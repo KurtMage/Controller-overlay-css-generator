@@ -1,5 +1,5 @@
 var rows = 5;
-var columns = 5;
+var columns = 8;
 
 var currTile;
 var otherTile;
@@ -12,7 +12,7 @@ window.onload = function() {
         for (let c = 0; c < columns; c++) {
             //<img>
             let tile = document.createElement("img");
-            tile.src = "https://imgur.com/WzKGKPH";
+            tile.src = "./images/arrows.png";
 
             //DRAG FUNCTIONALITY
             tile.addEventListener("dragstart", dragStart); //click on image to drag

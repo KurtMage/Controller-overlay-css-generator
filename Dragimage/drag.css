@@ -1,0 +1,10 @@
+  .dragme{
+			position:relative;
+			width: 270px;
+			height: 203px;
+			cursor: move;
+		}
+	#draggable {
+			background-color: #ccc;
+			border: 1px solid #000;
+		}
