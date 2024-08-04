@@ -9,8 +9,8 @@
 
 .img2 {
 	position:absolute;
-	top:200px;
-	left:200px;
+	top:40px;
+	left:370px;
 	width: 150px;
 	height: 150px;
 	border-radius: 100%;
@@ -23,8 +23,8 @@
 
 .img3 {
 	position:absolute;
-	top:300px;
-	left:300px;
+	top:-40px;
+	left:510px;
 	width: 150px;
 	height: 150px;
 	border-radius: 100%;

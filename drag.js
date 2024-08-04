@@ -48,23 +48,32 @@ function stopDrag() {
 		console.log("kurttm debug top: " + img.style.top);
 		console.log("kurttm debug left: " + img.style.left);
 		// TODO (and not zero? or probably not unchanged);
-		if (img.style.top) {
-			changedVariables += img.id + "    top: " + img.style.top + ";<br>";
-		}
-		if (img.style.left) {
-			changedVariables += img.id + "    left: " + img.style.left + ";<br>";
+		// if (img.style.top) {
+		// 	changedVariables += img.id + "    top: " + img.style.top + ";<br>";
+		// }
+		// if (img.style.left) {
+		// 	changedVariables += img.id + "    left: " + img.style.left + ";<br>";
+		// }
+		if (img.style.top || img.style.left) {
+			changedVariables +=
+			`
+			<br>${img.id} {<br>
+				${img.style.top ? `top: ${img.style.top}<br>` : ''}
+				${img.style.left ? `left: ${img.style.left}<br>` : ''}
+			}<br>
+			`
 		}
 	}
 	
-	document.getElementById("css-text1").innerHTML =
-		`:root {<br>
-			${changedVariables}
-		}`;
+	document.getElementById("css-text1").innerHTML =changedVariables;
+		// `:root {<br>
+		// 	${changedVariables}
+		// }`;
 
-	document.getElementById("css-text").value =
-		`:root {<br>
-			${changedVariables}
-		}`;
+	document.getElementById("css-text").value =changedVariables;
+		// `:root {<br>
+		// 	${changedVariables}
+		// }`;
 	console.log("kurttm debug top: " + targ.style.top);
 }
 
