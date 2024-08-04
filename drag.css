@@ -1,13 +1,6 @@
-.img1 {
-	position:absolute;
-	top:100px;
-	left:100px;
-	width: 270px;
-	height: 203px;
-	cursor: move;
-}
 
-.img2 {
+
+.x {
 	position:absolute;
 	top:40px;
 	left:370px;
@@ -21,7 +14,7 @@
 	background-size: 400%;
 }
 
-.img3 {
+.y {
 	position:absolute;
 	top:-40px;
 	left:510px;
