@@ -1,3 +1,4 @@
+var originalState = new Map();
 var pastStates = [];
 var selectedButton;
 var drag = false;
@@ -6,16 +7,11 @@ function init() {
 	document.onmousedown = startDrag;
 	document.onmouseup = stopDrag;
 
-	pushCurrentStateTo(pastStates);
-}
-
-function pushCurrentStateTo(list) {
-	const id2location = new Map();
 	for (const img of document.getElementsByTagName('span')) {
 		const location = { top: img.offsetTop, left: img.offsetLeft };
-		id2location.set(img.id, location);
+		originalState.set(img.id, location);
 	}
-	list.push(id2location);
+	pastStates.push(originalState);
 }
 
 function startDrag(e) {
@@ -78,6 +74,15 @@ function stopDrag() {
 	if (selectedButton) {
 		selectedButton.style.zIndex = 0;
 	}
+selectedButton.offsetTop === pastStates[pastStates.length - 1].get(selectedButton.id).top
+	const isNewState = selectedButton.offsetTop !==
+			pastStates[pastStates.length - 1].get(selectedButton.id).top
+			|| selectedButton.offsetLeft !==
+			pastStates[pastStates.length - 1].get(selectedButton.id).left;
+	if (!isNewState) {
+		return;
+	}
+
 
 	id2location = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
@@ -112,13 +117,37 @@ function undo() {
 	currentState = pastStates.pop();
 	stateToReturnTo = pastStates[pastStates.length - 1];
 	// console.log(stateToReturnTo);
-	for (const [id, location] of stateToReturnTo.entries()) {
+	for (const [id, locationToReturnTo] of stateToReturnTo.entries()) {
+		const currentLocation = currentState.get(id);
 		const img = document.getElementById(id);
-		// img.offsetTop = location.top;
-		// img.offsetLeft = location.left;
-		img.style.left = location.left + 'px';
-		img.style.top = location.top + 'px';
+		if (currentLocation.top !== locationToReturnTo.top) {
+			img.style.top = locationToReturnTo.top + 'px';
+		}
+		if (currentLocation.left !== locationToReturnTo.left) {
+			img.style.left = locationToReturnTo.left + 'px';
+		}
+		if (locationToReturnTo.top === originalState.get(id).offsetTop) {
+			img.style.top = null;
+		}
+		if (locationToReturnTo.left === originalState.get(id).offsetLeft) {
+			img.style.left = null;
+		}
 	}
+
+	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
+	for (const img of document.getElementsByTagName('span')) {
+		if (img.style.top || img.style.left) {
+			changedVariables +=
+			`
+			<br>${img.id} {<br>
+				${img.style.top ? `top: ${img.offsetTop};<br>` : ''}
+				${img.style.left ? `left: ${img.offsetLeft};<br>` : ''}
+				z index: ${img.style.zIndex}<br>
+			}<br>
+			`
+		}
+	}
+	document.getElementById("css-text").innerHTML = changedVariables;
 
 	if (pastStates.length <= 1) {
 		document.getElementById('undoButton').style.color = "#999";
