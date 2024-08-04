@@ -1,23 +1,26 @@
-
-var states = [];
+var pastStates = [];
 var selectedButton;
+var drag = false;
 
 function init() {
 	document.onmousedown = startDrag;
 	document.onmouseup = stopDrag;
 
+	pushCurrentStateTo(pastStates);
+}
+
+function pushCurrentStateTo(list) {
 	id2location = {};
 	for (const img of document.getElementsByTagName('span')) {
 		const location = { top: img.offsetTop, left: img.offsetLeft };
 		id2location = {};
 		id2location[img.id] = location;
 	}
-	states.push(id2location);
+	list.push(id2location);
 }
 
 function startDrag(e) {
 	// determine event object
-	console.log(states);
 	if (!e) {
 		var e = window.event;
 	}
@@ -69,11 +72,15 @@ function dragDiv(e) {
 }
 
 function stopDrag() {
+	if (!drag) {
+		return;
+	}
 	drag=false;
 	if (selectedButton) {
 		selectedButton.style.zIndex = 0;
 	}
 
+	id2location = {};
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
 		if (img.style.top || img.style.left) {
@@ -85,8 +92,12 @@ function stopDrag() {
 				z index: ${img.style.zIndex}<br>
 			}<br>
 			`
+			const location = { top: img.offsetTop, left: img.offsetLeft };
+			id2location = {};
+			id2location[img.id] = location;
 		}
 	}
+	pastStates.push(id2location)
 	
 	document.getElementById("css-text").innerHTML =changedVariables;
 	selectedButton = null;
