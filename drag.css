@@ -1,32 +1,125 @@
 
-
-.x {
-	position:absolute;
-	top:40px;
-	left:370px;
+.img {
+	position:fixed;
 	width: 150px;
 	height: 150px;
 	border-radius: 100%;
-	background: url(https://imgur.com/WzKGKPH.png);
-	background-size: cover;
 	cursor: move;
-	object-fit: cover;
 	background-size: 400%;
 }
 
-.y {
-	position:absolute;
-	top:-40px;
-	left:510px;
-	width: 150px;
-	height: 150px;
-	border-radius: 100%;
+:root {
+
+    --a-top: 300px;
+    --b-top: calc(var(--a-top) - var(--diag-vert-clearance));
+    --x-top: calc(var(--a-top) - var(--vert-clearance));
+    --y-top: calc(var(--x-top) - var(--diag-vert-clearance));
+    --rb-top: calc(var(--y-top));
+    --lb-top: calc(var(--rb-top));
+    --rt-top: calc(var(--rb-top) + var(--vert-clearance));
+    --lt-top: var(--rt-top);
+
+    --a-left: 500px;
+    --b-left: calc(var(--a-left) + var(--diag-horz-clearance));
+    --x-left: var(--a-left);
+    --y-left: calc(var(--a-left) + var(--diag-horz-clearance));
+    --rb-left: calc(var(--y-left) + var(--horz-clearance));
+    --lb-left: calc(var(--rb-left) + var(--horz-clearance));
+    --rt-left: calc(var(--rb-left));
+    --lt-left: calc(var(--rt-left) + var(--horz-clearance));
+
+    --dir-right-top: calc(var(--x-top) + 75px);
+    --dir-right-left: calc(var(--x-left) - 150px);
+    --dir-down-top: calc(var(--dir-right-top) - var(--diag-vert-clearance));
+    --dir-down-left: calc(var(--dir-right-left) - var(--diag-horz-clearance));
+    --dir-left-top: var(--dir-down-top);
+    --dir-left-left: calc(var(--dir-down-left) - var(--horz-clearance));
+    --dir-up-top: calc(var(--dir-right-top) + 230px);
+    --dir-up-left: calc(var(--dir-right-left) + 75px);
+
+	--vert-clearance: 160px;
+    --diag-vert-clearance: 80px;
+    --diag-horz-clearance: 140px;
+    --horz-clearance: var(--vert-clearance);
+}
+
+.img.button {
 	background: url(https://imgur.com/WzKGKPH.png);
-	background-size: cover;
-	cursor: move;
-	object-fit: cover;
-	background-size: 400%;
+}
+
+.img.button.x {
+	top:var(--x-top);
+	left:var(--x-left);
+}
+
+.img.button.y {
+	top:var(--y-top);
+	left:var(--y-left);
 	background-position: -150px 0px;
+}
+
+.img.button.a {
+	top:var(--a-top);
+	left:var(--a-left);
+	background-position: 0px -300px;
+}
+
+.img.button.b {
+	top:var(--b-top);
+	left:var(--b-left);
+	background-position: -150px -300px;
+}
+
+
+.img.button.rb {
+	top:var(--rb-top);
+	left:var(--rb-left);
+	background-position: -300px 0px;
+}
+
+.img.button.lb {
+	top:var(--lb-top);
+	left:var(--lb-left);
+	background-position: -450px 0px;
+}
+
+.img.button.rt {
+	top:var(--rt-top);
+	left:var(--rt-left);
+	background-position: -300px -300px;
+}
+
+.img.button.lt {
+	top:var(--lt-top);
+	left:var(--lt-left);
+	background-position: -450px -300px;
+}
+
+.img.arrow {
+	background: url(https://imgur.com/lHyit0Y.png);
+}
+
+.img.arrow.left {
+	top:var(--dir-left-top);
+	left:var(--dir-left-left);
+}
+
+.img.arrow.down {
+	top:var(--dir-down-top);
+	left:var(--dir-down-left);
+	background-position: -150px 0px;
+}
+
+.img.arrow.right {
+	top:var(--dir-right-top);
+	left:var(--dir-right-left);
+	background-position: -300px 0px;
+}
+
+.img.arrow.up {
+	top:var(--dir-up-top);
+	left:var(--dir-up-left);
+	background-position: -450px 0px;
 }
 
 .copycode {
