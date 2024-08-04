@@ -28,7 +28,8 @@
     </div>
     <div class="copycode">
         <button class="btn-1" onclick="copyText()">Copy code to clipboard</button>
-
+        <button class="btn-1" onclick="undo()" id="undoButton" style="color: #999;">Undo last action</button>
+        <button class="btn-1" onclick="copyText()" id="redoButton" style="color: #999;">Redo last undo</button>
         <div class="code-box">
             <code>
                 <p  id="css-text">body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }</p>>

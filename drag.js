@@ -10,11 +10,10 @@ function init() {
 }
 
 function pushCurrentStateTo(list) {
-	id2location = {};
+	const id2location = new Map();
 	for (const img of document.getElementsByTagName('span')) {
 		const location = { top: img.offsetTop, left: img.offsetLeft };
-		id2location = {};
-		id2location[img.id] = location;
+		id2location.set(img.id, location);
 	}
 	list.push(id2location);
 }
@@ -80,29 +79,50 @@ function stopDrag() {
 		selectedButton.style.zIndex = 0;
 	}
 
-	id2location = {};
+	id2location = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
 		if (img.style.top || img.style.left) {
 			changedVariables +=
 			`
 			<br>${img.id} {<br>
-				${img.style.top ? `top: ${img.style.top};<br>` : ''}
-				${img.style.left ? `left: ${img.style.left};<br>` : ''}
+				${img.style.top ? `top: ${img.offsetTop};<br>` : ''}
+				${img.style.left ? `left: ${img.offsetLeft};<br>` : ''}
 				z index: ${img.style.zIndex}<br>
 			}<br>
 			`
-			const location = { top: img.offsetTop, left: img.offsetLeft };
-			id2location = {};
-			id2location[img.id] = location;
 		}
+		const location = { top: img.offsetTop, left: img.offsetLeft };
+		id2location.set(img.id, location);
 	}
 	pastStates.push(id2location)
+	document.getElementById('undoButton').style.color = "#fff";
+	console.log(pastStates);
 	
-	document.getElementById("css-text").innerHTML =changedVariables;
+	document.getElementById("css-text").innerHTML = changedVariables;
 	selectedButton = null;
 
 	// document.getElementById("css-text3").value =changedVariables;
+}
+
+function undo() {
+	if (pastStates.length <= 1) {
+		return;
+	}
+	currentState = pastStates.pop();
+	stateToReturnTo = pastStates[pastStates.length - 1];
+	// console.log(stateToReturnTo);
+	for (const [id, location] of stateToReturnTo.entries()) {
+		const img = document.getElementById(id);
+		// img.offsetTop = location.top;
+		// img.offsetLeft = location.left;
+		img.style.left = location.left + 'px';
+		img.style.top = location.top + 'px';
+	}
+
+	if (pastStates.length <= 1) {
+		document.getElementById('undoButton').style.color = "#999";
+	}
 }
 
 function copyText() {
