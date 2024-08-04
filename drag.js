@@ -1,5 +1,6 @@
 
 var states = [];
+var selectedButton;
 
 function init() {
 	document.onmousedown = startDrag;
@@ -33,6 +34,7 @@ function startDrag(e) {
 	// assign default values for top and left properties
 	const img = document.getElementById(targ.id);
 	if (!img) { return; }
+	selectedButton = img;
 	img.style.zIndex = 1;
 	if (!targ.style.left) { targ.style.left=img.offsetLeft + 'px'};
 	if (!targ.style.top) { targ.style.top=img.offsetTop + 'px'};
@@ -61,6 +63,7 @@ function dragDiv(e) {
 
 function stopDrag() {
 	drag=false;
+	selectedButton.style.zIndex = 0;
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
@@ -70,12 +73,14 @@ function stopDrag() {
 			<br>${img.id} {<br>
 				${img.style.top ? `top: ${img.style.top};<br>` : ''}
 				${img.style.left ? `left: ${img.style.left};<br>` : ''}
+				z index: ${img.style.zIndex}<br>
 			}<br>
 			`
 		}
 	}
 	
 	document.getElementById("css-text").innerHTML =changedVariables;
+	selectedButton = null;
 
 	// document.getElementById("css-text3").value =changedVariables;
 }
