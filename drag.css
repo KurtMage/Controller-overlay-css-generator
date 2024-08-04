@@ -1,14 +1,15 @@
 .layout-box {
-  border: 4px solid;
-  border-radius: 12px;
-  width: 1200px;
-  height: 600px;
-  resize: both;
-  overflow: auto;
+    position: relative;
+    border: 4px solid;
+    border-radius: 12px;
+    width: 1200px;
+    height: 600px;
+    resize: both;
+    overflow: auto;
 }
 
 .img {
-	position:fixed;
+	position: absolute;
 	width: 150px;
 	height: 150px;
 	border-radius: 100%;
