@@ -1,11 +1,3 @@
-.resize {
-  border: 2px solid;
-  padding: 20px; 
-  width: 300px;
-  resize: both;
-  overflow: auto;
-}
-
 .layout-box {
   border: 4px solid;
   border-radius: 12px;
@@ -154,5 +146,13 @@ img.startback .back {
 
 .copycode {
 	position: relative;
-	/* top:600px; */
+}
+
+.code-box {
+  border: 4px solid;
+  border-radius: 12px;
+  width: 600px;
+  height: 300px;
+  resize: both;
+  overflow: auto;
 }
