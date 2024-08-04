@@ -4,57 +4,28 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Avengers Puzzle</title>
-        <link rel="stylesheet" href="drag.css">
-        <script src="drag.js"></script>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avengers Puzzle</title>
+    <link rel="stylesheet" href="drag.css">
+    <script src="drag.js"></script>
+</head>
 
-    <body>
-
-        <div id="draggable" class="dragme">"Hello World!"</div>
-        <img src="https://lh4.googleusercontent.com/-8tqTFxi2ebU/Ufo4j_thf7I/AAAAAAAADFM/_ZBQctm9e8E/w270-h203-no/flower.jpg" alt="drag-and-drop image script" 
-            title="drag-and-drop image script" class="dragme">
-        <img src="https://lh4.googleusercontent.com/-8tqTFxi2ebU/Ufo4j_thf7I/AAAAAAAADFM/_ZBQctm9e8E/w270-h203-no/flower.jpg" alt="drag-and-drop image script" 
-            title="drag-and-drop image script" class="dragme">
-        <!-- <br>
-        <div id="board"></div>
-        <h2>Turns: <span id="turns">0</span></h2>
-        <div id="pieces"></div> -->
-        <code>
-            <p id="css-text">kurttm test text</p>>
-        </code>
-    </body>
-    
 <body>
-
-<p>Click on the button to copy the text from the text field. Try to paste the text (e.g. ctrl+v) afterwards in a different window, to see the effect.</p>
-
-<input type="text" value="Hello World" id="myInput">
-<button onclick="myFunction()">Copy text</button>
-
-<script>
-function myFunction() {
-  // Get the text field
-  var copyText = document.getElementById("myInput");
-
-  // Select the text field
-  copyText.select();
-  copyText.setSelectionRange(0, 99999); // For mobile devices
-
-  // Copy the text inside the text field
-  navigator.clipboard.writeText(copyText.value);
-  
-  // Alert the copied text
-  alert("Copied the text: " + copyText.value);
-}
-</script>
-
+    <img src="https://lh4.googleusercontent.com/-8tqTFxi2ebU/Ufo4j_thf7I/AAAAAAAADFM/_ZBQctm9e8E/w270-h203-no/flower.jpg" alt="drag-and-drop image script" 
+        title="drag-and-drop image script" class="img1" id="img1">
+    <!-- <img src=".\images\Light mode DP buttons 10pt border.png" alt="img2" 
+        title="img3" class="img2" id="img2"> -->
+    <span class="img2" id="img2"></span>
+    <span class="img3" id="img3"></span>
+    <div class="copycode">
+        <button onclick="copyText()">Copy code to clipboard</button>
+        <code>
+            <p id="css-text1"></p>>
+        </code>
+    </div>
 </body>
-
-
 
 </html>
 
