@@ -12,7 +12,6 @@
 	position: absolute;
 	width: 150px;
 	height: 150px;
-	border-radius: 100%;
 	cursor: move;
 	background-size: 400%;
 }
@@ -52,16 +51,18 @@
     --horz-clearance: var(--vert-clearance);
 }
 
-img.startback {
+.img.startback {
 	background: url(https://imgur.com/QXROavN.png);
+	width: 100px;
+	height: 100px;
 }
 
-img.startback .start {
+.img.startback.start {
 	top: 70px;
 	left: 439px;
 }
 
-img.startback .back {
+.img.startback.back {
 	top: 70px;
 	left: 335px;
 }
