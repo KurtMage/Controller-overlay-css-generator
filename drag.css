@@ -1,3 +1,19 @@
+.resize {
+  border: 2px solid;
+  padding: 20px; 
+  width: 300px;
+  resize: both;
+  overflow: auto;
+}
+
+.layout-box {
+  border: 4px solid;
+  border-radius: 12px;
+  width: 1200px;
+  height: 600px;
+  resize: both;
+  overflow: auto;
+}
 
 .img {
 	position:fixed;
@@ -137,6 +153,6 @@ img.startback .back {
 }
 
 .copycode {
-	position: absolute;
-	top:600px;
+	position: relative;
+	/* top:600px; */
 }

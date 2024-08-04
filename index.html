@@ -4,30 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controller overlay css generator</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="drag.css">
     <script src="drag.js"></script>
 </head>
 
 <body>
-    <span class="img button x" id=".fight-stick .x"></span>
-    <span class="img button y" id=".fight-stick .y"></span>
-    <span class="img button a" id=".fight-stick .a"></span>
-    <span class="img button b" id=".fight-stick .b"></span>
-    <span class="img button rb" id=".fight-stick .bumper.right"></span>
-    <span class="img button lb" id=".fight-stick .bumper.left"></span>
-    <span class="img button rt" id=".fight-stick .trigger-button.right"></span>
-    <span class="img button lt" id=".fight-stick .trigger-button.left"></span>
-    <span class="img arrow left" id=".fight-stick .face.left"></span>
-    <span class="img arrow down" id=".fight-stick .face.down"></span>
-    <span class="img arrow right" id=".fight-stick .face.right"></span>
-    <span class="img arrow up" id=".fight-stick .face.up"></span>
-    <span class="img startback start" id=".fight-stick .start"></span>
-    <span class="img startback back" id=".fight-stick .back"></span>
+    <div class="layout-box">
+        <span class="img button x" id=".fight-stick .x"></span>
+        <span class="img button y" id=".fight-stick .y"></span>
+        <span class="img button a" id=".fight-stick .a"></span>
+        <span class="img button b" id=".fight-stick .b"></span>
+        <span class="img button rb" id=".fight-stick .bumper.right"></span>
+        <span class="img button lb" id=".fight-stick .bumper.left"></span>
+        <span class="img button rt" id=".fight-stick .trigger-button.right"></span>
+        <span class="img button lt" id=".fight-stick .trigger-button.left"></span>
+        <span class="img arrow left" id=".fight-stick .face.left"></span>
+        <span class="img arrow down" id=".fight-stick .face.down"></span>
+        <span class="img arrow right" id=".fight-stick .face.right"></span>
+        <span class="img arrow up" id=".fight-stick .face.up"></span>
+        <span class="img startback start" id=".fight-stick .start"></span>
+        <span class="img startback back" id=".fight-stick .back"></span>
+    </div>
     <div class="copycode">
-        <button onclick="copyText()">Copy code to clipboard</button>
-        <code>
-            <p id="css-text"></p>>
-        </code>
+        <button class="btn-1" onclick="copyText()">Copy code to clipboard</button>
+
+        <div class="layout-box">
+            <code>
+                <p  id="css-text"></p>>
+            </code>
+        </div>
     </div>
 </body>
 

@@ -22,10 +22,14 @@ function startDrag(e) {
 		var e = window.event;
 	}
 
-	if(e.preventDefault) e.preventDefault();
+	// if(e.preventDefault) e.preventDefault();
 
 	// IE uses srcElement, others use target
-	targ = e.target ? e.target : e.srcElement;
+	// targ = e.target ? e.target : e.srcElement;
+	targ = e.target ;
+	if (targ.tagName?.toUpperCase() != "SPAN") {
+		return;
+	}
 
 	// calculate event X, Y coordinates
 	offsetX = e.clientX;
@@ -55,6 +59,9 @@ function dragDiv(e) {
 	if (!drag) {return};
 	if (!e) { var e= window.event};
 	var targ=e.target;
+	if (targ.tagName?.toUpperCase() != "SPAN") {
+		return;
+	}
 	// move div element
 	targ.style.left=coordX+e.clientX-offsetX+'px';
 	targ.style.top=coordY+e.clientY-offsetY+'px';
@@ -63,7 +70,9 @@ function dragDiv(e) {
 
 function stopDrag() {
 	drag=false;
-	selectedButton.style.zIndex = 0;
+	if (selectedButton) {
+		selectedButton.style.zIndex = 0;
+	}
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
