@@ -43,6 +43,20 @@
     --horz-clearance: var(--vert-clearance);
 }
 
+img.startback {
+	background: url(https://imgur.com/QXROavN.png);
+}
+
+img.startback .start {
+	top: 70px;
+	left: 439px;
+}
+
+img.startback .back {
+	top: 70px;
+	left: 335px;
+}
+
 .img.button {
 	background: url(https://imgur.com/WzKGKPH.png);
 }
