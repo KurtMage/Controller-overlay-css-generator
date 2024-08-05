@@ -67,6 +67,14 @@ function resizeButton(e) {
 				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
 			}<br>
 			`
+			if (img.style.width != originalStateOfImg.size) {
+				changedVariables +=
+				`
+				<br>${img.id}.pressed {<br>
+					background-position-y: ${img.style.width};<br>
+				}<br>
+				`
+			}
 		}
 		const state = {
 			top: img.offsetTop,
@@ -116,6 +124,14 @@ function changeButton(e) {
 				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
 			}<br>
 			`
+			if (img.style.width != originalStateOfImg.size) {
+				changedVariables +=
+				`
+				<br>${img.id}.pressed {<br>
+					background-position-y: ${img.style.width};<br>
+				}<br>
+				`
+			}
 		}
 		const state = {
 			top: img.offsetTop,
@@ -201,6 +217,14 @@ function deleteButton(e) {
 				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
 			}<br>
 			`
+			if (img.style.width != originalStateOfImg.size) {
+				changedVariables +=
+				`
+				<br>${img.id}.pressed {<br>
+					background-position-y: ${img.style.width};<br>
+				}<br>
+				`
+			}
 		}
 		const state = {
 			top: img.offsetTop,
@@ -261,6 +285,14 @@ function stopDrag() {
 				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
 			}<br>
 			`
+			if (img.style.width != originalStateOfImg.size) {
+				changedVariables +=
+				`
+				<br>${img.id}.pressed {<br>
+					background-position-y: ${img.style.width};<br>
+				}<br>
+				`
+			}
 		}
 		const state = {
 			top: img.offsetTop,
@@ -334,6 +366,14 @@ function undo() {
 				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
 			}<br>
 			`
+			if (img.style.width != originalStateOfImg.size) {
+				changedVariables +=
+				`
+				<br>${img.id}.pressed {<br>
+					background-position-y: ${img.style.width};<br>
+				}<br>
+				`
+			}
 		}
 	}
 	document.getElementById("css-text").innerHTML = changedVariables;
@@ -400,6 +440,14 @@ function redo() {
 				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
 			}<br>
 			`
+			if (img.style.width != originalStateOfImg.size) {
+				changedVariables +=
+				`
+				<br>${img.id}.pressed {<br>
+					background-position-y: ${img.style.width};<br>
+				}<br>
+				`
+			}
 		}
 	}
 	document.getElementById("css-text").innerHTML = changedVariables;
