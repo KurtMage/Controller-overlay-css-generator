@@ -64,6 +64,7 @@ body {font-family: Arial;}
   <button class="tablinks" onclick="openCity(event, 'moveTab')">Move buttons</button>
   <button class="tablinks" onclick="openCity(event, 'deleteTab')">Delete buttons</button>
   <button class="tablinks" onclick="openCity(event, 'changeButtonsTab')">Change buttons</button>
+  <button class="tablinks" onclick="openCity(event, 'changeSizeTab')">Change size</button>
   <button class="tablinks active" onclick="openCity(event, 'tutorialTab')">How to use</button>
 </div>
 
@@ -83,6 +84,14 @@ body {font-family: Arial;}
   <input type="text" id="leftOffset"><br><br>
     <label for="url">Offset from top (in px):</label>
   <input type="text" id="topOffset"><br><br>
+   <label for="colorpicker">Color Picker:</label>
+   <input type="color" id="colorpicker" value="#0000ff">
+</div>
+
+<div id="changeSizeTab" class="tabcontent">
+  <p>Choose a size (in px) for the buttons to change to, then click them to make them that size. For reference, they're 150px by default.</p> 
+    <label for="size">size (just a number):</label>
+  <input type="text" id="sizeInput"><br><br>
 </div>
 
 <div id="tutorialTab" class="tabcontent" style="display: block;">

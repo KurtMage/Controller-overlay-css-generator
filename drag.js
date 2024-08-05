@@ -12,7 +12,8 @@ function init() {
 		const state = {
 			top: img.offsetTop,
 			left: img.offsetLeft,
-			isVisible: img.style.visibility === 'visible' || img.style.visibility === ''};
+			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
+			background: img.style.background};
 		originalState.set(img.id, state);
 	}
 	pastStates.push(originalState);
@@ -25,12 +26,54 @@ function clickAction(e) {
 		deleteButton(e);
 	} else if (document.getElementById("changeButtonsTab").style.display === 'block') {
 		changeButton(e);
+	} else if (document.getElementById("changeSizeTab").style.display === 'block') {
+		resizeButton(e);
 	}
+}
+
+function resizeButton(e) {
+	targ = e.target ;
+	if (targ.tagName?.toUpperCase() != "SPAN") {
+		return;
+	}
+
+	const img = document.getElementById(targ.id);
+	if (!img) { return; }
+	const size = parseInt(document.getElementById("sizeInput").value);
+	img.style.backgroundSize = `${size}px`;
+	img.style.height = `${size}px`;
+	img.style.width = `${size}px`;
+
+
+	id2state = new Map();
+	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
+	for (const img of document.getElementsByTagName('span')) {
+		originalStateOfImg = originalState.get(img.id);
+		if (doesButtonHaveChange(img)) {
+			const backgroundChanged = img.style.background != originalStateOfImg.background;
+			changedVariables +=
+			`
+			<br>${img.id} {<br>
+				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
+				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
+				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
+				${img.style.visibility ? `background: none;<br>` : ''}
+			}<br>
+			`
+		}
+		const state = {
+			top: img.offsetTop,
+			left: img.offsetLeft,
+			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
+			background: img.style.background};
+		id2state.set(img.id, state);
+	}
+	addToPastStates(id2state);
+	document.getElementById("css-text").innerHTML = changedVariables;
 }
 
 function changeButton(e) {
 	const url = document.getElementById("urlInput").value;
-	console.log("kurttm debug text: "+ url);
 	targ = e.target ;
 	if (targ.tagName?.toUpperCase() != "SPAN") {
 		return;
@@ -44,6 +87,33 @@ function changeButton(e) {
 	const leftOffset = parseInt(document.getElementById("leftOffset").value);
 	img.style.backgroundPositionY = -topOffset + "px";
 	img.style.backgroundPositionX = -leftOffset + "px";
+
+
+	id2state = new Map();
+	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
+	for (const img of document.getElementsByTagName('span')) {
+		originalStateOfImg = originalState.get(img.id);
+		if (doesButtonHaveChange(img)) {
+			const backgroundChanged = img.style.background != originalStateOfImg.background;
+			changedVariables +=
+			`
+			<br>${img.id} {<br>
+				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
+				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
+				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
+				${img.style.visibility ? `background: none;<br>` : ''}
+			}<br>
+			`
+		}
+		const state = {
+			top: img.offsetTop,
+			left: img.offsetLeft,
+			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
+			background: img.style.background};
+		id2state.set(img.id, state);
+	}
+	addToPastStates(id2state);
+	document.getElementById("css-text").innerHTML = changedVariables;
 }
 
 function startDrag(e) {
@@ -98,15 +168,18 @@ function deleteButton(e) {
 
 	targ.style.visibility = "hidden";
 
-	id2location = new Map();
+	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
+		originalStateOfImg = originalState.get(img.id);
 		if (doesButtonHaveChange(img)) {
+			const backgroundChanged = img.style.background != originalStateOfImg.background;
 			changedVariables +=
 			`
 			<br>${img.id} {<br>
 				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
 				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
+				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
 				${img.style.visibility ? `background: none;<br>` : ''}
 			}<br>
 			`
@@ -114,10 +187,11 @@ function deleteButton(e) {
 		const state = {
 			top: img.offsetTop,
 			left: img.offsetLeft,
-			isVisible: img.style.visibility === 'visible' || img.style.visibility === ''};
-		id2location.set(img.id, state);
+			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
+			background: img.style.background};
+		id2state.set(img.id, state);
 	}
-	addToPastStates(id2location);
+	addToPastStates(id2state);
 	document.getElementById("css-text").innerHTML = changedVariables;
 }
 
@@ -150,15 +224,18 @@ function stopDrag() {
 		return;
 	}
 
-	id2location = new Map();
+	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
+		originalStateOfImg = originalState.get(img.id);
 		if (doesButtonHaveChange(img)) {
+			const backgroundChanged = img.style.background != originalStateOfImg.background;
 			changedVariables +=
 			`
 			<br>${img.id} {<br>
 				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
 				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
+				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
 				${img.style.visibility ? `background: none;<br>` : ''}
 			}<br>
 			`
@@ -166,10 +243,11 @@ function stopDrag() {
 		const state = {
 			top: img.offsetTop,
 			left: img.offsetLeft,
-			isVisible: img.style.visibility === 'visible' || img.style.visibility === ''};
-		id2location.set(img.id, state);
+			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
+			background: img.style.background};
+		id2state.set(img.id, state);
 	}
-	addToPastStates(id2location);
+	addToPastStates(id2state);
 	console.log(pastStates);
 	
 	document.getElementById("css-text").innerHTML = changedVariables;
@@ -205,17 +283,22 @@ function undo() {
 			img.style.visibility = null;
 			img.style.zIndex = 0;
 		}
-
+		if (locationToReturnTo.background !== currentLocation.background) {
+			img.style.background = locationToReturnTo.background;
+		}
 	}
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
+		originalStateOfImg = originalState.get(img.id);
 		if (doesButtonHaveChange(img)) {
+			const backgroundChanged = img.style.background != originalStateOfImg.background;
 			changedVariables +=
 			`
 			<br>${img.id} {<br>
 				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
 				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
+				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
 				${img.style.visibility ? `background: none;<br>` : ''}
 			}<br>
 			`
@@ -258,16 +341,22 @@ function redo() {
 			img.style.visibility = 'hidden';
 			img.style.zIndex = -1;
 		}
+		if (locationToReturnTo.background !== currentLocation.background) {
+			img.style.background = locationToReturnTo.background;
+		}
 	}
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
+		originalStateOfImg = originalState.get(img.id);
 		if (doesButtonHaveChange(img)) {
+			const backgroundChanged = img.style.background != originalStateOfImg.background;
 			changedVariables +=
 			`
 			<br>${img.id} {<br>
 				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
 				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
+				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
 				${img.style.visibility ? `background: none;<br>` : ''}
 			}<br>
 			`
@@ -289,11 +378,12 @@ function copyText() {
 }
 
 function doesButtonHaveChange(img) {
-    return img.style.top || img.style.left || img.style.visibility == 'hidden';
+    return img.style.top || img.style.left || img.style.visibility == 'hidden'
+		|| img.style.background != originalStateOfImg.background;
 }
 
-function addToPastStates(id2location) {
-	pastStates.push(id2location);
+function addToPastStates(id2state) {
+	pastStates.push(id2state);
 	document.getElementById('undoButton').style.color = "#fff";
 	undoneStates = [];
 	document.getElementById('redoButton').style.color = "#999";
