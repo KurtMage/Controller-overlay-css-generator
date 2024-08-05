@@ -23,7 +23,27 @@ function clickAction(e) {
 		startDrag(e);
 	} else if (document.getElementById("deleteTab").style.display === 'block') {
 		deleteButton(e);
+	} else if (document.getElementById("changeButtonsTab").style.display === 'block') {
+		changeButton(e);
 	}
+}
+
+function changeButton(e) {
+	const url = document.getElementById("urlInput").value;
+	console.log("kurttm debug text: "+ url);
+	targ = e.target ;
+	if (targ.tagName?.toUpperCase() != "SPAN") {
+		return;
+	}
+
+	const img = document.getElementById(targ.id);
+	if (!img) { return; }
+	img.style.background = `url(${url}.png)`;
+
+	const topOffset = parseInt(document.getElementById("topOffset").value);
+	const leftOffset = parseInt(document.getElementById("leftOffset").value);
+	img.style.backgroundPositionY = -topOffset + "px";
+	img.style.backgroundPositionX = -leftOffset + "px";
 }
 
 function startDrag(e) {
