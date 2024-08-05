@@ -23,12 +23,11 @@ function clickAction(e) {
 		const cursorType = e.target.id === 'tabToggle01Label' ? "move" : "crosshair";
 		for (const img of document.getElementsByTagName('span')) {
 			img.style.cursor = cursorType;
-			console.log('');
 		}
 	}
-	if (document.getElementById("tabToggle01").checked) {
+	if (document.getElementById("tabToggle01").style.display === 'block') {
 		startDrag(e);
-	} else if (document.getElementById("tabToggle02").checked) {
+	} else if (document.getElementById("tabToggle02").style.display === 'block') {
 		deleteButton(e);
 	}
 }
@@ -284,6 +283,26 @@ function addToPastStates(id2location) {
 	document.getElementById('undoButton').style.color = "#fff";
 	undoneStates = [];
 	document.getElementById('redoButton').style.color = "#999";
+}
+
+
+function openCity(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+
+	const cursorType = cityName === 'tabToggle01' ? "move" : "crosshair";
+	for (const img of document.getElementsByTagName('span')) {
+		img.style.cursor = cursorType;
+	}
 }
 
 window.onload = function() {

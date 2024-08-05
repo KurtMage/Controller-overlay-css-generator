@@ -10,33 +10,81 @@
 </head>
 
 <body>
-<tab-container>
-	<!-- TAB CONTROLS -->
-	<input type="radio" id="tabToggle01" name="tabs" value="1" checked />
-	<label for="tabToggle01" id="tabToggle01Label" checked="checked">Move buttons</label>
-	<input type="radio" id="tabToggle02" name="tabs" value="2" />
-	<label for="tabToggle02" id="tabToggle02Label">Delete buttons</label>
-	<input type="radio" id="tabToggle03" name="tabs" value="3" />
-	<label for="tabToggle03" id="tabToggle03Label">Change buttons</label>
-	<input type="radio" id="tabToggle04" name="tabs" value="4" />
-	<label for="tabToggle04" id="tabToggle04Label">Import CSS</label>
-	<tab-content>
-		<p>TAB [ <tab-number>01</tab-number> ] content</p>
-		<p>CSS...</p>
-	</tab-content>
-	<tab-content>
-		<p>TAB [ <tab-number>02</tab-number> ] content</p>
-		<p>CSS Grid...</p>
-	</tab-content>
-	<tab-content>
-		<p>TAB [ <tab-number>03</tab-number> ] content</p>
-		<p>CSS Grid is the...</p>
-	</tab-content>
-	<tab-content>
-		<p>TAB [ <tab-number>04</tab-number> ] content</p>
-		<p>CSS Grid is the future!</p>
-	</tab-content>
-</tab-container>
+
+<style>
+body {font-family: Arial;}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border-top: 4px solid #000;
+  border-left: 4px solid #000;
+  border-right: 4px solid #000;
+  background-color: #ccc;
+  border-radius: 12px 12px 0px 0px;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #f1f1f1;
+  border: none;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border-left: 4px solid #000;
+  border-right: 4px solid #000;
+  border-top: none;
+  background-color: #f1f1f1;
+}
+</style>
+</head>
+<body>
+
+<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'tabToggle01')">Move buttons</button>
+  <button class="tablinks" onclick="openCity(event, 'tabToggle02')">Delete buttons</button>
+  <button class="tablinks" onclick="openCity(event, 'tabToggle03')">Change buttons</button>
+  <button class="tablinks" onclick="openCity(event, 'tabToggle04')">How to use</button>
+</div>
+
+<div id="tabToggle01" class="tabcontent">
+  <p>Click and drag buttons to move them.</p>
+</div>
+
+<div id="tabToggle02" class="tabcontent">
+  <p>Click buttons to delete them.</p>
+</div>
+
+<div id="tabToggle03" class="tabcontent">
+  <p>Provide a URL for a properly formatted image. Then click a button to make it into that image.</p> 
+    <label for="fname">URL:</label>
+  <input type="text" id="fname" name="fname"><br><br>
+</div>
+
+<div id="tabToggle04" class="tabcontent">
+  <p>Tutorial</p> 
+</div>
+
     <div class="layout-box">
         <span class="img button x" id=".fight-stick .x"></span>
         <span class="img button y" id=".fight-stick .y"></span>
