@@ -52,29 +52,8 @@ function resizeButton(e) {
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
-		originalStateOfImg = originalState.get(img.id);
 		if (doesButtonHaveChange(img)) {
-			const backgroundChanged = img.style.background != originalStateOfImg.background;
-			changedVariables +=
-			`
-			<br>${img.id} {<br>
-				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
-				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
-				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
-				${img.style.visibility ? `background: none;<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
-			}<br>
-			`
-			if (img.style.width != originalStateOfImg.size) {
-				changedVariables +=
-				`
-				<br>${img.id}.pressed {<br>
-					background-position-y: ${img.style.width};<br>
-				}<br>
-				`
-			}
+			changedVariables += getChangedVariables(img);
 		}
 		const state = {
 			top: img.offsetTop,
@@ -109,29 +88,8 @@ function changeButton(e) {
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
-		originalStateOfImg = originalState.get(img.id);
 		if (doesButtonHaveChange(img)) {
-			const backgroundChanged = img.style.background != originalStateOfImg.background;
-			changedVariables +=
-			`
-			<br>${img.id} {<br>
-				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
-				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
-				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
-				${img.style.visibility ? `background: none;<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
-			}<br>
-			`
-			if (img.style.width != originalStateOfImg.size) {
-				changedVariables +=
-				`
-				<br>${img.id}.pressed {<br>
-					background-position-y: ${img.style.width};<br>
-				}<br>
-				`
-			}
+			changedVariables += getChangedVariables(img);
 		}
 		const state = {
 			top: img.offsetTop,
@@ -202,29 +160,8 @@ function deleteButton(e) {
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
-		originalStateOfImg = originalState.get(img.id);
 		if (doesButtonHaveChange(img)) {
-			const backgroundChanged = img.style.background != originalStateOfImg.background;
-			changedVariables +=
-			`
-			<br>${img.id} {<br>
-				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
-				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
-				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
-				${img.style.visibility ? `background: none;<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
-			}<br>
-			`
-			if (img.style.width != originalStateOfImg.size) {
-				changedVariables +=
-				`
-				<br>${img.id}.pressed {<br>
-					background-position-y: ${img.style.width};<br>
-				}<br>
-				`
-			}
+			changedVariables += getChangedVariables(img);
 		}
 		const state = {
 			top: img.offsetTop,
@@ -271,28 +208,8 @@ function stopDrag() {
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
-		originalStateOfImg = originalState.get(img.id);
 		if (doesButtonHaveChange(img)) {
-			const backgroundChanged = img.style.background != originalStateOfImg.background;
-			changedVariables +=
-			`
-			<br>${img.id} {<br>
-				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
-				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
-				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
-				${img.style.visibility ? `background: none;<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''} ${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
-			}<br>
-			`
-			if (img.style.width != originalStateOfImg.size) {
-				changedVariables +=
-				`
-				<br>${img.id}.pressed {<br>
-					background-position-y: ${img.style.width};<br>
-				}<br>
-				`
-			}
+			changedVariables += getChangedVariables(img);
 		}
 		const state = {
 			top: img.offsetTop,
@@ -351,29 +268,8 @@ function undo() {
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
-		originalStateOfImg = originalState.get(img.id);
 		if (doesButtonHaveChange(img)) {
-			const backgroundChanged = img.style.background != originalStateOfImg.background;
-			changedVariables +=
-			`
-			<br>${img.id} {<br>
-				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
-				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
-				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
-				${img.style.visibility ? `background: none;<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
-			}<br>
-			`
-			if (img.style.width != originalStateOfImg.size) {
-				changedVariables +=
-				`
-				<br>${img.id}.pressed {<br>
-					background-position-y: ${img.style.width};<br>
-				}<br>
-				`
-			}
+			changedVariables += getChangedVariables(img);
 		}
 	}
 	document.getElementById("css-text").innerHTML = changedVariables;
@@ -425,29 +321,8 @@ function redo() {
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
-		originalStateOfImg = originalState.get(img.id);
 		if (doesButtonHaveChange(img)) {
-			const backgroundChanged = img.style.background != originalStateOfImg.background;
-			changedVariables +=
-			`
-			<br>${img.id} {<br>
-				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
-				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
-				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
-				${img.style.visibility ? `background: none;<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
-				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
-			}<br>
-			`
-			if (img.style.width != originalStateOfImg.size) {
-				changedVariables +=
-				`
-				<br>${img.id}.pressed {<br>
-					background-position-y: ${img.style.width};<br>
-				}<br>
-				`
-			}
+			changedVariables += getChangedVariables(img);
 		}
 	}
 	document.getElementById("css-text").innerHTML = changedVariables;
@@ -477,6 +352,33 @@ function addToPastStates(id2state) {
 	document.getElementById('undoButton').style.color = "#fff";
 	undoneStates = [];
 	document.getElementById('redoButton').style.color = "#999";
+}
+
+function getChangedVariables(img) {
+	originalStateOfImg = originalState.get(img.id);
+	var changedVariables = '';
+	const backgroundChanged = img.style.background != originalStateOfImg.background;
+	changedVariables +=
+	`
+	<br>${img.id} {<br>
+		${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
+		${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
+		${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
+		${img.style.visibility ? `background: none;<br>` : ''}
+		${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''}
+		${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
+		${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
+	}<br>
+	`
+	if (img.style.width != originalStateOfImg.size) {
+		changedVariables +=
+		`
+		<br>${img.id}.pressed {<br>
+			background-position-y: ${img.style.width};<br>
+		}<br>
+		`
+	}
+	return changedVariables;
 }
 
 
