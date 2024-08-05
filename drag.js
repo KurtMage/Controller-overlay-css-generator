@@ -9,13 +9,7 @@ function init() {
 	document.onmouseup = stopDrag;
 
 	for (const img of document.getElementsByTagName('span')) {
-		const state = {
-			top: img.offsetTop,
-			left: img.offsetLeft,
-			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
-			background: img.style.background,
-			size: img.style.width
-		};
+		const state = getStateOfImg(img);
 		originalState.set(img.id, state);
 	}
 	pastStates.push(originalState);
@@ -55,13 +49,7 @@ function resizeButton(e) {
 		if (doesButtonHaveChange(img)) {
 			changedVariables += getChangedVariables(img);
 		}
-		const state = {
-			top: img.offsetTop,
-			left: img.offsetLeft,
-			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
-			background: img.style.background,
-			size: img.style.width
-		};
+		const state = getStateOfImg(img);
 		id2state.set(img.id, state);
 	}
 	addToPastStates(id2state);
@@ -91,14 +79,7 @@ function changeButton(e) {
 		if (doesButtonHaveChange(img)) {
 			changedVariables += getChangedVariables(img);
 		}
-		const state = {
-			top: img.offsetTop,
-			left: img.offsetLeft,
-			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
-			background: img.style.background,
-			size: img.style.width
-		};
-
+		const state = getStateOfImg(img);
 		id2state.set(img.id, state);
 	}
 	addToPastStates(id2state);
@@ -163,13 +144,7 @@ function deleteButton(e) {
 		if (doesButtonHaveChange(img)) {
 			changedVariables += getChangedVariables(img);
 		}
-		const state = {
-			top: img.offsetTop,
-			left: img.offsetLeft,
-			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
-			background: img.style.background,
-			size: img.style.width
-		};
+		const state = getStateOfImg(img);
 		id2state.set(img.id, state);
 	}
 	addToPastStates(id2state);
@@ -211,13 +186,7 @@ function stopDrag() {
 		if (doesButtonHaveChange(img)) {
 			changedVariables += getChangedVariables(img);
 		}
-		const state = {
-			top: img.offsetTop,
-			left: img.offsetLeft,
-			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
-			background: img.style.background,
-			size: img.style.width
-		};
+		const state = getStateOfImg(img);
 		id2state.set(img.id, state);
 	}
 	addToPastStates(id2state);
@@ -379,6 +348,16 @@ function getChangedVariables(img) {
 		`
 	}
 	return changedVariables;
+}
+
+function getStateOfImg(img) {
+		return {
+			top: img.offsetTop,
+			left: img.offsetLeft,
+			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
+			background: img.style.background,
+			size: img.style.width
+		};
 }
 
 
