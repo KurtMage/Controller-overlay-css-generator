@@ -5,14 +5,25 @@ var selectedButton;
 var drag = false;
 
 function init() {
-	document.onmousedown = startDrag;
+	document.onmousedown = clickAction;
 	document.onmouseup = stopDrag;
 
 	for (const img of document.getElementsByTagName('span')) {
-		const location = { top: img.offsetTop, left: img.offsetLeft };
-		originalState.set(img.id, location);
+		const state = {
+			top: img.offsetTop,
+			left: img.offsetLeft,
+			isVisible: img.style.visibility === 'visible' || img.style.visibility === ''};
+		originalState.set(img.id, state);
 	}
 	pastStates.push(originalState);
+}
+
+function clickAction(e) {
+	if (document.getElementById("tabToggle01").checked) {
+		startDrag(e);
+	} else if (document.getElementById("tabToggle02").checked) {
+		deleteButton(e);
+	}
 }
 
 function startDrag(e) {
@@ -21,10 +32,6 @@ function startDrag(e) {
 		var e = window.event;
 	}
 
-	// if(e.preventDefault) e.preventDefault();
-
-	// IE uses srcElement, others use target
-	// targ = e.target ? e.target : e.srcElement;
 	targ = e.target ;
 	if (targ.tagName?.toUpperCase() != "SPAN") {
 		return;
@@ -52,6 +59,46 @@ function startDrag(e) {
 	document.onmousemove=dragDiv;
 	return false;
 	
+}
+
+function deleteButton(e) {
+	// determine event object
+	if (!e) {
+		var e = window.event;
+	}
+
+	targ = e.target ;
+	if (targ.tagName?.toUpperCase() != "SPAN") {
+		return;
+	}
+	// assign default values for top and left properties
+	const img = document.getElementById(targ.id);
+	if (!img) { return; }
+	img.style.zIndex = -1;
+
+	targ.style.visibility = "hidden";
+
+	id2location = new Map();
+	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
+	for (const img of document.getElementsByTagName('span')) {
+		if (doesButtonHaveChange(img)) {
+			changedVariables +=
+			`
+			<br>${img.id} {<br>
+				${img.style.top ? `top: ${img.offsetTop};<br>` : ''}
+				${img.style.left ? `left: ${img.offsetLeft};<br>` : ''}
+				background: none;<br>
+			}<br>
+			`
+		}
+		const state = {
+			top: img.offsetTop,
+			left: img.offsetLeft,
+			isVisible: img.style.visibility === 'visible' || img.style.visibility === ''};
+		id2location.set(img.id, state);
+	}
+	addToPastStates(id2location);
+	document.getElementById("css-text").innerHTML = changedVariables;
 }
 
 function dragDiv(e) {
@@ -83,11 +130,10 @@ function stopDrag() {
 		return;
 	}
 
-
 	id2location = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
-		if (img.style.top || img.style.left) {
+		if (doesButtonHaveChange(img)) {
 			changedVariables +=
 			`
 			<br>${img.id} {<br>
@@ -97,13 +143,13 @@ function stopDrag() {
 			}<br>
 			`
 		}
-		const location = { top: img.offsetTop, left: img.offsetLeft };
-		id2location.set(img.id, location);
+		const state = {
+			top: img.offsetTop,
+			left: img.offsetLeft,
+			isVisible: img.style.visibility === 'visible' || img.style.visibility === ''};
+		id2location.set(img.id, state);
 	}
-	pastStates.push(id2location);
-	document.getElementById('undoButton').style.color = "#fff";
-	undoneStates = [];
-	document.getElementById('redoButton').style.color = "#999";
+	addToPastStates(id2location);
 	console.log(pastStates);
 	
 	document.getElementById("css-text").innerHTML = changedVariables;
@@ -135,17 +181,21 @@ function undo() {
 		if (locationToReturnTo.left === originalState.get(id).left) {
 			img.style.left = null;
 		}
+		if (locationToReturnTo.isVisible) {
+			img.style.visibility = null;
+			img.style.zIndex = 0;
+		}
+
 	}
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
-		if (img.style.top || img.style.left) {
+		if (doesButtonHaveChange(img)) {
 			changedVariables +=
 			`
 			<br>${img.id} {<br>
 				${img.style.top ? `top: ${img.offsetTop};<br>` : ''}
 				${img.style.left ? `left: ${img.offsetLeft};<br>` : ''}
-				z index: ${img.style.zIndex}<br>
 			}<br>
 			`
 		}
@@ -180,11 +230,18 @@ function redo() {
 		if (locationToReturnTo.left === originalState.get(id).left) {
 			img.style.left = null;
 		}
+		if (locationToReturnTo.isVisible) {
+			img.style.visibility = null;
+			img.style.zIndex = 0;
+		} else {
+			img.style.visibility = 'hidden';
+			img.style.zIndex = -1;
+		}
 	}
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementsByTagName('span')) {
-		if (img.style.top || img.style.left) {
+		if (doesButtonHaveChange(img)) {
 			changedVariables +=
 			`
 			<br>${img.id} {<br>
@@ -208,6 +265,17 @@ function copyText() {
 
   // Copy the text inside the text field
   navigator.clipboard.writeText(copyText);
+}
+
+function doesButtonHaveChange(img) {
+    return img.style.top || img.style.left || img.style.visibility == 'hidden';
+}
+
+function addToPastStates(id2location) {
+	pastStates.push(id2location);
+	document.getElementById('undoButton').style.color = "#fff";
+	undoneStates = [];
+	document.getElementById('redoButton').style.color = "#999";
 }
 
 window.onload = function() {
