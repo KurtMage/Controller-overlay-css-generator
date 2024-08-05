@@ -63,8 +63,8 @@ body {font-family: Arial;}
 <div class="tab">
   <button class="tablinks" onclick="openCity(event, 'moveTab')">Move buttons</button>
   <button class="tablinks" onclick="openCity(event, 'deleteTab')">Delete buttons</button>
-  <button class="tablinks" onclick="openCity(event, 'tabToggle03')">Change buttons</button>
-  <button class="tablinks" onclick="openCity(event, 'tabToggle04')">How to use</button>
+  <button class="tablinks" onclick="openCity(event, 'changeButtonsTab')">Change buttons</button>
+  <button class="tablinks active" onclick="openCity(event, 'tutorialTab')">How to use</button>
 </div>
 
 <div id="moveTab" class="tabcontent">
@@ -75,13 +75,13 @@ body {font-family: Arial;}
   <p>Click buttons to delete them.</p>
 </div>
 
-<div id="tabToggle03" class="tabcontent">
+<div id="changeButtonsTab" class="tabcontent">
   <p>Provide a URL for a properly formatted image. Then click a button to make it into that image.</p> 
     <label for="fname">URL:</label>
   <input type="text" id="fname" name="fname"><br><br>
 </div>
 
-<div id="tabToggle04" class="tabcontent">
+<div id="tutorialTab" class="tabcontent" style="display: block;">
   <p>Tutorial</p> 
 </div>
 
