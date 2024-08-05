@@ -62,7 +62,7 @@ function clickAction(e) {
 		startDrag(e);
 	} else if (document.getElementById("deleteTab").style.display === 'block') {
 		deleteButton(e);
-	} else if (document.getElementById("changeButtonsTab").style.display === 'block') {
+	} else if (document.getElementById("importButtonsTab").style.display === 'block') {
 		changeButton(e);
 	} else if (document.getElementById("changeSizeTab").style.display === 'block') {
 		resizeButton(e);
