@@ -1,5 +1,6 @@
 var originalState = new Map();
 var pastStates = [];
+var undoneStates = [];
 var selectedButton;
 var drag = false;
 
@@ -99,8 +100,10 @@ function stopDrag() {
 		const location = { top: img.offsetTop, left: img.offsetLeft };
 		id2location.set(img.id, location);
 	}
-	pastStates.push(id2location)
+	pastStates.push(id2location);
 	document.getElementById('undoButton').style.color = "#fff";
+	undoneStates = [];
+	document.getElementById('redoButton').style.color = "#999";
 	console.log(pastStates);
 	
 	document.getElementById("css-text").innerHTML = changedVariables;
@@ -114,8 +117,9 @@ function undo() {
 		return;
 	}
 	currentState = pastStates.pop();
+	undoneStates.push(currentState);
+	document.getElementById('redoButton').style.color = "#fff";
 	stateToReturnTo = pastStates[pastStates.length - 1];
-	// console.log(stateToReturnTo);
 	for (const [id, locationToReturnTo] of stateToReturnTo.entries()) {
 		const currentLocation = currentState.get(id);
 		const img = document.getElementById(id);
@@ -150,6 +154,51 @@ function undo() {
 
 	if (pastStates.length <= 1) {
 		document.getElementById('undoButton').style.color = "#999";
+	}
+}
+
+function redo() {
+	if (undoneStates.length <= 0) {
+		return;
+	}
+	currentState = pastStates[pastStates.length - 1];
+	stateToReturnTo = undoneStates.pop();
+	document.getElementById('undoButton').style.color = "#fff";
+	pastStates.push(stateToReturnTo);
+	for (const [id, locationToReturnTo] of stateToReturnTo.entries()) {
+		const currentLocation = currentState.get(id);
+		const img = document.getElementById(id);
+		if (currentLocation.top !== locationToReturnTo.top) {
+			img.style.top = locationToReturnTo.top + 'px';
+		}
+		if (currentLocation.left !== locationToReturnTo.left) {
+			img.style.left = locationToReturnTo.left + 'px';
+		}
+		if (locationToReturnTo.top === originalState.get(id).top) {
+			img.style.top = null;
+		}
+		if (locationToReturnTo.left === originalState.get(id).left) {
+			img.style.left = null;
+		}
+	}
+
+	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
+	for (const img of document.getElementsByTagName('span')) {
+		if (img.style.top || img.style.left) {
+			changedVariables +=
+			`
+			<br>${img.id} {<br>
+				${img.style.top ? `top: ${img.offsetTop};<br>` : ''}
+				${img.style.left ? `left: ${img.offsetLeft};<br>` : ''}
+				z index: ${img.style.zIndex}<br>
+			}<br>
+			`
+		}
+	}
+	document.getElementById("css-text").innerHTML = changedVariables;
+
+	if (undoneStates.length <= 1) {
+		document.getElementById('redoButton').style.color = "#999";
 	}
 }
 
