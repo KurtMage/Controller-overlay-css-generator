@@ -19,15 +19,9 @@ function init() {
 }
 
 function clickAction(e) {
-	if (e.target.id.startsWith('tabToggle0')) {
-		const cursorType = e.target.id === 'tabToggle01Label' ? "move" : "crosshair";
-		for (const img of document.getElementsByTagName('span')) {
-			img.style.cursor = cursorType;
-		}
-	}
-	if (document.getElementById("tabToggle01").style.display === 'block') {
+	if (document.getElementById("moveTab").style.display === 'block') {
 		startDrag(e);
-	} else if (document.getElementById("tabToggle02").style.display === 'block') {
+	} else if (document.getElementById("deleteTab").style.display === 'block') {
 		deleteButton(e);
 	}
 }
@@ -299,7 +293,7 @@ function openCity(evt, cityName) {
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
 
-	const cursorType = cityName === 'tabToggle01' ? "move" : "crosshair";
+	const cursorType = cityName === 'moveTab' ? "move" : "crosshair";
 	for (const img of document.getElementsByTagName('span')) {
 		img.style.cursor = cursorType;
 	}
