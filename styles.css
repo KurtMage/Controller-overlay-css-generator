@@ -79,7 +79,7 @@ body {
   color: white;
   font-weight: bold;
   float: right;
-  font-size: 22px;
+  font-size: 16px;
   line-height: 20px;
   cursor: pointer;
   transition: 0.3s;
@@ -119,5 +119,5 @@ body {
     padding: 12px 20px;
     border-radius: 4px;
     box-sizing: border-box;
-    font-size:22pt;
+    font-size: 16pt;
 }
