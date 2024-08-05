@@ -92,9 +92,9 @@ function deleteButton(e) {
 			changedVariables +=
 			`
 			<br>${img.id} {<br>
-				${img.style.top ? `top: ${img.offsetTop};<br>` : ''}
-				${img.style.left ? `left: ${img.offsetLeft};<br>` : ''}
-				background: none;<br>
+				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
+				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
+				${img.style.visibility ? `background: none;<br>` : ''}
 			}<br>
 			`
 		}
@@ -144,8 +144,8 @@ function stopDrag() {
 			changedVariables +=
 			`
 			<br>${img.id} {<br>
-				${img.style.top ? `top: ${img.offsetTop};<br>` : ''}
-				${img.style.left ? `left: ${img.offsetLeft};<br>` : ''}
+				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
+				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
 				${img.style.visibility ? `background: none;<br>` : ''}
 			}<br>
 			`
@@ -201,8 +201,8 @@ function undo() {
 			changedVariables +=
 			`
 			<br>${img.id} {<br>
-				${img.style.top ? `top: ${img.offsetTop};<br>` : ''}
-				${img.style.left ? `left: ${img.offsetLeft};<br>` : ''}
+				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
+				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
 				${img.style.visibility ? `background: none;<br>` : ''}
 			}<br>
 			`
@@ -253,8 +253,8 @@ function redo() {
 			changedVariables +=
 			`
 			<br>${img.id} {<br>
-				${img.style.top ? `top: ${img.offsetTop};<br>` : ''}
-				${img.style.left ? `left: ${img.offsetLeft};<br>` : ''}
+				${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
+				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
 				${img.style.visibility ? `background: none;<br>` : ''}
 			}<br>
 			`
