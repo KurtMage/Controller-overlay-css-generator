@@ -10,6 +10,33 @@
 </head>
 
 <body>
+<tab-container>
+	<!-- TAB CONTROLS -->
+	<input type="radio" id="tabToggle01" name="tabs" value="1" checked />
+	<label for="tabToggle01" checked="checked">Move buttons</label>
+	<input type="radio" id="tabToggle02" name="tabs" value="2" />
+	<label for="tabToggle02">Delete buttons</label>
+	<input type="radio" id="tabToggle03" name="tabs" value="3" />
+	<label for="tabToggle03">Change buttons</label>
+	<input type="radio" id="tabToggle04" name="tabs" value="4" />
+	<label for="tabToggle04">Import CSS</label>
+	<tab-content>
+		<p>TAB [ <tab-number>01</tab-number> ] content</p>
+		<p>CSS...</p>
+	</tab-content>
+	<tab-content>
+		<p>TAB [ <tab-number>02</tab-number> ] content</p>
+		<p>CSS Grid...</p>
+	</tab-content>
+	<tab-content>
+		<p>TAB [ <tab-number>03</tab-number> ] content</p>
+		<p>CSS Grid is the...</p>
+	</tab-content>
+	<tab-content>
+		<p>TAB [ <tab-number>04</tab-number> ] content</p>
+		<p>CSS Grid is the future!</p>
+	</tab-content>
+</tab-container>
     <div class="layout-box">
         <span class="img button x" id=".fight-stick .x"></span>
         <span class="img button y" id=".fight-stick .y"></span>
@@ -32,7 +59,7 @@
         <button class="btn-1" onclick="redo()" id="redoButton" style="color: #999;">Redo last undo</button>
         <div class="code-box">
             <code>
-                <p  id="css-text">body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }</p>>
+                <p  id="css-text">body { background-color: rgba(1, 0, 0, 0); margin: 0px auto; overflow: hidden; }</p>>
             </code>
         </div>
     </div>
