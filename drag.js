@@ -13,7 +13,9 @@ function init() {
 			top: img.offsetTop,
 			left: img.offsetLeft,
 			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
-			background: img.style.background};
+			background: img.style.background,
+			size: img.style.width
+		};
 		originalState.set(img.id, state);
 	}
 	pastStates.push(originalState);
@@ -40,6 +42,8 @@ function resizeButton(e) {
 	const img = document.getElementById(targ.id);
 	if (!img) { return; }
 	const size = parseInt(document.getElementById("sizeInput").value);
+	if (isNaN(size)) { return; }
+
 	img.style.backgroundSize = `${size}px`;
 	img.style.height = `${size}px`;
 	img.style.width = `${size}px`;
@@ -58,6 +62,9 @@ function resizeButton(e) {
 				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
 				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
 				${img.style.visibility ? `background: none;<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
 			}<br>
 			`
 		}
@@ -65,7 +72,9 @@ function resizeButton(e) {
 			top: img.offsetTop,
 			left: img.offsetLeft,
 			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
-			background: img.style.background};
+			background: img.style.background,
+			size: img.style.width
+		};
 		id2state.set(img.id, state);
 	}
 	addToPastStates(id2state);
@@ -102,6 +111,9 @@ function changeButton(e) {
 				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
 				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
 				${img.style.visibility ? `background: none;<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
 			}<br>
 			`
 		}
@@ -109,7 +121,10 @@ function changeButton(e) {
 			top: img.offsetTop,
 			left: img.offsetLeft,
 			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
-			background: img.style.background};
+			background: img.style.background,
+			size: img.style.width
+		};
+
 		id2state.set(img.id, state);
 	}
 	addToPastStates(id2state);
@@ -181,6 +196,9 @@ function deleteButton(e) {
 				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
 				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
 				${img.style.visibility ? `background: none;<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
 			}<br>
 			`
 		}
@@ -188,7 +206,9 @@ function deleteButton(e) {
 			top: img.offsetTop,
 			left: img.offsetLeft,
 			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
-			background: img.style.background};
+			background: img.style.background,
+			size: img.style.width
+		};
 		id2state.set(img.id, state);
 	}
 	addToPastStates(id2state);
@@ -237,6 +257,8 @@ function stopDrag() {
 				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
 				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
 				${img.style.visibility ? `background: none;<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''} ${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
 			}<br>
 			`
 		}
@@ -244,7 +266,9 @@ function stopDrag() {
 			top: img.offsetTop,
 			left: img.offsetLeft,
 			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
-			background: img.style.background};
+			background: img.style.background,
+			size: img.style.width
+		};
 		id2state.set(img.id, state);
 	}
 	addToPastStates(id2state);
@@ -286,6 +310,11 @@ function undo() {
 		if (locationToReturnTo.background !== currentLocation.background) {
 			img.style.background = locationToReturnTo.background;
 		}
+		if (locationToReturnTo.size !== currentLocation.size) {
+			img.style.backgroundSize = locationToReturnTo.size;
+			img.style.width = locationToReturnTo.size;
+			img.style.height = locationToReturnTo.size;
+		}
 	}
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
@@ -300,6 +329,9 @@ function undo() {
 				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
 				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
 				${img.style.visibility ? `background: none;<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
 			}<br>
 			`
 		}
@@ -344,6 +376,11 @@ function redo() {
 		if (locationToReturnTo.background !== currentLocation.background) {
 			img.style.background = locationToReturnTo.background;
 		}
+		if (locationToReturnTo.size !== currentLocation.size) {
+			img.style.backgroundSize = locationToReturnTo.size;
+			img.style.width = locationToReturnTo.size;
+			img.style.height = locationToReturnTo.size;
+		}
 	}
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
@@ -358,6 +395,9 @@ function redo() {
 				${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
 				${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
 				${img.style.visibility ? `background: none;<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
+				${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
 			}<br>
 			`
 		}
@@ -378,8 +418,10 @@ function copyText() {
 }
 
 function doesButtonHaveChange(img) {
+	const originalStateOfImg = originalState.get(img.id);
     return img.style.top || img.style.left || img.style.visibility == 'hidden'
-		|| img.style.background != originalStateOfImg.background;
+		|| img.style.background != originalStateOfImg.background
+		|| img.style.width != originalStateOfImg.size;
 }
 
 function addToPastStates(id2state) {
