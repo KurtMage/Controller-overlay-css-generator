@@ -2,12 +2,16 @@ var originalState = new Map();
 var pastStates = [];
 var undoneStates = [];
 var selectedButton;
+var lastMovedButton;
 var drag = false;
 var urlImageIsGood = false;
+var lastKeyPressMove;
+var baseLayoutURL = "https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/2XKO/light-mode.css";
 
 function init() {
 	document.onmousedown = clickAction;
 	document.onmouseup = stopDrag;
+	document.onkeydown = onePxArrowKeyMove;
 	setInterval(alternatePreviewPicture, 1000);
 
 	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
@@ -15,6 +19,47 @@ function init() {
 		originalState.set(img.id, state);
 	}
 	pastStates.push(originalState);
+}
+
+function onePxArrowKeyMove(e) {
+	if (!lastMovedButton) {
+		return;
+	}
+	switch (e.key) {
+		case "ArrowLeft":
+			lastMovedButton.style.left = (parseInt(lastMovedButton.style.left) - 1) + "px";
+			break;
+		case "ArrowDown":
+			lastMovedButton.style.top = (parseInt(lastMovedButton.style.top) + 1) + "px";
+			break;
+		case "ArrowRight":
+			lastMovedButton.style.left = (parseInt(lastMovedButton.style.left) + 1) + "px";
+			break;
+		case "ArrowUp":
+			lastMovedButton.style.top = (parseInt(lastMovedButton.style.top) - 1) + "px";
+			break;
+	}
+
+	id2state = new Map();
+	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
+	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
+		if (doesButtonHaveChange(img)) {
+			changedVariables += getChangedVariables(img);
+		}
+		const state = getStateOfImg(img);
+		id2state.set(img.id, state);
+	}
+	document.getElementById("css-text").innerHTML = changedVariables;
+	// Removing state from 1-pixel away in order to group arrow-key moves.
+	if (e.key === lastKeyPressMove) {
+		pastStates.pop();
+	}
+	addToPastStates(id2state);
+
+	document.getElementById('undoButton').style.color = "#fff";
+	undoneStates = [];
+	document.getElementById('redoButton').style.color = "#999";
+	lastKeyPressMove = e.key;
 }
 
 function alternatePreviewPicture() {
@@ -58,6 +103,7 @@ function checkImage(success) {
 }
 
 function clickAction(e) {
+	document.getElementById("clickToCopy").innerText = "Click to copy";
 	if (document.getElementById("moveTab").style.display === 'block') {
 		startDrag(e);
 	} else if (document.getElementById("deleteTab").style.display === 'block') {
@@ -79,6 +125,8 @@ function resizeButton(e) {
 	if (!img) { return; }
 	const size = parseInt(document.getElementById("sizeInput").value);
 	if (isNaN(size)) { return; }
+
+	lastKeyPressMove = null;
 
 	img.style.backgroundSize = `${size}px`;
 	img.style.height = `${size}px`;
@@ -107,6 +155,9 @@ function changeButton(e) {
 
 	const img = document.getElementById(targ.id);
 	if (!img) { return; }
+
+	lastKeyPressMove = null;
+
 	img.style.background = `url(${url}.png)`;
 
 	const imgSize = img.offsetWidth;
@@ -129,6 +180,8 @@ function changeButton(e) {
 }
 
 function startDrag(e) {
+
+	lastKeyPressMove = null;
 	// determine event object
 	if (!e) {
 		var e = window.event;
@@ -147,6 +200,7 @@ function startDrag(e) {
 	const img = document.getElementById(targ.id);
 	if (!img) { return; }
 	selectedButton = img;
+	lastMovedButton = img;
 	img.style.zIndex = 1;
 	if (!targ.style.left) { targ.style.left=img.offsetLeft + 'px'};
 	if (!targ.style.top) { targ.style.top=img.offsetTop + 'px'};
@@ -176,6 +230,9 @@ function deleteButton(e) {
 	// assign default values for top and left properties
 	const img = document.getElementById(targ.id);
 	if (!img) { return; }
+
+	lastKeyPressMove = null;
+
 	img.style.zIndex = -1;
 
 	targ.style.visibility = "hidden";
@@ -244,6 +301,7 @@ function undo() {
 	if (pastStates.length <= 1) {
 		return;
 	}
+	lastKeyPressMove = null;
 	currentState = pastStates.pop();
 	undoneStates.push(currentState);
 	document.getElementById('redoButton').style.color = "#fff";
@@ -294,6 +352,7 @@ function redo() {
 	if (undoneStates.length <= 0) {
 		return;
 	}
+	lastKeyPressMove = null;
 	currentState = pastStates[pastStates.length - 1];
 	stateToReturnTo = undoneStates.pop();
 	document.getElementById('undoButton').style.color = "#fff";
@@ -349,6 +408,12 @@ function copyText() {
 
   // Copy the text inside the text field
   navigator.clipboard.writeText(copyText);
+}
+
+function copyLayoutBaseURL() {
+    navigator.clipboard.writeText(baseLayoutURL);
+
+    document.getElementById("clickToCopy").innerText = "Copied!";
 }
 
 function doesButtonHaveChange(img) {
