@@ -397,7 +397,7 @@ function redo() {
 	}
 	document.getElementById("css-text").innerHTML = changedVariables;
 
-	if (undoneStates.length <= 1) {
+	if (undoneStates.length < 1) {
 		document.getElementById('redoButton').style.color = "#999";
 	}
 }
