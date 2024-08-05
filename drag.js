@@ -19,6 +19,13 @@ function init() {
 }
 
 function clickAction(e) {
+	if (e.target.id.startsWith('tabToggle0')) {
+		const cursorType = e.target.id === 'tabToggle01Label' ? "move" : "crosshair";
+		for (const img of document.getElementsByTagName('span')) {
+			img.style.cursor = cursorType;
+			console.log('');
+		}
+	}
 	if (document.getElementById("tabToggle01").checked) {
 		startDrag(e);
 	} else if (document.getElementById("tabToggle02").checked) {
@@ -139,7 +146,7 @@ function stopDrag() {
 			<br>${img.id} {<br>
 				${img.style.top ? `top: ${img.offsetTop};<br>` : ''}
 				${img.style.left ? `left: ${img.offsetLeft};<br>` : ''}
-				z index: ${img.style.zIndex}<br>
+				${img.style.visibility ? `background: none;<br>` : ''}
 			}<br>
 			`
 		}
@@ -196,6 +203,7 @@ function undo() {
 			<br>${img.id} {<br>
 				${img.style.top ? `top: ${img.offsetTop};<br>` : ''}
 				${img.style.left ? `left: ${img.offsetLeft};<br>` : ''}
+				${img.style.visibility ? `background: none;<br>` : ''}
 			}<br>
 			`
 		}
@@ -247,7 +255,7 @@ function redo() {
 			<br>${img.id} {<br>
 				${img.style.top ? `top: ${img.offsetTop};<br>` : ''}
 				${img.style.left ? `left: ${img.offsetLeft};<br>` : ''}
-				z index: ${img.style.zIndex}<br>
+				${img.style.visibility ? `background: none;<br>` : ''}
 			}<br>
 			`
 		}
