@@ -6,6 +6,9 @@
     height: 620px;
     resize: both;
     overflow: auto;
+	min-width: 400px;
+	min-height: 100px;
+	background-color: #ffffff;
 }
 
 .img {
