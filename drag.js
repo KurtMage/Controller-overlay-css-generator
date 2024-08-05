@@ -74,7 +74,6 @@ function stopDrag() {
 	if (selectedButton) {
 		selectedButton.style.zIndex = 0;
 	}
-selectedButton.offsetTop === pastStates[pastStates.length - 1].get(selectedButton.id).top
 	const isNewState = selectedButton.offsetTop !==
 			pastStates[pastStates.length - 1].get(selectedButton.id).top
 			|| selectedButton.offsetLeft !==
@@ -126,10 +125,10 @@ function undo() {
 		if (currentLocation.left !== locationToReturnTo.left) {
 			img.style.left = locationToReturnTo.left + 'px';
 		}
-		if (locationToReturnTo.top === originalState.get(id).offsetTop) {
+		if (locationToReturnTo.top === originalState.get(id).top) {
 			img.style.top = null;
 		}
-		if (locationToReturnTo.left === originalState.get(id).offsetLeft) {
+		if (locationToReturnTo.left === originalState.get(id).left) {
 			img.style.left = null;
 		}
 	}
