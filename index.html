@@ -63,7 +63,7 @@ body {font-family: Arial;}
 <div class="tab">
   <button class="tablinks" onclick="openCity(event, 'moveTab')">Move buttons</button>
   <button class="tablinks" onclick="openCity(event, 'deleteTab')">Delete buttons</button>
-  <button class="tablinks" onclick="openCity(event, 'changeButtonsTab')">Change buttons</button>
+  <button class="tablinks" onclick="openCity(event, 'changeButtonsTab')">Import buttons</button>
   <button class="tablinks" onclick="openCity(event, 'changeSizeTab')">Change size</button>
   <button class="tablinks active" onclick="openCity(event, 'tutorialTab')">How to use</button>
 </div>
@@ -79,11 +79,24 @@ body {font-family: Arial;}
 <div id="changeButtonsTab" class="tabcontent">
   <p>Provide a URL for a properly formatted image. Then click a button to make it into that image.</p> 
     <label for="url">URL:</label>
-  <input type="text" id="urlInput"><br><br>
-   <label for="colorpicker">Color Picker:</label>
-  <input type="color" id="colorpicker" value="#0000ff">
+  <input type="text" id="urlInput" onChange="updatePreviewPicture()"><br><br>
+  <div>
+    <div id="previewText">Preview (alternates between unpressed and pressed):<br><br></div>
+    <img src="https://imgur.com/KCkHaew.png" 
+    style="width: 150px; height: 150px; object-fit: cover; object-position: 0% 0%; overflow: hidden" id="urlButtonPreview"
+    onLoad="checkImage(true)" onError="checkImage(false)">
+    <div class="alert" style="display: none">
+        <span id="closeErrorButton" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        <strong>Error:</strong> No image found at the provided URL.
+    </div>
+    <!-- <div id="previewMissingError" class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">asdfasdf</span>
+        Error message
+    </div> -->
+  </div>
+   <!-- <label for="colorpicker">Color Picker:</label>
+  <input type="color" id="colorpicker" value="#0000ff"> -->
 </div>
-
 <div id="changeSizeTab" class="tabcontent">
   <p>Choose a size (in px) for the buttons to change to, then click them to make them that size. For reference, they're 150px by default.</p> 
     <label for="size">size (just a number):</label>
@@ -116,7 +129,7 @@ body {font-family: Arial;}
         <button class="btn-1" onclick="redo()" id="redoButton" style="color: #999;">Redo last undo</button>
         <div class="code-box">
             <code>
-                <p  id="css-text">body { background-color: rgba(1, 0, 0, 0); margin: 0px auto; overflow: hidden; }</p>>
+                <p  id="css-text">body { background-color: rgba(1, 0, 0, 0); margin: 0px auto; overflow: hidden; }</p>
             </code>
         </div>
     </div>

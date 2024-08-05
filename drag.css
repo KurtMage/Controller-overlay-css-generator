@@ -69,7 +69,7 @@
 }
 
 .img.button {
-	background: url(https://imgur.com/WzKGKPH.png);
+	background: url("https://imgur.com/WzKGKPH.png");
 }
 
 .img.button.x {
@@ -128,13 +128,13 @@
 }
 
 .img.arrow.down {
-	background: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/arrows/right.png");
+	background: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/arrows/down.png");
 	top:var(--dir-down-top);
 	left:var(--dir-down-left);
 }
 
 .img.arrow.right {
-	background: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/arrows/down.png");
+	background: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/arrows/right.png");
 	top:var(--dir-right-top);
 	left:var(--dir-right-left);
 }

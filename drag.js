@@ -3,16 +3,58 @@ var pastStates = [];
 var undoneStates = [];
 var selectedButton;
 var drag = false;
+var urlImageIsGood = false;
 
 function init() {
 	document.onmousedown = clickAction;
 	document.onmouseup = stopDrag;
+	setInterval(alternatePreviewPicture, 1000);
 
 	for (const img of document.getElementsByTagName('span')) {
 		const state = getStateOfImg(img);
 		originalState.set(img.id, state);
 	}
 	pastStates.push(originalState);
+}
+
+function alternatePreviewPicture() {
+	const img = document.getElementById("urlButtonPreview");
+	const pressButton = img.style.objectPosition === "0% 0%";
+	img.style.objectPosition = `0% ${pressButton ? '100%' : '0%'}`;
+}
+
+function updatePreviewPicture() {
+	const img = document.getElementById("urlButtonPreview");
+	const url = document.getElementById("urlInput").value;
+	img.src = `${url}.png`;
+}
+
+function checkImage(success) {
+	const img = document.getElementById("urlButtonPreview");
+	const urlInputBox = document.getElementById("urlInput");
+	const closeErrorButton = document.getElementById("closeErrorButton");
+	const previewText = document.getElementById("previewText");
+	if (success) {
+		img.visibility = "visible";
+		img.style.width = "150px";
+		img.style.height = "150px";
+		urlInputBox.style.background = "#ffffff";
+		urlInputBox.style.borderColor = "#000000";
+		previewText.style.display = "block";
+		// Clicking the error button makes it go away.
+		closeErrorButton.click();
+		urlImageIsGood = true;
+	} else {
+		img.visibility = "hidden";
+		img.style.width = "0px";
+		img.style.height = "0px";
+		urlInputBox.style.background = "#fff0f4";
+		urlInputBox.style.borderColor = "#c51244";
+		closeErrorButton.parentElement.style.display = "block";
+		const url = document.getElementById("urlInput").value;
+		previewText.style.display = "none";
+		urlImageIsGood = false;
+	}
 }
 
 function clickAction(e) {
@@ -59,7 +101,7 @@ function resizeButton(e) {
 function changeButton(e) {
 	const url = document.getElementById("urlInput").value;
 	targ = e.target ;
-	if (targ.tagName?.toUpperCase() != "SPAN") {
+	if (targ.tagName?.toUpperCase() != "SPAN" || !urlImageIsGood) {
 		return;
 	}
 
@@ -376,7 +418,9 @@ function openCity(evt, cityName) {
 
 	const cursorType = cityName === 'moveTab' ? "move" : "crosshair";
 	for (const img of document.getElementsByTagName('span')) {
-		img.style.cursor = cursorType;
+		if (img.className.startsWith("img")) {
+			img.style.cursor = cursorType;
+		}
 	}
 }
 
