@@ -121,31 +121,28 @@
 	left:var(--lt-left);
 }
 
-.img.arrow {
-	background: url(https://imgur.com/lHyit0Y.png);
-}
-
 .img.arrow.left {
+	background: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/arrows/left.png");
 	top:var(--dir-left-top);
 	left:var(--dir-left-left);
 }
 
 .img.arrow.down {
+	background: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/arrows/right.png");
 	top:var(--dir-down-top);
 	left:var(--dir-down-left);
-	background-position: -150px 0px;
 }
 
 .img.arrow.right {
+	background: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/arrows/down.png");
 	top:var(--dir-right-top);
 	left:var(--dir-right-left);
-	background-position: -300px 0px;
 }
 
 .img.arrow.up {
+	background: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/arrows/up.png");
 	top:var(--dir-up-top);
 	left:var(--dir-up-left);
-	background-position: -450px 0px;
 }
 
 .copycode {
