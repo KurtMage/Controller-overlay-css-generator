@@ -52,9 +52,10 @@
 
 
 .img.startback {
-	background: url(https://imgur.com/QXROavN.png);
+	background: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/light\ mode/start.png");
 	width: 100px;
 	height: 100px;
+	background-size: 100px;
 }
 
 .img.startback.start {
