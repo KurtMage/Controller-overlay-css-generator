@@ -10,7 +10,7 @@ function init() {
 	document.onmouseup = stopDrag;
 	setInterval(alternatePreviewPicture, 1000);
 
-	for (const img of document.getElementsByTagName('span')) {
+	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
 		const state = getStateOfImg(img);
 		originalState.set(img.id, state);
 	}
@@ -87,7 +87,7 @@ function resizeButton(e) {
 
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
-	for (const img of document.getElementsByTagName('span')) {
+	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
 		if (doesButtonHaveChange(img)) {
 			changedVariables += getChangedVariables(img);
 		}
@@ -117,7 +117,7 @@ function changeButton(e) {
 
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
-	for (const img of document.getElementsByTagName('span')) {
+	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
 		if (doesButtonHaveChange(img)) {
 			changedVariables += getChangedVariables(img);
 		}
@@ -182,7 +182,7 @@ function deleteButton(e) {
 
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
-	for (const img of document.getElementsByTagName('span')) {
+	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
 		if (doesButtonHaveChange(img)) {
 			changedVariables += getChangedVariables(img);
 		}
@@ -224,7 +224,7 @@ function stopDrag() {
 
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
-	for (const img of document.getElementsByTagName('span')) {
+	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
 		if (doesButtonHaveChange(img)) {
 			changedVariables += getChangedVariables(img);
 		}
@@ -278,7 +278,7 @@ function undo() {
 	}
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
-	for (const img of document.getElementsByTagName('span')) {
+	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
 		if (doesButtonHaveChange(img)) {
 			changedVariables += getChangedVariables(img);
 		}
@@ -331,7 +331,7 @@ function redo() {
 	}
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
-	for (const img of document.getElementsByTagName('span')) {
+	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
 		if (doesButtonHaveChange(img)) {
 			changedVariables += getChangedVariables(img);
 		}
@@ -417,7 +417,7 @@ function openCity(evt, cityName) {
     evt.currentTarget.className += " active";
 
 	const cursorType = cityName === 'moveTab' ? "move" : "crosshair";
-	for (const img of document.getElementsByTagName('span')) {
+	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
 		if (img.className.startsWith("img")) {
 			img.style.cursor = cursorType;
 		}

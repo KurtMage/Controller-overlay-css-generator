@@ -1,13 +1,5 @@
 .layout-box {
     position: relative;
-    border: 4px solid;
-    border-radius: 0px 0px 12px 12px;
-    width: 1200px;
-    height: 620px;
-    resize: both;
-    overflow: auto;
-	min-width: 400px;
-	min-height: 100px;
 	background-color: #ffffff;
 }
 
@@ -149,7 +141,7 @@
 }
 
 .copycode {
-	position: relative;
+	/* position: relative; */
 }
 
 .code-box {

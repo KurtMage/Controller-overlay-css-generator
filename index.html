@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <div class="wholeTool">
     <div class="tab">
         <button class="tablinks" onclick="openCity(event, 'moveTab')">Move buttons</button>
         <button class="tablinks" onclick="openCity(event, 'deleteTab')">Delete buttons</button>
@@ -19,9 +20,15 @@
     </div>
     <div id="moveTab" class="tabcontent">
         <p>Click and drag buttons to move them.</p>
+        <button class="btn-1" onclick="copyText()">Copy code to clipboard</button>
+        <button class="btn-1" onclick="undo()" id="undoButton" style="color: #999;">Undo last action</button>
+        <button class="btn-1" onclick="redo()" id="redoButton" style="color: #999;">Redo last undo</button>
     </div>
     <div id="deleteTab" class="tabcontent">
         <p>Click buttons to delete them.</p>
+        <button class="btn-1" onclick="copyText()">Copy code to clipboard</button>
+        <button class="btn-1" onclick="undo()" id="undoButton" style="color: #999;">Undo last action</button>
+        <button class="btn-1" onclick="redo()" id="redoButton" style="color: #999;">Redo last undo</button>
     </div>
     <div id="importButtonsTab" class="tabcontent">
         <!-- <div class="tab">
@@ -43,11 +50,17 @@
         </div>
         <!-- <label for="colorpicker">Color Picker:</label>
             <input type="color" id="colorpicker" value="#0000ff"> -->
+        <button class="btn-1" onclick="copyText()">Copy code to clipboard</button>
+        <button class="btn-1" onclick="undo()" id="undoButton" style="color: #999;">Undo last action</button>
+        <button class="btn-1" onclick="redo()" id="redoButton" style="color: #999;">Redo last undo</button>
     </div>
     <div id="changeSizeTab" class="tabcontent">
         <p>Choose a size (in px) for the buttons to change to, then click them to make them that size.</p>
         <label for="size">Size:</label>
         <input class="urlTextBox" type="number" id="sizeInput" style="width: initial" value="150"><br><br>
+        <button class="btn-1" onclick="copyText()">Copy code to clipboard</button>
+        <button class="btn-1" onclick="undo()" id="undoButton" style="color: #999;">Undo last action</button>
+        <button class="btn-1" onclick="redo()" id="redoButton" style="color: #999;">Redo last undo</button>
     </div>
     <div id="tutorialTab" class="tabcontent" style="display: block;">
         <p>
@@ -59,8 +72,11 @@
             6. Right-click your browser source in OBS and open Properties. Replace the text in the "Custom CSS" dialog box with your text (ctrl+a, ctrl+v to select all and paste).<br>
             7. Press OK and you're done!
         </p>
+        <button class="btn-1" onclick="copyText()">Copy code to clipboard</button>
+        <button class="btn-1" onclick="undo()" id="undoButton" style="color: #999;">Undo last action</button>
+        <button class="btn-1" onclick="redo()" id="redoButton" style="color: #999;">Redo last undo</button>
     </div>
-    <div class="layout-box">
+    <div class="layout-box" id="layout-box">
         <span class="img button x" id=".fight-stick .x"></span>
         <span class="img button y" id=".fight-stick .y"></span>
         <span class="img button a" id=".fight-stick .a"></span>
@@ -76,10 +92,9 @@
         <span class="img startback start" id=".fight-stick .start"></span>
         <span class="img startback back" id=".fight-stick .back"></span>
     </div>
+
+    </div>
     <div class="copycode">
-        <button class="btn-1" onclick="copyText()">Copy code to clipboard</button>
-        <button class="btn-1" onclick="undo()" id="undoButton" style="color: #999;">Undo last action</button>
-        <button class="btn-1" onclick="redo()" id="redoButton" style="color: #999;">Redo last undo</button>
         <div class="code-box">
             <code>
                 <p  id="css-text">body { background-color: rgba(1, 0, 0, 0); margin: 0px auto; overflow: hidden; }</p>
