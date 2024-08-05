@@ -67,10 +67,10 @@ function changeButton(e) {
 	if (!img) { return; }
 	img.style.background = `url(${url}.png)`;
 
-	const topOffset = parseInt(document.getElementById("topOffset").value);
-	const leftOffset = parseInt(document.getElementById("leftOffset").value);
-	img.style.backgroundPositionY = -topOffset + "px";
-	img.style.backgroundPositionX = -leftOffset + "px";
+	const imgSize = img.offsetWidth;
+	img.style.backgroundSize = `${imgSize}px`;
+	img.style.width = `${imgSize}px`;
+	img.style.height = `${imgSize}px`;
 
 
 	id2state = new Map();
