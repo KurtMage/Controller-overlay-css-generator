@@ -79,13 +79,13 @@ function checkImage(success) {
 	const urlInputBox = document.getElementById("urlInput");
 	const closeErrorButton = document.getElementById("closeErrorButton");
 	const previewText = document.getElementById("previewText");
-	if (success) {
-		img.visibility = "visible";
-		img.style.width = "150px";
-		img.style.height = "150px";
+	if (success || urlInputBox.value === '') {
+		img.visibility = urlInputBox.value === '' ? "hidden" : "visible";
+		img.style.width = urlInputBox.value === '' ? "0px" : "150px";
+		img.style.height = urlInputBox.value === '' ? "0px" : "150px";
 		urlInputBox.style.background = "#ffffff";
 		urlInputBox.style.borderColor = "#000000";
-		previewText.style.display = "block";
+		previewText.style.display = urlInputBox.value === '' ? "none" : "block";
 		// Clicking the error button makes it go away.
 		closeErrorButton.click();
 		urlImageIsGood = true;
