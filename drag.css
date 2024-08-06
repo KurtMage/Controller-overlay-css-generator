@@ -160,8 +160,16 @@
 	border-radius: 100%;
 	border: 10px solid #000000;
 	display: block;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-image: url(https://imgur.com/cUxiqd5.png);
+	background-size: 117px;
 }
 
 .made-button.pressed {
 	background: #ffffff;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-image: url(https://imgur.com/S8qj5Rt.png);
+	background-size: 117px;
 }

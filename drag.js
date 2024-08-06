@@ -35,6 +35,7 @@ function init() {
 		checkImage(false, this, document.getElementById('pressedButtonUrlInput'),
 					document.getElementById('pressedButtonMakerCloseErrorButton'));
 	};
+	
 	setInterval(alternatePreviewPicture, 1000);
 
 	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
@@ -585,8 +586,8 @@ function getStateOfImg(img) {
 		};
 }
 
-function updateMadeButtonColor(colorPicker, button) {
-	button.style.backgroundColor = colorPicker.value;
+function updateMadeButtonColor(colorValue, button) {
+	button.style.backgroundColor = colorValue;
 }
 
 function updateMadeButtonSize(value, button) {
@@ -594,8 +595,8 @@ function updateMadeButtonSize(value, button) {
 	button.style.height = value + 'px';
 }
 
-function updateMadeButtonBorderColor(colorPicker, button) {
-	button.style.borderColor = colorPicker.value;
+function updateMadeButtonBorderColor(colorValue, button) {
+	button.style.borderColor = colorValue;
 }
 
 function updateMadeButtonBorderSize(value, button) {
@@ -617,6 +618,15 @@ function updateMadeButtonImg(url, button) {
 
 function updateMadeButtonImgSize(size, button) {
 	button.style.backgroundSize = size + "px";
+}
+
+function initializeMadeButton(madeButton, url, imgSize, buttonColorValue, buttonSize, borderColorValue, borderSize) {
+	updateMadeButtonImg(url, madeButton);
+	updateMadeButtonImgSize(imgSize, madeButton);
+	updateMadeButtonColor(buttonColorValue, madeButton);
+	updateMadeButtonSize(buttonSize, madeButton);
+	updateMadeButtonBorderColor(borderColorValue, madeButton);
+	updateMadeButtonBorderSize(borderSize, madeButton);
 }
 
 function validImageUrlStyle(url) {
