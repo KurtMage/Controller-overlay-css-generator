@@ -29,18 +29,22 @@
         <div id="makeButtonsTab" class="tabcontent">
             <div>
                 <h4>Unpressed button</h4>
-                <label for="unpressedSize">Size (in px):</label>
-                    <input class="buttonMakerTextBox" type="number" id="unpressedSize" style="width: initial" value="130" onInput="updateMadeButtonSize(this.value, document.getElementById('unpressedMadeButton'))"><br>
+                <label for="unpressedButtonUrlInput">Image URL:</label>
+                    <input class="urlTextBox" type="text" id="unpressedButtonUrlInput" onChange="updateMadeButtonImg(this.value, document.getElementById('unpressedMadeButton'))" value="https://imgur.com/KCkHaew"><br><br>
+                <div class="alert" style="display: none">
+                    <span id="unpressedButtonMakerCloseErrorButton" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                    <strong>Error:</strong> No image found at the provided URL.
+                </div>
+                <label for="unpressedImgSize">Image size (in px):</label>
+                    <input class="buttonMakerTextBox" type="number" id="unpressedImgSize" value="100" onInput="updateMadeButtonImgSize(this.value, document.getElementById('unpressedMadeButton'))"><br><br>
                 <label for="colorpicker">Color:</label>
                     <input type="color" id="colorpicker" value="#666666" onInput="updateMadeButtonColor(this, document.getElementById('unpressedMadeButton'))">
+                <label for="unpressedSize">Size (in px):</label>
+                    <input class="buttonMakerTextBox" type="number" id="unpressedSize" value="130" onInput="updateMadeButtonSize(this.value, document.getElementById('unpressedMadeButton'))"><br>
                 <label for="colorpicker">Border color:</label>
                     <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this, document.getElementById('unpressedMadeButton'))">
                 <label for="unpressedBorderThickness">Border thickness (in px):</label>
-                    <input class="buttonMakerTextBox" type="number" id="unpressedBorderThickness" style="width: initial" value="10" onInput="updateMadeButtonBorderSize(this.value, document.getElementById('unpressedMadeButton'))"><br><br>
-                <label for="urlInput">Image URL:</label>
-                    <input class="urlTextBox" type="text" id="unpressedButtonUrlInput" onChange="updateMadeButtonImg(this.value, document.getElementById('unpressedMadeButton'))" value="https://imgur.com/KCkHaew"><br><br>
-                <label for="unpressedImgSize">Image size (in px):</label>
-                    <input class="buttonMakerTextBox" type="number" id="unpressedImgSize" style="width: initial" value="100" onInput="updateMadeButtonImgSize(this.value, document.getElementById('unpressedMadeButton'))"><br><br>
+                    <input class="buttonMakerTextBox" type="number" id="unpressedBorderThickness" value="10" onInput="updateMadeButtonBorderSize(this.value, document.getElementById('unpressedMadeButton'))"><br><br>
                 <span class="made-button" id="unpressedMadeButton"></span>
             </div>
             <div>
@@ -48,16 +52,20 @@
                 <label for="colorpicker">Color:</label>
                     <input type="color" id="colorpicker" value="#ffffff" onInput="updateMadeButtonColor(this, document.getElementById('pressedMadeButton'))">
                 <label for="pressedSize">Size (in px):</label>
-                    <input class="buttonMakerTextBox" type="number" id="pressedSize" style="width: initial" value="130" onInput="updateMadeButtonSize(this.value, document.getElementById('pressedMadeButton'))"><br>
+                    <input class="buttonMakerTextBox" type="number" id="pressedSize" value="130" onInput="updateMadeButtonSize(this.value, document.getElementById('pressedMadeButton'))"><br>
 
                 <label for="colorpicker">Border color:</label>
                     <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this, document.getElementById('pressedMadeButton'))">
                 <label for="pressedBorderThickness">Border thickness (in px):</label>
-                    <input class="buttonMakerTextBox" type="number" id="pressedBorderThickness" style="width: initial" value="10" onInput="updateMadeButtonBorderSize(this.value, document.getElementById('pressedMadeButton'))"><br><br>
-                <label for="urlInput">Image URL:</label>
+                    <input class="buttonMakerTextBox" type="number" id="pressedBorderThickness" value="10" onInput="updateMadeButtonBorderSize(this.value, document.getElementById('pressedMadeButton'))"><br><br>
+                <label for="pressedButtonUrlInput">Image URL:</label>
                     <input class="urlTextBox" type="text" id="pressedButtonUrlInput" onChange="updateMadeButtonImg(this.value, document.getElementById('pressedMadeButton'))" value="https://imgur.com/KCkHaew"><br><br>
+                <div class="alert" style="display: none">
+                    <span id="pressedButtonMakerCloseErrorButton" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                    <strong>Error:</strong> No image found at the provided URL.
+                </div>
                 <label for="pressedImgSize">Image size (in px):</label>
-                    <input class="buttonMakerTextBox" type="number" id="pressedImgSize" style="width: initial" value="100" onInput="updateMadeButtonImgSize(this.value, document.getElementById('pressedMadeButton'))"><br><br>
+                    <input class="buttonMakerTextBox" type="number" id="pressedImgSize" value="100" onInput="updateMadeButtonImgSize(this.value, document.getElementById('pressedMadeButton'))"><br><br>
                 <span class="made-button pressed" id="pressedMadeButton"></span>
             </div>
         </div>
@@ -66,7 +74,7 @@
             <label for="urlInput">URL:</label>
             <input class="urlTextBox" type="text" id="urlInput" onChange="updatePreviewPicture()" value="https://imgur.com/KCkHaew"><br><br>
             <div>
-                <div id="previewText">Preview (alternates between unpressed and pressed):<br><br></div>
+                <div id="previewText">Preview (alternates between unpressed and pressed if formatted properly):<br><br></div>
                 <img src="https://imgur.com/KCkHaew.png" 
                     style="width: 150px; height: 150px; object-fit: cover; object-position: 0% 0%; overflow: hidden" id="urlButtonPreview"
                     onLoad="checkImage(true)" onError="checkImage(false)">
@@ -79,7 +87,7 @@
         <div id="changeSizeTab" class="tabcontent">
             <p>Choose a size (in px) for the buttons to change to, then click them to make them that size.<br>NOTE: If you made a button in the "Make buttons" tab, this size does not take your border thickness into account.</p>
             <label for="sizeInput">Size:</label>
-            <input class="urlTextBox" type="number" id="sizeInput" style="width: initial" value="150"><br><br>
+            <input class="urlTextBox" type="number" id="sizeInput" value="150"><br><br>
         </div>
         <div id="tutorialTab" class="tabcontent" style="display: block;">
             <p>

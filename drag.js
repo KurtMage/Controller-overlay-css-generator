@@ -7,11 +7,38 @@ var drag = false;
 var urlImageIsGood = false;
 var lastKeyPressMove;
 var baseLayoutURL = "https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/2XKO/light-mode.css";
+var hiddenPressedImgUpdater;
+var hiddenUnpressedImgUpdater;
 
 function init() {
 	document.onmousedown = clickAction;
 	document.onmouseup = stopDrag;
 	document.onkeydown = onePxArrowKeyMove;
+
+	hiddenUnpressedImgUpdater = new Image();
+	hiddenUnpressedImgUpdater.onload = function() {
+		console.log("kurttm debug onload");
+		checkImage(true, this, document.getElementById("unpressedButtonUrlInput"),
+					document.getElementById("unpressedButtonMakerCloseErrorButton"));
+
+	};
+	hiddenUnpressedImgUpdater.onerror = function() {
+		console.log("kurttm debug onerror");
+		checkImage(false, this, document.getElementById('unpressedButtonUrlInput'),
+					document.getElementById('unpressedButtonMakerCloseErrorButton'));
+	};
+	hiddenPressedImgUpdater = new Image();
+	hiddenPressedImgUpdater.onload = function() {
+		console.log("kurttm debug onload");
+		checkImage(true, this, document.getElementById("pressedButtonUrlInput"),
+					document.getElementById("pressedButtonMakerCloseErrorButton"));
+
+	};
+	hiddenPressedImgUpdater.onerror = function() {
+		console.log("kurttm debug onerror");
+		checkImage(false, this, document.getElementById('pressedButtonUrlInput'),
+					document.getElementById('pressedButtonMakerCloseErrorButton'));
+	};
 	setInterval(alternatePreviewPicture, 1000);
 
 	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
@@ -71,14 +98,14 @@ function alternatePreviewPicture() {
 function updatePreviewPicture() {
 	const img = document.getElementById("urlButtonPreview");
 	const url = document.getElementById("urlInput").value;
-	img.src = url.endsWith(".png") ? url : `${url}.png`;
+	img.src = validImageUrlStyle(url) ? url : `${url}.png`;
 }
 
-function checkImage(success) {
-	const img = document.getElementById("urlButtonPreview");
-	const urlInputBox = document.getElementById("urlInput");
-	const closeErrorButton = document.getElementById("closeErrorButton");
-	const previewText = document.getElementById("previewText");
+function checkImage(success, 
+					img = document.getElementById("urlButtonPreview"),
+					urlInputBox = document.getElementById("urlInput"),
+					closeErrorButton = document.getElementById("closeErrorButton"),
+					previewText = document.getElementById("previewText")) {
 	if (success || urlInputBox.value === '') {
 		img.visibility = urlInputBox.value === '' ? "hidden" : "visible";
 		img.style.width = urlInputBox.value === '' ? "0px" : "150px";
@@ -212,14 +239,14 @@ function changeButton(e) {
 	}
 
 	if (!targ) { return; }
-	const urlCss = url.endsWith(".png") ? `url(\"${url}\")` : `url(\"${url}.png\")`;
+	const urlCss = validImageUrlStyle(url) ? `url(\"${url}\")` : `url(\"${url}.png\")`;
 	if (targ.style.backgroundImage === urlCss) {
 		return;
 	}
 
 	lastKeyPressMove = null;
 
-	targ.style.backgroundImage = url.endsWith(".png") ? `url(${url})` : `url(${url}.png)`;
+	targ.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
 
 	const imgSize = targ.offsetWidth;
 	targ.style.backgroundSize = `${imgSize}px`;
@@ -587,7 +614,13 @@ function updateMadeButtonBorderSize(value, button) {
 }
 
 function updateMadeButtonImg(url, button) {
-	button.style.backgroundImage = url.endsWith(".png") ? `url(${url})` : `url(${url}.png)`;
+	button.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
+	const fixedUrl = validImageUrlStyle(url) ? url : `${url}.png`;
+	if (button.id.startsWith("unpressed")) {
+		hiddenUnpressedImgUpdater.src = fixedUrl;
+	} else if (button.id.startsWith("pressed")) {
+		hiddenPressedImgUpdater.src = fixedUrl;
+	}
 	button.style.backgroundRepeat = "no-repeat";
 	button.style.backgroundPosition = "center";
 	updateMadeButtonImgSize(document.getElementById("unpressedImgSize").value, button);
@@ -595,6 +628,10 @@ function updateMadeButtonImg(url, button) {
 
 function updateMadeButtonImgSize(size, button) {
 	button.style.backgroundSize = size + "px";
+}
+
+function validImageUrlStyle(url) {
+	return url.match(".*(png|jpg|svg|gif|webp|jpeg)$");
 }
 
 function openCity(evt, cityName) {
