@@ -362,10 +362,10 @@ function undo() {
 		const currentLocation = currentState.get(id);
 		const img = document.getElementById(id);
 		if (currentLocation.top !== locationToReturnTo.top) {
-			img.style.top = locationToReturnTo.top + 'px';
+			img.style.top = locationToReturnTo.top;
 		}
 		if (currentLocation.left !== locationToReturnTo.left) {
-			img.style.left = locationToReturnTo.left + 'px';
+			img.style.left = locationToReturnTo.left;
 		}
 		if (locationToReturnTo.top === originalState.get(id).top) {
 			img.style.top = null;
