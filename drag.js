@@ -17,25 +17,21 @@ function init() {
 
 	hiddenUnpressedImgUpdater = new Image();
 	hiddenUnpressedImgUpdater.onload = function() {
-		console.log("kurttm debug onload");
 		checkImage(true, this, document.getElementById("unpressedButtonUrlInput"),
 					document.getElementById("unpressedButtonMakerCloseErrorButton"));
 
 	};
 	hiddenUnpressedImgUpdater.onerror = function() {
-		console.log("kurttm debug onerror");
 		checkImage(false, this, document.getElementById('unpressedButtonUrlInput'),
 					document.getElementById('unpressedButtonMakerCloseErrorButton'));
 	};
 	hiddenPressedImgUpdater = new Image();
 	hiddenPressedImgUpdater.onload = function() {
-		console.log("kurttm debug onload");
 		checkImage(true, this, document.getElementById("pressedButtonUrlInput"),
 					document.getElementById("pressedButtonMakerCloseErrorButton"));
 
 	};
 	hiddenPressedImgUpdater.onerror = function() {
-		console.log("kurttm debug onerror");
 		checkImage(false, this, document.getElementById('pressedButtonUrlInput'),
 					document.getElementById('pressedButtonMakerCloseErrorButton'));
 	};
@@ -267,42 +263,6 @@ function changeButton(e) {
 	document.getElementById("css-text").innerHTML = changedVariables;
 }
 
-function startDrag(e) {
-
-	lastKeyPressMove = null;
-	// determine event object
-	if (!e) {
-		var e = window.event;
-	}
-
-	targ = e.target ;
-	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN") {
-		return;
-	}
-
-	// calculate event X, Y coordinates
-	offsetX = e.clientX;
-	offsetY = e.clientY;
-
-	// assign default values for top and left properties
-	selectedButton = targ;
-	lastMovedButton = targ;
-	targ.style.zIndex = 1;
-	if (!targ.style.left) { targ.style.left=targ.offsetLeft + 'px'};
-	if (!targ.style.top) { targ.style.top=targ.offsetTop + 'px'};
-
-	// calculate integer values for top and left 
-	// properties
-	coordX = parseInt(targ.style.left);
-	coordY = parseInt(targ.style.top);
-	drag = true;
-
-	// move div element
-	document.onmousemove=dragDiv;
-	return false;
-	
-}
-
 function deleteButton(e) {
 	// determine event object
 	if (!e) {
@@ -336,10 +296,48 @@ function deleteButton(e) {
 	document.getElementById("css-text").innerHTML = changedVariables;
 }
 
+function startDrag(e) {
+
+	lastKeyPressMove = null;
+	// determine event object
+	if (!e) {
+		var e = window.event;
+	}
+
+	targ = e.target ;
+	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN") {
+		return;
+	}
+	if(e.preventDefault) e.preventDefault();
+
+	// calculate event X, Y coordinates
+	offsetX = e.clientX;
+	offsetY = e.clientY;
+
+	// assign default values for top and left properties
+	selectedButton = targ;
+	lastMovedButton = targ;
+	targ.style.zIndex = 1;
+	if (!targ.style.left) { targ.style.left=targ.offsetLeft + 'px'};
+	if (!targ.style.top) { targ.style.top=targ.offsetTop + 'px'};
+
+	// calculate integer values for top and left 
+	// properties
+	coordX = parseInt(targ.style.left);
+	coordY = parseInt(targ.style.top);
+	drag = true;
+
+	// move div element
+	document.onmousemove=dragDiv;
+	return false;
+	
+}
+
 function dragDiv(e) {
+	if(e.preventDefault) e.preventDefault();
 	if (!drag) {return};
 	if (!e) { var e= window.event};
-	var targ=e.target;
+
 	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN") {
 		return;
 	}
@@ -353,7 +351,7 @@ function stopDrag() {
 	if (!drag) {
 		return;
 	}
-	drag=false;
+	drag = false;
 	if (selectedButton) {
 		selectedButton.style.zIndex = 0;
 	}
@@ -441,9 +439,6 @@ function undo() {
 	if (pastStates.length <= 1) {
 		document.getElementById('undoButton').style.color = "#999";
 	}
-	console.log(pastStates);
-	console.log('redo states:');
-	console.log(undoneStates);
 }
 
 function redo() {
@@ -504,9 +499,6 @@ function redo() {
 	if (undoneStates.length < 1) {
 		document.getElementById('redoButton').style.color = "#999";
 	}
-	console.log(pastStates);
-	console.log('redo states:');
-	console.log(undoneStates);
 }
 
 function copyText() {
@@ -545,9 +537,6 @@ function addToPastStates(id2state) {
 	document.getElementById('undoButton').style.color = "#fff";
 	undoneStates = [];
 	document.getElementById('redoButton').style.color = "#999";
-	console.log(pastStates);
-	console.log('redo states:');
-	console.log(undoneStates);
 }
 
 function getChangedVariables(img) {
