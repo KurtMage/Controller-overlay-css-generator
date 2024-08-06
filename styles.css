@@ -61,10 +61,14 @@
 body {
     zoom: 80%;
     display: grid;
-	justify-content: left;
     font-size: 22px;
     resize:both;
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}  
 
 /* Error message for bad URL */
 

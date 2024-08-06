@@ -1,6 +1,12 @@
 .layout-box {
     position: relative;
 	background-color: #ffffff;
+	height: 580px;
+    overflow: auto;
+    resize: both;
+    border: solid rgb(0, 0, 0);
+    border-radius: 12px;
+    width: 1203px;
 }
 
 .img {
@@ -145,6 +151,7 @@
 }
 
 .code-box {
+  position:relative;
   border: 4px solid;
   border-radius: 12px;
   width: 600px;
