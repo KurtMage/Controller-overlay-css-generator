@@ -137,6 +137,14 @@ function applyMadeButton(e) {
 	img.style.borderRadius = unpressedStyle.borderRadius;
 	img.style.border = unpressedStyle.border;
 
+	const pressedImg = document.getElementById(targ.id + ".pressed");
+
+	pressedImg.style.background = pressedStyle.background;
+	pressedImg.style.height = pressedStyle.height;
+	pressedImg.style.width = pressedStyle.width;
+	pressedImg.style.borderRadius = pressedStyle.borderRadius;
+	pressedImg.style.border = pressedStyle.border;
+
 
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
@@ -168,6 +176,12 @@ function resizeButton(e) {
 	img.style.height = `${size}px`;
 	img.style.width = `${size}px`;
 
+	const pressedImg = document.getElementById(targ.id + ".pressed");
+
+	pressedImg.style.backgroundSize = `${size}px`;
+	pressedImg.style.height = `${size}px`;
+	pressedImg.style.width = `${size}px`;
+	pressedImg.style.backgroundPositionY = `-${size}px`;
 
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
@@ -469,7 +483,7 @@ function doesButtonHaveChange(img) {
 	const originalStateOfImg = originalState.get(img.id);
     return style.top !== originalStateOfImg.top
 		|| style.left !== originalStateOfImg.left
-		|| style.visibility === 'hidden'
+		|| (!img.id.endsWith(".pressed") && style.visibility === 'hidden')
 		|| style.background !== originalStateOfImg.background
 		|| style.width !== originalStateOfImg.size
 		|| style.border !== originalStateOfImg.border
@@ -491,25 +505,27 @@ function getChangedVariables(img) {
 	changedVariables +=
 	`
 	<br>${img.id} {<br>
-		${img.style.top ? `top: ${img.offsetTop}px;<br>` : ''}
-		${img.style.left ? `left: ${img.offsetLeft}px;<br>` : ''}
-		${!img.style.visibility && backgroundChanged ? `background: ${img.style.background};<br>` : ''}
-		${img.style.visibility ? `background: none;<br>` : ''}
-		${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''}
-		${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
-		${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
-		${img.style.border != originalStateOfImg.border ? `border: ${img.style.border};<br>` : ''}
-		${img.style.borderRadius != originalStateOfImg.borderRadius ? `border-radius: ${img.style.borderRadius};<br>` : ''}
+		${style.top !== originalStateOfImg.top ? `top: ${img.offsetTop}px;<br>` : ''}
+		${style.left !== originalStateOfImg.left ? `left: ${img.offsetLeft}px;<br>` : ''}
+		${!style.visibility && backgroundChanged ? `background: ${style.background};<br>` : ''}
+		${style.visibility === 'hidden' && !img.id.endsWith(".pressed") ? `background: none;<br>` : ''}
+		${style.width !== originalStateOfImg.size ? `width: ${style.width};<br>` : ''}
+		${style.width !== originalStateOfImg.size ? `height: ${style.width};<br>` : ''}
+		${style.width !== originalStateOfImg.size ? `background-size: ${style.width};<br>` : ''}
+		${style.border !== originalStateOfImg.border ? `border: ${style.border};<br>` : ''}
+		${style.borderRadius !== originalStateOfImg.borderRadius ? `border-radius: ${style.borderRadius};<br>` : ''}
+		${style.backgroundPositionY !== originalStateOfImg.backgroundPositionY ? `background-position-y: ${style.backgroundPositionY};<br>` : ''}
+		${style.background !== originalStateOfImg.background ? `background: ${style.background};<br>` : ''}
 	}<br>
 	`
-	if (img.style.width != originalStateOfImg.size) {
-		changedVariables +=
-		`
-		<br>${img.id}.pressed {<br>
-			background-position-y: ${img.style.width};<br>
-		}<br>
-		`
-	}
+	// if (style.width != originalStateOfImg.size) {
+	// 	changedVariables +=
+	// 	`
+	// 	<br>${img.id}.pressed {<br>
+	// 		background-position-y: ${style.width};<br>
+	// 	}<br>
+	// 	`
+	// }
 	return changedVariables;
 }
 
@@ -522,7 +538,8 @@ function getStateOfImg(img) {
 			background: style.background,
 			size: style.width,
 			borderRadius: style.borderRadius,
-			border: style.border
+			border: style.border,
+			backgroundPositionY: style.backgroundPositionY
 		};
 }
 

@@ -73,6 +73,10 @@
 	left:var(--x-left);
 }
 
+.img.button.x.pressed {
+	background-position-y: -150px;
+}
+
 .img.button.y {
 	background: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/light\ mode/M.png");
 	top:var(--y-top);
