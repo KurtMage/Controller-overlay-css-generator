@@ -71,7 +71,7 @@ function alternatePreviewPicture() {
 function updatePreviewPicture() {
 	const img = document.getElementById("urlButtonPreview");
 	const url = document.getElementById("urlInput").value;
-	img.src = `${url}.png`;
+	img.src = url.endsWith(".png") ? url : `${url}.png`;
 }
 
 function checkImage(success) {
@@ -204,14 +204,14 @@ function changeButton(e) {
 	}
 
 	if (!targ) { return; }
-	const urlCss = `url(\"${url}.png\")`;
+	const urlCss = url.endsWith(".png") ? `url(\"${url}\")` : `url(\"${url}.png\")`;
 	if (targ.style.backgroundImage === urlCss) {
 		return;
 	}
 
 	lastKeyPressMove = null;
 
-	targ.style.background = `url(${url}.png)`;
+	targ.style.backgroundImage = url.endsWith(".png") ? `url(${url})` : `url(${url}.png)`;
 
 	const imgSize = targ.offsetWidth;
 	targ.style.backgroundSize = `${imgSize}px`;
