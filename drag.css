@@ -3,10 +3,11 @@
 	background-color: #ffffff;
 	height: 580px;
     overflow: auto;
-    resize: both;
-    border: solid rgb(0, 0, 0);
-    border-radius: 12px;
-    width: 1203px;
+    resize: vertical;
+    border-top: solid rgb(0, 0, 0);
+    border-bottom: solid rgb(0, 0, 0);
+    /* border-radius: 12px; */
+    width: 100%;
 }
 
 .img {
@@ -152,12 +153,8 @@
 
 .code-box {
   position:relative;
-  border: 4px solid;
-  border-radius: 12px;
-  width: 600px;
-  height: 300px;
-  resize: both;
-  overflow: auto;
+  width:100%;
+  height:100%;
 }
 
 .made-button {
