@@ -165,16 +165,14 @@ function resizeButton(e) {
 		return;
 	}
 
-	const img = document.getElementById(targ.id);
-	if (!img) { return; }
 	const size = parseInt(document.getElementById("sizeInput").value);
-	if (isNaN(size)) { return; }
+	if (isNaN(size) || parseInt(targ.style.backgroundSize) === size) { return; }
 
 	lastKeyPressMove = null;
 
-	img.style.backgroundSize = `${size}px`;
-	img.style.height = `${size}px`;
-	img.style.width = `${size}px`;
+	targ.style.backgroundSize = `${size}px`;
+	targ.style.height = `${size}px`;
+	targ.style.width = `${size}px`;
 
 	const pressedImg = document.getElementById(targ.id + ".pressed");
 
