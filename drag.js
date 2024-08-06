@@ -513,21 +513,20 @@ function getChangedVariables(img) {
 	const originalStateOfImg = originalState.get(img.id);
 	var changedVariables = '';
 	const backgroundChanged = style.background !== originalStateOfImg.background;
-	const indent = '&emsp;&emsp;&emsp;&emsp;';
 	changedVariables +=
 	`
 	<br>${img.id} {<br>
-		${style.top !== originalStateOfImg.top ? `${indent}top: ${img.offsetTop}px;<br>` : ''}
-		${style.left !== originalStateOfImg.left ? `${indent}left: ${img.offsetLeft}px;<br>` : ''}
-		${!style.visibility && backgroundChanged ? `${indent}background: ${style.background};<br>` : ''}
-		${style.visibility === 'hidden' && !img.id.endsWith(".pressed") ? `${indent}background: none;<br>` : ''}
-		${style.width !== originalStateOfImg.size ? `${indent}width: ${style.width};<br>` : ''}
-		${style.width !== originalStateOfImg.size ? `${indent}height: ${style.width};<br>` : ''}
-		${style.width !== originalStateOfImg.size ? `${indent}background-size: ${style.width};<br>` : ''}
-		${style.border !== originalStateOfImg.border ? `${indent}border: ${style.border};<br>` : ''}
-		${style.borderRadius !== originalStateOfImg.borderRadius ? `${indent}border-radius: ${style.borderRadius};<br>` : ''}
-		${style.backgroundPositionY !== originalStateOfImg.backgroundPositionY ? `${indent}background-position-y: ${style.backgroundPositionY};<br>` : ''}
-		${style.background !== originalStateOfImg.background ? `${indent}background: ${style.background};<br>` : ''}
+		${style.top !== originalStateOfImg.top ? `top: ${img.offsetTop}px;<br>` : ''}
+		${style.left !== originalStateOfImg.left ? `left: ${img.offsetLeft}px;<br>` : ''}
+		${!style.visibility && backgroundChanged ? `background: ${style.background};<br>` : ''}
+		${style.visibility === 'hidden' && !img.id.endsWith(".pressed") ? `background: none;<br>` : ''}
+		${style.width !== originalStateOfImg.size ? `width: ${style.width};<br>` : ''}
+		${style.width !== originalStateOfImg.size ? `height: ${style.width};<br>` : ''}
+		${style.width !== originalStateOfImg.size ? `background-size: ${style.width};<br>` : ''}
+		${style.border !== originalStateOfImg.border ? `border: ${style.border};<br>` : ''}
+		${style.borderRadius !== originalStateOfImg.borderRadius ? `border-radius: ${style.borderRadius};<br>` : ''}
+		${style.backgroundPositionY !== originalStateOfImg.backgroundPositionY ? `background-position-y: ${style.backgroundPositionY};<br>` : ''}
+		${style.background !== originalStateOfImg.background ? `background: ${style.background};<br>` : ''}
 	}<br>
 	`
 	return changedVariables;
