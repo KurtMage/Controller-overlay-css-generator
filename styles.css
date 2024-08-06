@@ -122,6 +122,14 @@ body {
     font-size: 16pt;
 }
 
+.buttonMakerTextBox {
+    width: 50px;
+    padding: 2px 2px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16pt;
+}
+
 /* Tabs */ 
 
 

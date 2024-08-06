@@ -140,10 +140,6 @@
 	left:var(--dir-up-left);
 }
 
-.copycode {
-	/* position: relative; */
-}
-
 .code-box {
   border: 4px solid;
   border-radius: 12px;
@@ -151,4 +147,13 @@
   height: 300px;
   resize: both;
   overflow: auto;
+}
+
+.made-button {
+	height: 150px;
+	width: 150px;
+	background-color: #000000;
+	border-radius: 100%;
+	border: 10px solid;
+	display: block;
 }

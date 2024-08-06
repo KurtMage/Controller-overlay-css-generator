@@ -14,24 +14,47 @@
     <div class="tab">
         <button class="tablinks" onclick="openCity(event, 'moveTab')">Move buttons</button>
         <button class="tablinks" onclick="openCity(event, 'deleteTab')">Delete buttons</button>
+        <button class="tablinks" onclick="openCity(event, 'makeButtonsTab')">Make buttons</button>
         <button class="tablinks" onclick="openCity(event, 'importButtonsTab')">Import buttons</button>
         <button class="tablinks" onclick="openCity(event, 'changeSizeTab')">Change size</button>
         <button class="tablinks active" onclick="openCity(event, 'tutorialTab')">How to use</button>
     </div>
     <div>
         <div id="moveTab" class="tabcontent">
-            <p>Click and drag buttons to move them.</p>
+            <p>Click and drag buttons to move them.<br>You can also click a button and then use arrow keys to move them 1px at a time.</p>
         </div>
         <div id="deleteTab" class="tabcontent">
             <p>Click buttons to delete them.</p>
         </div>
+        <div id="makeButtonsTab" class="tabcontent">
+            <div>
+                <h4>Unpressed button</h4>
+                <label for="colorpicker">Color:</label>
+                    <input type="color" id="colorpicker" value="#666666" onInput="updateMadeButtonColor(this, 'unpressedMadeButton')">
+                <label for="unpressedSize">Size (in px):</label>
+                    <input class="buttonMakerTextBox" type="number" id="unpressedSize" style="width: initial" value="150" onInput="updateMadeButtonSize(this.value, 'unpressedMadeButton')"><br>
+                <label for="colorpicker">Border color:</label>
+                    <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this, 'unpressedMadeButton')">
+                <label for="unpressedBorderThickness">Border thickness (in px):</label>
+                    <input class="buttonMakerTextBox" type="number" id="unpressedBorderThickness" style="width: initial" value="10" onInput="updateMadeButtonBorderSize(this.value, 'unpressedMadeButton')"><br><br>
+                <span class="made-button" id="unpressedMadeButton"></span>
+            </div>
+            <div>
+                <h4>Pressed button</h4>
+                <label for="colorpicker">Color:</label>
+                    <input type="color" id="colorpicker" value="#666666" onInput="updateMadeButtonColor(this, 'pressedMadeButton')">
+                <label for="pressedSize">Size (in px):</label>
+                    <input class="buttonMakerTextBox" type="number" id="pressedSize" style="width: initial" value="150" onInput="updateMadeButtonSize(this.value, 'pressedMadeButton')"><br>
+                <label for="colorpicker">Border color:</label>
+                    <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this, 'pressedMadeButton')">
+                <label for="pressedBorderThickness">Border thickness (in px):</label>
+                    <input class="buttonMakerTextBox" type="number" id="pressedBorderThickness" style="width: initial" value="10" onInput="updateMadeButtonBorderSize(this.value, 'pressedMadeButton')"><br><br>
+                <span class="made-button" id="pressedMadeButton"></span>
+            </div>
+        </div>
         <div id="importButtonsTab" class="tabcontent">
-            <!-- <div class="tab">
-                <button class="tablinks" onclick="openCity(event, 'changeSizeTab')">Test1</button>
-                <button class="tablinks active" onclick="openCity(event, 'tutorialTab')">Test2</button>
-                </div> -->
             <p>Provide a URL for a <span class="tooltip"><span class="tooltiptext">A properly formatted image just needs to have twice as much height as width (e.g. 150px by 300px). The top half of the image is used as the unpressed version of the button and the bottom half is used as the pressed version.</span>properly formatted</span> image. Then click a button to make it into that image.</p>
-            <label for="url">URL:</label>
+            <label for="urlInput">URL:</label>
             <input class="urlTextBox" type="text" id="urlInput" onChange="updatePreviewPicture()" value="https://imgur.com/KCkHaew"><br><br>
             <div>
                 <div id="previewText">Preview (alternates between unpressed and pressed):<br><br></div>
@@ -43,12 +66,10 @@
                     <strong>Error:</strong> No image found at the provided URL.
                 </div>
             </div>
-            <!-- <label for="colorpicker">Color Picker:</label>
-                <input type="color" id="colorpicker" value="#0000ff"> -->
         </div>
         <div id="changeSizeTab" class="tabcontent">
             <p>Choose a size (in px) for the buttons to change to, then click them to make them that size.</p>
-            <label for="size">Size:</label>
+            <label for="sizeInput">Size:</label>
             <input class="urlTextBox" type="number" id="sizeInput" style="width: initial" value="150"><br><br>
         </div>
         <div id="tutorialTab" class="tabcontent" style="display: block;">

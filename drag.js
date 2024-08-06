@@ -467,6 +467,23 @@ function getStateOfImg(img) {
 		};
 }
 
+function updateMadeButtonColor(colorPicker, button) {
+	document.getElementById(button).style.backgroundColor = colorPicker.value;
+}
+
+function updateMadeButtonSize(value, button) {
+	document.getElementById(button).style.width = value + 'px';
+	document.getElementById(button).style.height = value + 'px';
+}
+
+function updateMadeButtonBorderColor(colorPicker, button) {
+	document.getElementById(button).style.borderColor = colorPicker.value;
+}
+
+function updateMadeButtonBorderSize(value, button) {
+	document.getElementById(button).style.borderWidth = value + 'px';
+	console.log();
+}
 
 function openCity(evt, cityName) {
     var i, tabcontent, tablinks;
