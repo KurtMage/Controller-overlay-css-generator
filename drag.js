@@ -135,26 +135,20 @@ function applyMadeButton(e) {
 	img.style.height = unpressedStyle.height;
 	img.style.width = unpressedStyle.width;
 	img.style.borderRadius = unpressedStyle.borderRadius;
-	img.style.borderColor = unpressedStyle.borderColor;
-	img.style.border = unpressedStyle.borderWidth + " solid";
-
-	// const imgSize = img.offsetWidth;
-	// img.style.backgroundSize = `${imgSize}px`;
-	// img.style.width = `${imgSize}px`;
-	// img.style.height = `${imgSize}px`;
+	img.style.border = unpressedStyle.border;
 
 
-	// id2state = new Map();
-	// var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
-	// for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
-	// 	if (doesButtonHaveChange(img)) {
-	// 		changedVariables += getChangedVariables(img);
-	// 	}
-	// 	const state = getStateOfImg(img);
-	// 	id2state.set(img.id, state);
-	// }
-	// addToPastStates(id2state);
-	// document.getElementById("css-text").innerHTML = changedVariables;
+	id2state = new Map();
+	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
+	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
+		if (doesButtonHaveChange(img)) {
+			changedVariables += getChangedVariables(img);
+		}
+		const state = getStateOfImg(img);
+		id2state.set(img.id, state);
+	}
+	addToPastStates(id2state);
+	document.getElementById("css-text").innerHTML = changedVariables;
 }
 
 function resizeButton(e) {
@@ -375,6 +369,12 @@ function undo() {
 			img.style.width = locationToReturnTo.size;
 			img.style.height = locationToReturnTo.size;
 		}
+		if (locationToReturnTo.border !== currentLocation.border) {
+			img.style.border = locationToReturnTo.border;
+		}
+		if (locationToReturnTo.borderRadius !== currentLocation.borderRadius) {
+			img.style.borderRadius = locationToReturnTo.borderRadius;
+		}
 	}
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
@@ -429,6 +429,12 @@ function redo() {
 			img.style.width = locationToReturnTo.size;
 			img.style.height = locationToReturnTo.size;
 		}
+		if (locationToReturnTo.border !== currentLocation.border) {
+			img.style.border = locationToReturnTo.border;
+		}
+		if (locationToReturnTo.borderRadius !== currentLocation.borderRadius) {
+			img.style.borderRadius = locationToReturnTo.borderRadius;
+		}
 	}
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
@@ -459,10 +465,15 @@ function copyLayoutBaseURL() {
 }
 
 function doesButtonHaveChange(img) {
+	const style = getComputedStyle(img);
 	const originalStateOfImg = originalState.get(img.id);
-    return img.style.top || img.style.left || img.style.visibility == 'hidden'
-		|| img.style.background != originalStateOfImg.background
-		|| img.style.width != originalStateOfImg.size;
+    return style.top !== originalStateOfImg.top
+		|| style.left !== originalStateOfImg.left
+		|| style.visibility === 'hidden'
+		|| style.background !== originalStateOfImg.background
+		|| style.width !== originalStateOfImg.size
+		|| style.border !== originalStateOfImg.border
+		|| style.borderRadius !== originalStateOfImg.borderRadius;
 }
 
 function addToPastStates(id2state) {
@@ -473,9 +484,10 @@ function addToPastStates(id2state) {
 }
 
 function getChangedVariables(img) {
-	originalStateOfImg = originalState.get(img.id);
+	const style = getComputedStyle(img);
+	const originalStateOfImg = originalState.get(img.id);
 	var changedVariables = '';
-	const backgroundChanged = img.style.background != originalStateOfImg.background;
+	const backgroundChanged = style.background !== originalStateOfImg.background;
 	changedVariables +=
 	`
 	<br>${img.id} {<br>
@@ -486,6 +498,8 @@ function getChangedVariables(img) {
 		${img.style.width != originalStateOfImg.size ? `width: ${img.style.width};<br>` : ''}
 		${img.style.width != originalStateOfImg.size ? `height: ${img.style.width};<br>` : ''}
 		${img.style.width != originalStateOfImg.size ? `background-size: ${img.style.width};<br>` : ''}
+		${img.style.border != originalStateOfImg.border ? `border: ${img.style.border};<br>` : ''}
+		${img.style.borderRadius != originalStateOfImg.borderRadius ? `border-radius: ${img.style.borderRadius};<br>` : ''}
 	}<br>
 	`
 	if (img.style.width != originalStateOfImg.size) {
@@ -500,12 +514,15 @@ function getChangedVariables(img) {
 }
 
 function getStateOfImg(img) {
+		const style = getComputedStyle(img);
 		return {
-			top: img.offsetTop,
-			left: img.offsetLeft,
-			isVisible: img.style.visibility === 'visible' || img.style.visibility === '',
-			background: img.style.background,
-			size: img.style.width
+			top: style.top,
+			left: style.left,
+			isVisible: style.visibility === 'visible' || style.visibility === '',
+			background: style.background,
+			size: style.width,
+			borderRadius: style.borderRadius,
+			border: style.border
 		};
 }
 

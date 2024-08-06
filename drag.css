@@ -7,7 +7,7 @@
 	position: absolute;
 	width: 150px;
 	height: 150px;
-	background-size: 400%;
+	background-size: 150px;
 }
 
 :root {
@@ -154,8 +154,6 @@
 	width: 130px;
 	background: #666666;
 	border-radius: 100%;
-	border: 10px solid;
-	border-width: 10px;
-	border-color: #000000;
+	border: 10px solid #000000;
 	display: block;
 }
