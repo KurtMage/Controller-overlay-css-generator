@@ -112,12 +112,54 @@ function clickAction(e) {
 		changeButton(e);
 	} else if (document.getElementById("changeSizeTab").style.display === 'block') {
 		resizeButton(e);
+	} else if (document.getElementById("makeButtonsTab").style.display === 'block') {
+		applyMadeButton(e);
 	}
+}
+
+function applyMadeButton(e) {
+	targ = e.target ;
+	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN") {
+		return;
+	}
+
+	const img = document.getElementById(targ.id);
+	if (!img) { return; }
+
+	lastKeyPressMove = null;
+
+	const unpressedStyle = getComputedStyle(document.getElementById("unpressedMadeButton"));
+	const pressedStyle = getComputedStyle(document.getElementById("pressedMadeButton"));
+
+	img.style.background = unpressedStyle.background;
+	img.style.height = unpressedStyle.height;
+	img.style.width = unpressedStyle.width;
+	img.style.borderRadius = unpressedStyle.borderRadius;
+	img.style.borderColor = unpressedStyle.borderColor;
+	img.style.border = unpressedStyle.borderWidth + " solid";
+
+	// const imgSize = img.offsetWidth;
+	// img.style.backgroundSize = `${imgSize}px`;
+	// img.style.width = `${imgSize}px`;
+	// img.style.height = `${imgSize}px`;
+
+
+	// id2state = new Map();
+	// var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
+	// for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
+	// 	if (doesButtonHaveChange(img)) {
+	// 		changedVariables += getChangedVariables(img);
+	// 	}
+	// 	const state = getStateOfImg(img);
+	// 	id2state.set(img.id, state);
+	// }
+	// addToPastStates(id2state);
+	// document.getElementById("css-text").innerHTML = changedVariables;
 }
 
 function resizeButton(e) {
 	targ = e.target ;
-	if (targ.tagName?.toUpperCase() != "SPAN") {
+	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN") {
 		return;
 	}
 
@@ -149,7 +191,7 @@ function resizeButton(e) {
 function changeButton(e) {
 	const url = document.getElementById("urlInput").value;
 	targ = e.target ;
-	if (targ.tagName?.toUpperCase() != "SPAN" || !urlImageIsGood) {
+	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN" || !urlImageIsGood) {
 		return;
 	}
 
@@ -188,7 +230,7 @@ function startDrag(e) {
 	}
 
 	targ = e.target ;
-	if (targ.tagName?.toUpperCase() != "SPAN") {
+	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN") {
 		return;
 	}
 
@@ -224,7 +266,7 @@ function deleteButton(e) {
 	}
 
 	targ = e.target ;
-	if (targ.tagName?.toUpperCase() != "SPAN") {
+	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN") {
 		return;
 	}
 	// assign default values for top and left properties
@@ -254,7 +296,7 @@ function dragDiv(e) {
 	if (!drag) {return};
 	if (!e) { var e= window.event};
 	var targ=e.target;
-	if (targ.tagName?.toUpperCase() != "SPAN") {
+	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN") {
 		return;
 	}
 	// move div element
@@ -468,7 +510,7 @@ function getStateOfImg(img) {
 }
 
 function updateMadeButtonColor(colorPicker, button) {
-	document.getElementById(button).style.backgroundColor = colorPicker.value;
+	document.getElementById(button).style.background = colorPicker.value;
 }
 
 function updateMadeButtonSize(value, button) {

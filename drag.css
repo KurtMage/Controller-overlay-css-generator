@@ -150,10 +150,12 @@
 }
 
 .made-button {
-	height: 150px;
-	width: 150px;
-	background-color: #000000;
+	height: 130px;
+	width: 130px;
+	background: #666666;
 	border-radius: 100%;
 	border: 10px solid;
+	border-width: 10px;
+	border-color: #000000;
 	display: block;
 }

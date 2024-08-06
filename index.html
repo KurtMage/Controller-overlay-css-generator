@@ -29,10 +29,10 @@
         <div id="makeButtonsTab" class="tabcontent">
             <div>
                 <h4>Unpressed button</h4>
+                <label for="unpressedSize">Size (in px):</label>
+                    <input class="buttonMakerTextBox" type="number" id="unpressedSize" style="width: initial" value="130" onInput="updateMadeButtonSize(this.value, 'unpressedMadeButton')"><br>
                 <label for="colorpicker">Color:</label>
                     <input type="color" id="colorpicker" value="#666666" onInput="updateMadeButtonColor(this, 'unpressedMadeButton')">
-                <label for="unpressedSize">Size (in px):</label>
-                    <input class="buttonMakerTextBox" type="number" id="unpressedSize" style="width: initial" value="150" onInput="updateMadeButtonSize(this.value, 'unpressedMadeButton')"><br>
                 <label for="colorpicker">Border color:</label>
                     <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this, 'unpressedMadeButton')">
                 <label for="unpressedBorderThickness">Border thickness (in px):</label>
@@ -44,7 +44,7 @@
                 <label for="colorpicker">Color:</label>
                     <input type="color" id="colorpicker" value="#666666" onInput="updateMadeButtonColor(this, 'pressedMadeButton')">
                 <label for="pressedSize">Size (in px):</label>
-                    <input class="buttonMakerTextBox" type="number" id="pressedSize" style="width: initial" value="150" onInput="updateMadeButtonSize(this.value, 'pressedMadeButton')"><br>
+                    <input class="buttonMakerTextBox" type="number" id="pressedSize" style="width: initial" value="130" onInput="updateMadeButtonSize(this.value, 'pressedMadeButton')"><br>
                 <label for="colorpicker">Border color:</label>
                     <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this, 'pressedMadeButton')">
                 <label for="pressedBorderThickness">Border thickness (in px):</label>
