@@ -42,14 +42,14 @@
             <div>
                 <h4>Pressed button</h4>
                 <label for="colorpicker">Color:</label>
-                    <input type="color" id="colorpicker" value="#666666" onInput="updateMadeButtonColor(this, 'pressedMadeButton')">
+                    <input type="color" id="colorpicker" value="#ffffff" onInput="updateMadeButtonColor(this, 'pressedMadeButton')">
                 <label for="pressedSize">Size (in px):</label>
                     <input class="buttonMakerTextBox" type="number" id="pressedSize" style="width: initial" value="130" onInput="updateMadeButtonSize(this.value, 'pressedMadeButton')"><br>
                 <label for="colorpicker">Border color:</label>
                     <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this, 'pressedMadeButton')">
                 <label for="pressedBorderThickness">Border thickness (in px):</label>
                     <input class="buttonMakerTextBox" type="number" id="pressedBorderThickness" style="width: initial" value="10" onInput="updateMadeButtonBorderSize(this.value, 'pressedMadeButton')"><br><br>
-                <span class="made-button" id="pressedMadeButton"></span>
+                <span class="made-button pressed" id="pressedMadeButton"></span>
             </div>
         </div>
         <div id="importButtonsTab" class="tabcontent">

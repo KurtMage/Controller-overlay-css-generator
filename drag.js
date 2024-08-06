@@ -203,17 +203,20 @@ function changeButton(e) {
 		return;
 	}
 
-	const img = document.getElementById(targ.id);
-	if (!img) { return; }
+	if (!targ) { return; }
+	const urlCss = `url(\"${url}.png\")`;
+	if (targ.style.backgroundImage === urlCss) {
+		return;
+	}
 
 	lastKeyPressMove = null;
 
-	img.style.background = `url(${url}.png)`;
+	targ.style.background = `url(${url}.png)`;
 
-	const imgSize = img.offsetWidth;
-	img.style.backgroundSize = `${imgSize}px`;
-	img.style.width = `${imgSize}px`;
-	img.style.height = `${imgSize}px`;
+	const imgSize = targ.offsetWidth;
+	targ.style.backgroundSize = `${imgSize}px`;
+	targ.style.width = `${imgSize}px`;
+	targ.style.height = `${imgSize}px`;
 
 
 	id2state = new Map();
@@ -247,13 +250,11 @@ function startDrag(e) {
 	offsetY = e.clientY;
 
 	// assign default values for top and left properties
-	const img = document.getElementById(targ.id);
-	if (!img) { return; }
-	selectedButton = img;
-	lastMovedButton = img;
-	img.style.zIndex = 1;
-	if (!targ.style.left) { targ.style.left=img.offsetLeft + 'px'};
-	if (!targ.style.top) { targ.style.top=img.offsetTop + 'px'};
+	selectedButton = targ;
+	lastMovedButton = targ;
+	targ.style.zIndex = 1;
+	if (!targ.style.left) { targ.style.left=targ.offsetLeft + 'px'};
+	if (!targ.style.top) { targ.style.top=targ.offsetTop + 'px'};
 
 	// calculate integer values for top and left 
 	// properties
@@ -329,17 +330,20 @@ function stopDrag() {
 		return;
 	}
 
+	var hasChanged = false;
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
 		if (doesButtonHaveChange(img)) {
+			hasChanged = true;
 			changedVariables += getChangedVariables(img);
 		}
 		const state = getStateOfImg(img);
 		id2state.set(img.id, state);
 	}
-	addToPastStates(id2state);
-	console.log(pastStates);
+	if (hasChanged) {
+		addToPastStates(id2state);
+	}
 	
 	document.getElementById("css-text").innerHTML = changedVariables;
 	selectedButton = null;
@@ -402,6 +406,9 @@ function undo() {
 	if (pastStates.length <= 1) {
 		document.getElementById('undoButton').style.color = "#999";
 	}
+	console.log(pastStates);
+	console.log('redo states:');
+	console.log(undoneStates);
 }
 
 function redo() {
@@ -417,10 +424,10 @@ function redo() {
 		const currentLocation = currentState.get(id);
 		const img = document.getElementById(id);
 		if (currentLocation.top !== locationToReturnTo.top) {
-			img.style.top = locationToReturnTo.top + 'px';
+			img.style.top = locationToReturnTo.top;
 		}
 		if (currentLocation.left !== locationToReturnTo.left) {
-			img.style.left = locationToReturnTo.left + 'px';
+			img.style.left = locationToReturnTo.left;
 		}
 		if (locationToReturnTo.top === originalState.get(id).top) {
 			img.style.top = null;
@@ -462,6 +469,9 @@ function redo() {
 	if (undoneStates.length < 1) {
 		document.getElementById('redoButton').style.color = "#999";
 	}
+	console.log(pastStates);
+	console.log('redo states:');
+	console.log(undoneStates);
 }
 
 function copyText() {
@@ -495,6 +505,9 @@ function addToPastStates(id2state) {
 	document.getElementById('undoButton').style.color = "#fff";
 	undoneStates = [];
 	document.getElementById('redoButton').style.color = "#999";
+	console.log(pastStates);
+	console.log('redo states:');
+	console.log(undoneStates);
 }
 
 function getChangedVariables(img) {
@@ -558,7 +571,6 @@ function updateMadeButtonBorderColor(colorPicker, button) {
 
 function updateMadeButtonBorderSize(value, button) {
 	document.getElementById(button).style.borderWidth = value + 'px';
-	console.log();
 }
 
 function openCity(evt, cityName) {

@@ -161,3 +161,7 @@
 	border: 10px solid #000000;
 	display: block;
 }
+
+.made-button.pressed {
+	background: #ffffff;
+}
