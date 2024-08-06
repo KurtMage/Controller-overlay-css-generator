@@ -30,25 +30,29 @@
             <div>
                 <h4>Unpressed button</h4>
                 <label for="unpressedSize">Size (in px):</label>
-                    <input class="buttonMakerTextBox" type="number" id="unpressedSize" style="width: initial" value="130" onInput="updateMadeButtonSize(this.value, 'unpressedMadeButton')"><br>
+                    <input class="buttonMakerTextBox" type="number" id="unpressedSize" style="width: initial" value="130" onInput="updateMadeButtonSize(this.value, document.getElementById('unpressedMadeButton'))"><br>
                 <label for="colorpicker">Color:</label>
-                    <input type="color" id="colorpicker" value="#666666" onInput="updateMadeButtonColor(this, 'unpressedMadeButton')">
+                    <input type="color" id="colorpicker" value="#666666" onInput="updateMadeButtonColor(this, document.getElementById('unpressedMadeButton'))">
                 <label for="colorpicker">Border color:</label>
-                    <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this, 'unpressedMadeButton')">
+                    <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this, document.getElementById('unpressedMadeButton'))">
                 <label for="unpressedBorderThickness">Border thickness (in px):</label>
-                    <input class="buttonMakerTextBox" type="number" id="unpressedBorderThickness" style="width: initial" value="10" onInput="updateMadeButtonBorderSize(this.value, 'unpressedMadeButton')"><br><br>
+                    <input class="buttonMakerTextBox" type="number" id="unpressedBorderThickness" style="width: initial" value="10" onInput="updateMadeButtonBorderSize(this.value, document.getElementById('unpressedMadeButton'))"><br><br>
+
+            <label for="urlInput">URL:</label>
+            <input class="urlTextBox" type="text" id="unpressedButtonUrlInput" onChange="updatePreviewPicture()" value="https://imgur.com/KCkHaew"><br><br>
                 <span class="made-button" id="unpressedMadeButton"></span>
             </div>
             <div>
                 <h4>Pressed button</h4>
                 <label for="colorpicker">Color:</label>
-                    <input type="color" id="colorpicker" value="#ffffff" onInput="updateMadeButtonColor(this, 'pressedMadeButton')">
+                    <input type="color" id="colorpicker" value="#ffffff" onInput="updateMadeButtonColor(this, document.getElementById('pressedMadeButton'))">
                 <label for="pressedSize">Size (in px):</label>
-                    <input class="buttonMakerTextBox" type="number" id="pressedSize" style="width: initial" value="130" onInput="updateMadeButtonSize(this.value, 'pressedMadeButton')"><br>
+                    <input class="buttonMakerTextBox" type="number" id="pressedSize" style="width: initial" value="130" onInput="updateMadeButtonSize(this.value, document.getElementById('pressedMadeButton'))"><br>
+
                 <label for="colorpicker">Border color:</label>
-                    <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this, 'pressedMadeButton')">
+                    <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this, document.getElementById('pressedMadeButton'))">
                 <label for="pressedBorderThickness">Border thickness (in px):</label>
-                    <input class="buttonMakerTextBox" type="number" id="pressedBorderThickness" style="width: initial" value="10" onInput="updateMadeButtonBorderSize(this.value, 'pressedMadeButton')"><br><br>
+                    <input class="buttonMakerTextBox" type="number" id="pressedBorderThickness" style="width: initial" value="10" onInput="updateMadeButtonBorderSize(this.value, document.getElementById('pressedMadeButton'))"><br><br>
                 <span class="made-button pressed" id="pressedMadeButton"></span>
             </div>
         </div>

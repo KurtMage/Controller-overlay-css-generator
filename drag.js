@@ -131,7 +131,8 @@ function applyMadeButton(e) {
 	const unpressedStyle = getComputedStyle(document.getElementById("unpressedMadeButton"));
 	const pressedStyle = getComputedStyle(document.getElementById("pressedMadeButton"));
 
-	img.style.background = unpressedStyle.background;
+	img.style.background = "none";
+	img.style.backgroundColor = unpressedStyle.backgroundColor;
 	img.style.height = unpressedStyle.height;
 	img.style.width = unpressedStyle.width;
 	img.style.borderRadius = unpressedStyle.borderRadius;
@@ -139,7 +140,8 @@ function applyMadeButton(e) {
 
 	const pressedImg = document.getElementById(targ.id + ".pressed");
 
-	pressedImg.style.background = pressedStyle.background;
+	pressedImg.style.background = "none";
+	pressedImg.style.backgroundColor = pressedStyle.backgroundColor;
 	pressedImg.style.height = pressedStyle.height;
 	pressedImg.style.width = pressedStyle.width;
 	pressedImg.style.borderRadius = pressedStyle.borderRadius;
@@ -547,20 +549,26 @@ function getStateOfImg(img) {
 }
 
 function updateMadeButtonColor(colorPicker, button) {
-	document.getElementById(button).style.background = colorPicker.value;
+	button.style.background = "none";
+	button.style.backgroundColor = colorPicker.value;
 }
 
 function updateMadeButtonSize(value, button) {
-	document.getElementById(button).style.width = value + 'px';
-	document.getElementById(button).style.height = value + 'px';
+	button.style.width = value + 'px';
+	button.style.height = value + 'px';
 }
 
 function updateMadeButtonBorderColor(colorPicker, button) {
-	document.getElementById(button).style.borderColor = colorPicker.value;
+	button.style.borderColor = colorPicker.value;
 }
 
 function updateMadeButtonBorderSize(value, button) {
-	document.getElementById(button).style.borderWidth = value + 'px';
+	button.style.borderWidth = value + 'px';
+}
+
+function updateMadeImg(url, button) {
+	button.style.background = "none";
+	button.style.backgroundColor = colorPicker.value;
 }
 
 function openCity(evt, cityName) {
