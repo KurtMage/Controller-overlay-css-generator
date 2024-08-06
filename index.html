@@ -37,9 +37,10 @@
                     <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this, document.getElementById('unpressedMadeButton'))">
                 <label for="unpressedBorderThickness">Border thickness (in px):</label>
                     <input class="buttonMakerTextBox" type="number" id="unpressedBorderThickness" style="width: initial" value="10" onInput="updateMadeButtonBorderSize(this.value, document.getElementById('unpressedMadeButton'))"><br><br>
-
-            <label for="urlInput">URL:</label>
-            <input class="urlTextBox" type="text" id="unpressedButtonUrlInput" onChange="updatePreviewPicture()" value="https://imgur.com/KCkHaew"><br><br>
+                <label for="urlInput">Image URL:</label>
+                    <input class="urlTextBox" type="text" id="unpressedButtonUrlInput" onChange="updateMadeButtonImg(this.value, document.getElementById('unpressedMadeButton'))" value="https://imgur.com/KCkHaew"><br><br>
+                <label for="unpressedImgSize">Image size (in px):</label>
+                    <input class="buttonMakerTextBox" type="number" id="unpressedImgSize" style="width: initial" value="100" onInput="updateMadeButtonImgSize(this.value, document.getElementById('unpressedMadeButton'))"><br><br>
                 <span class="made-button" id="unpressedMadeButton"></span>
             </div>
             <div>
@@ -53,6 +54,10 @@
                     <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this, document.getElementById('pressedMadeButton'))">
                 <label for="pressedBorderThickness">Border thickness (in px):</label>
                     <input class="buttonMakerTextBox" type="number" id="pressedBorderThickness" style="width: initial" value="10" onInput="updateMadeButtonBorderSize(this.value, document.getElementById('pressedMadeButton'))"><br><br>
+                <label for="urlInput">Image URL:</label>
+                    <input class="urlTextBox" type="text" id="pressedButtonUrlInput" onChange="updateMadeButtonImg(this.value, document.getElementById('pressedMadeButton'))" value="https://imgur.com/KCkHaew"><br><br>
+                <label for="pressedImgSize">Image size (in px):</label>
+                    <input class="buttonMakerTextBox" type="number" id="pressedImgSize" style="width: initial" value="100" onInput="updateMadeButtonImgSize(this.value, document.getElementById('pressedMadeButton'))"><br><br>
                 <span class="made-button pressed" id="pressedMadeButton"></span>
             </div>
         </div>

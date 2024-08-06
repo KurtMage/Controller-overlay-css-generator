@@ -137,6 +137,10 @@ function applyMadeButton(e) {
 	img.style.width = unpressedStyle.width;
 	img.style.borderRadius = unpressedStyle.borderRadius;
 	img.style.border = unpressedStyle.border;
+	img.style.backgroundImage = unpressedStyle.backgroundImage;
+	img.style.backgroundSize = unpressedStyle.backgroundSize;
+	img.style.backgroundRepeat = unpressedStyle.backgroundRepeat;
+	img.style.backgroundPosition = unpressedStyle.backgroundPosition;
 
 	const pressedImg = document.getElementById(targ.id + ".pressed");
 
@@ -146,6 +150,10 @@ function applyMadeButton(e) {
 	pressedImg.style.width = pressedStyle.width;
 	pressedImg.style.borderRadius = pressedStyle.borderRadius;
 	pressedImg.style.border = pressedStyle.border;
+	pressedImg.style.backgroundImage = pressedStyle.backgroundImage;
+	pressedImg.style.backgroundSize = pressedStyle.backgroundSize;
+	pressedImg.style.backgroundRepeat = pressedStyle.backgroundRepeat;
+	pressedImg.style.backgroundPosition = pressedStyle.backgroundPosition;
 
 
 	id2state = new Map();
@@ -497,7 +505,12 @@ function doesButtonHaveChange(img) {
 		|| style.background !== originalStateOfImg.background
 		|| style.width !== originalStateOfImg.size
 		|| style.border !== originalStateOfImg.border
-		|| style.borderRadius !== originalStateOfImg.borderRadius;
+		|| style.borderRadius !== originalStateOfImg.borderRadius
+		|| style.backgroundImage !== originalStateOfImg.backgroundImage
+		|| style.backgroundSize !== originalStateOfImg.backgroundSize
+		|| style.backgroundRepeat !== originalStateOfImg.backgroundRepeat
+		|| style.backgroundPosition !== originalStateOfImg.backgroundPosition
+		;
 }
 
 function addToPastStates(id2state) {
@@ -529,6 +542,10 @@ function getChangedVariables(img) {
 		${style.borderRadius !== originalStateOfImg.borderRadius ? `border-radius: ${style.borderRadius};<br>` : ''}
 		${style.backgroundPositionY !== originalStateOfImg.backgroundPositionY ? `background-position-y: ${style.backgroundPositionY};<br>` : ''}
 		${style.background !== originalStateOfImg.background ? `background: ${style.background};<br>` : ''}
+		${style.backgroundImage !== originalStateOfImg.backgroundImage ? `background-image: ${style.backgroundImage};<br>` : ''}
+		${style.backgroundSize !== originalStateOfImg.backgroundSize ? `background-size: ${style.backgroundSize};<br>` : ''}
+		${style.backgroundRepeat !== originalStateOfImg.backgroundRepeate ? `background-repeat: ${style.backgroundRepeat};<br>` : ''}
+		${style.backgroundPosition !== originalStateOfImg.backgroundPosition ? `background-image: ${style.backgroundPosition};<br>` : ''}
 	}<br>
 	`
 	return changedVariables;
@@ -544,12 +561,15 @@ function getStateOfImg(img) {
 			size: style.width,
 			borderRadius: style.borderRadius,
 			border: style.border,
-			backgroundPositionY: style.backgroundPositionY
+			backgroundPositionY: style.backgroundPositionY,
+			backgroundImage: style.backgroundImage,
+			backgroundSize: style.backgroundSize,
+			backgroundRepeat: style.backgroundRepeat,
+			backgroundPosition: style.backgroundPosition,
 		};
 }
 
 function updateMadeButtonColor(colorPicker, button) {
-	button.style.background = "none";
 	button.style.backgroundColor = colorPicker.value;
 }
 
@@ -566,9 +586,15 @@ function updateMadeButtonBorderSize(value, button) {
 	button.style.borderWidth = value + 'px';
 }
 
-function updateMadeImg(url, button) {
-	button.style.background = "none";
-	button.style.backgroundColor = colorPicker.value;
+function updateMadeButtonImg(url, button) {
+	button.style.backgroundImage = url.endsWith(".png") ? `url(${url})` : `url(${url}.png)`;
+	button.style.backgroundRepeat = "no-repeat";
+	button.style.backgroundPosition = "center";
+	updateMadeButtonImgSize(document.getElementById("unpressedImgSize").value, button);
+}
+
+function updateMadeButtonImgSize(size, button) {
+	button.style.backgroundSize = size + "px";
 }
 
 function openCity(evt, cityName) {
