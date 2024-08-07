@@ -71,14 +71,14 @@
             <p>Provide a URL for a <span class="tooltip"><span class="tooltiptext">A properly formatted image just needs to have twice as much height as width (e.g. 150px by 300px). The top half of the image is used as the unpressed version of the button and the bottom half is used as the pressed version.</span>properly formatted</span> image. Then click a button to make it into that image.</p>
             <label for="unpressedImportedUrlInput">URL:</label>
             <input class="urlTextBox" type="text" id="unpressedImportedUrlInput" onChange="updatePreviewPicture(this.value)" value="https://imgur.com/xwCaQWn.png"><br><br>
-            <p>Or provide a second image to be used as the "pressed" version of the button.</p>
+            <!-- <p>Or provide a second image to be used as the "pressed" version of the button.</p>
             <label for="pressedImportedUrlInput">URL:</label>
-            <input class="urlTextBox" type="text" id="pressedImportedUrlInput" onChange="updatePreviewPicture(this.value)"><br><br>
+            <input class="urlTextBox" type="text" id="pressedImportedUrlInput" onChange="updatePreviewPicture(this.value)"><br><br> -->
             <div>
                 <div id="previewText">Preview (alternates between unpressed and pressed if set up properly):<br><br></div>
                 <img src="https://imgur.com/xwCaQWn.png" 
                     style="width: 150px; height: 150px; object-fit: cover; object-position: 0% 0%; overflow: hidden" id="urlButtonPreview"
-                    >
+                    onLoad="checkImage(true)" onError="checkImage(false)">
                 <div class="alert" style="display: none">
                     <span id="closeErrorButton" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
                     <strong>Error:</strong> No image found at the provided URL.
@@ -124,6 +124,8 @@
         <span class="img arrow up" id=".fight-stick .face.up" style="background-size:150px"></span>
         <span class="img startback start" id=".fight-stick .start" style="background-size:100px"></span>
         <span class="img startback back" id=".fight-stick .back" style="background-size:100px"></span>
+        <span class="img ls" id=".fight-stick .stick.left" style="background-size:150px"></span>
+        <span class="img rs" id=".fight-stick .stick.right" style="background-size:150px"></span>
 
         <span hidden class="img button x pressed" id=".fight-stick .x.pressed" style="background-size:150px"></span>
         <span hidden class="img button y pressed" id=".fight-stick .y.pressed" style="background-size:150px"></span>
@@ -139,6 +141,8 @@
         <span hidden class="img arrow up pressed" id=".fight-stick .face.up.pressed" style="background-size:150px"></span>
         <span hidden class="img startback start pressed" id=".fight-stick .start.pressed" style="background-size:100px"></span>
         <span hidden class="img startback back pressed" id=".fight-stick .back.pressed" style="background-size:100px"></span>
+        <span hidden class="img ls pressed" id=".fight-stick .stick.left.pressed" style="background-size:150px"></span>
+        <span hidden class="img rs pressed" id=".fight-stick .stick.right.pressed" style="background-size:150px"></span>
     </div>
 
     <div class="copycode">

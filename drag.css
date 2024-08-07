@@ -70,6 +70,24 @@
 	left: 335px;
 }
 
+.img.ls {
+	top: 400px;
+	left: 220px;
+}
+
+.img.ls.pressed {
+	background-position-y: -150px;
+}
+
+.img.rs {
+	top: 400px;
+	left: 630px;
+}
+
+.img.rs.pressed {
+	background-position-y: -150px;
+}
+
 .img.button {
 	background: url("https://imgur.com/WzKGKPH.png");
 }

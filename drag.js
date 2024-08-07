@@ -6,10 +6,13 @@ var lastMovedButton;
 var drag = false;
 var urlImageIsGood = false;
 var lastKeyPressMove;
-var baseLayoutURL = "https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/2XKO/light-mode.css";
+// var baseLayoutURL = "https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/2XKO/light-mode.css";
+var customCssFile = "https://kurtmage.github.io/hitbox%20layout/console%20controllers/xbox/xbox.css";
+var baseLayoutURL = "https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/console%20controllers/xbox/xbox.css";
 var hiddenPressedImgUpdater;
 var hiddenUnpressedImgUpdater;
 var importButtonInterval;
+var mostRecentlyChangedTextBox;
 
 function init() {
 	document.onmousedown = clickAction;
@@ -39,11 +42,57 @@ function init() {
 	
 	importButtonInterval = setInterval(alternatePreviewPicture, 1000);
 
-	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
-		const state = getStateOfImg(img);
-		originalState.set(img.id, state);
-	}
-	pastStates.push(originalState);
+	var request = new XMLHttpRequest();
+
+	request.addEventListener("load", function(evt){
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(this.responseText, "text/html");
+		doc.getElementById("body");
+
+		var parseCssRules = function (cssText) {
+			var tokenizer = /\s*([a-z\-]+)\s*:\s*((?:[^;]*url\(.*?\)[^;]*|[^;]*)*)\s*(?:;|$)/gi,
+			obj = {},
+			token;
+			while ( (token=tokenizer.exec(cssText)) ) {
+			obj[token[1].toLowerCase()] = token[2];
+			}
+		return obj;
+		};
+		const cssRules = parseCssRules(doc.body.textContent)
+		console.log(cssRules);
+		console.log(cssRules["--bot-row-index-finger-button-source-image"]);
+		document.getElementById(".fight-stick .x").style.backgroundImage = cssRules["--top-row-index-finger-button-source-image"];
+		document.getElementById(".fight-stick .y").style.backgroundImage = cssRules["--top-row-middle-finger-button-source-image"];
+		document.getElementById(".fight-stick .a").style.backgroundImage = cssRules["--bot-row-index-finger-button-source-image"];
+		document.getElementById(".fight-stick .b").style.backgroundImage = cssRules["--bot-row-middle-finger-button-source-image"];
+		document.getElementById(".fight-stick .bumper.right").style.backgroundImage = cssRules["--top-row-ring-finger-button-source-image"];
+		document.getElementById(".fight-stick .bumper.left").style.backgroundImage = cssRules["--top-row-pinky-finger-button-source-image"];
+		document.getElementById(".fight-stick .trigger-button.right").style.backgroundImage = cssRules["--bot-row-ring-finger-button-source-image"];
+		document.getElementById(".fight-stick .trigger-button.left").style.backgroundImage = cssRules["--bot-row-pinky-finger-button-source-image"];
+
+		document.getElementById(".fight-stick .face.left").style.backgroundImage = cssRules["--left-arrow-source-image"];
+		document.getElementById(".fight-stick .face.down").style.backgroundImage = cssRules["--down-arrow-source-image"];
+		document.getElementById(".fight-stick .face.right").style.backgroundImage = cssRules["--right-arrow-source-image"];
+		document.getElementById(".fight-stick .face.up").style.backgroundImage = cssRules["--up-arrow-source-image"];
+
+		document.getElementById(".fight-stick .start").style.backgroundImage = cssRules["--start-button-source-image"];
+		document.getElementById(".fight-stick .back").style.backgroundImage = cssRules["--back-button-source-image"];
+
+		document.getElementById(".fight-stick .stick.left").style.backgroundImage = cssRules["--ls-button-source-image"];
+		document.getElementById(".fight-stick .stick.right").style.backgroundImage = cssRules["--rs-button-source-image"];
+		console.log(cssRules["--left-arrow-source-image"]);
+		console.log(cssRules[""]);
+
+		for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
+			const state = getStateOfImg(img);
+			originalState.set(img.id, state);
+		}
+		pastStates.push(originalState);
+
+	}, false);
+
+	request.open('GET', customCssFile, true),
+	request.send();
 }
 
 function onePxArrowKeyMove(e) {
@@ -89,20 +138,21 @@ function onePxArrowKeyMove(e) {
 
 function alternatePreviewPicture() {
 	const img = document.getElementById("urlButtonPreview");
-	pressedUrl = document.getElementById("pressedImportedUrlInput").value;
+	// pressedUrl = document.getElementById("pressedImportedUrlInput").value;
+	pressedUrl = "";
 	if (pressedUrl === "") {
 		const pressButton = img.style.objectPosition === "0% 0%";
 		img.style.objectPosition = `0% ${pressButton ? '100%' : '0%'}`;
 	} else {
-		img.style.objectPosition = '0% 0%';
-		unpressedUrl = document.getElementById("unpressedImportedUrlInput").value;
-		if (img.src === pressedUrl || img.src === pressedUrl + ".png") {
-			const formattedUnpressedUrl = validImageUrlStyle(unpressedUrl) ? `${unpressedUrl}` : `${unpressedUrl}.png`;
-			img.src = formattedUnpressedUrl;
-		} else {
-			const formattedPressedUrl = validImageUrlStyle(pressedUrl) ? `${pressedUrl}` : `${pressedUrl}.png`
-			img.src = formattedPressedUrl;
-		}
+		// img.style.objectPosition = '0% 0%';
+		// unpressedUrl = document.getElementById("unpressedImportedUrlInput").value;
+		// if (img.src === pressedUrl || img.src === pressedUrl + ".png") {
+		// 	const formattedUnpressedUrl = validImageUrlStyle(unpressedUrl) ? `${unpressedUrl}` : `${unpressedUrl}.png`;
+		// 	img.src = formattedUnpressedUrl;
+		// } else {
+		// 	const formattedPressedUrl = validImageUrlStyle(pressedUrl) ? `${pressedUrl}` : `${pressedUrl}.png`
+		// 	img.src = formattedPressedUrl;
+		// }
 	}
 }
 
@@ -628,6 +678,7 @@ function updateMadeButtonBorderSize(value, button) {
 }
 
 function updateMadeButtonImg(url, button) {
+	mostRecentlyChangedTextBox = button;
 	button.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
 	const fixedUrl = validImageUrlStyle(url) ? url : `${url}.png`;
 	if (button.id.startsWith("unpressed")) {
