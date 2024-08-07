@@ -6,13 +6,13 @@ var lastMovedButton;
 var drag = false;
 var urlImageIsGood = false;
 var lastKeyPressMove;
-// var baseLayoutURL = "https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/2XKO/light-mode.css";
-var customCssFile = "https://kurtmage.github.io/hitbox%20layout/console%20controllers/xbox/xbox.css";
-var baseLayoutURL = "https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/console%20controllers/xbox/xbox.css";
+var baseLayoutUrl = "https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/console%20controllers/xbox/xbox.css";
 var hiddenPressedImgUpdater;
 var hiddenUnpressedImgUpdater;
 var importButtonInterval;
 var mostRecentlyChangedTextBox;
+
+const stateMapUrlKey = "baseLayoutUrl";
 
 function init() {
 	document.onmousedown = clickAction;
@@ -39,9 +39,18 @@ function init() {
 		checkImage(false, this, document.getElementById('pressedButtonUrlInput'),
 					document.getElementById('pressedButtonMakerCloseErrorButton'));
 	};
+
+	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
+		const state = getStateOfImg(img);
+		originalState.set(img.id, state);
+	}
+	pastStates.push(originalState);
 	
 	importButtonInterval = setInterval(alternatePreviewPicture, 1000);
 
+}
+
+function switchBaseLayout(linkToGamepadviewerBaseLayout) {
 	var request = new XMLHttpRequest();
 
 	request.addEventListener("load", function(evt){
@@ -60,7 +69,6 @@ function init() {
 		};
 		const cssRules = parseCssRules(doc.body.textContent)
 		console.log(cssRules);
-		console.log(cssRules["--bot-row-index-finger-button-source-image"]);
 		document.getElementById(".fight-stick .x").style.backgroundImage = cssRules["--top-row-index-finger-button-source-image"];
 		document.getElementById(".fight-stick .y").style.backgroundImage = cssRules["--top-row-middle-finger-button-source-image"];
 		document.getElementById(".fight-stick .a").style.backgroundImage = cssRules["--bot-row-index-finger-button-source-image"];
@@ -80,18 +88,30 @@ function init() {
 
 		document.getElementById(".fight-stick .stick.left").style.backgroundImage = cssRules["--ls-button-source-image"];
 		document.getElementById(".fight-stick .stick.right").style.backgroundImage = cssRules["--rs-button-source-image"];
-		console.log(cssRules["--left-arrow-source-image"]);
-		console.log(cssRules[""]);
 
-		for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
+		const layoutBox = document.getElementById("layout-box");
+
+		id2state = new Map();
+		var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
+		for (const img of layoutBox.getElementsByTagName('*')) {
+			if (doesButtonHaveChange(img)) {
+				changedVariables += getChangedVariables(img);
+			}
 			const state = getStateOfImg(img);
-			originalState.set(img.id, state);
+			id2state.set(img.id, state);
 		}
-		pastStates.push(originalState);
+		addToPastStates(id2state);
+		document.getElementById("css-text").innerHTML = changedVariables;
+
+		// document.getElementById("baseLayoutPreview").innerHTML = layoutBox.innerHTML;
+		console.log(pastStates);
 
 	}, false);
 
-	request.open('GET', customCssFile, true),
+	baseLayoutUrl = linkToGamepadviewerBaseLayout;
+	const baseLayoutEditCss = linkToGamepadviewerBaseLayout.split("&editcss=")[1];
+
+	request.open('GET', baseLayoutEditCss, true),
 	request.send();
 }
 
@@ -467,6 +487,9 @@ function undo() {
 	document.getElementById('redoButton').style.color = "#fff";
 	stateToReturnTo = pastStates[pastStates.length - 1];
 	for (const [id, locationToReturnTo] of stateToReturnTo.entries()) {
+		if (id === stateMapUrlKey) {
+			continue;
+		}
 		const currentLocation = currentState.get(id);
 		const img = document.getElementById(id);
 		if (currentLocation.top !== locationToReturnTo.top) {
@@ -524,6 +547,9 @@ function redo() {
 	document.getElementById('undoButton').style.color = "#fff";
 	pastStates.push(stateToReturnTo);
 	for (const [id, locationToReturnTo] of stateToReturnTo.entries()) {
+		if (id === stateMapUrlKey) {
+			continue;
+		}
 		const currentLocation = currentState.get(id);
 		const img = document.getElementById(id);
 		if (currentLocation.top !== locationToReturnTo.top) {
@@ -583,7 +609,7 @@ function copyText() {
 }
 
 function copyLayoutBaseURL() {
-    navigator.clipboard.writeText(baseLayoutURL);
+    navigator.clipboard.writeText(baseLayoutUrl);
 
     document.getElementById("clickToCopy").innerText = "Copied!";
 }
@@ -606,6 +632,7 @@ function doesButtonHaveChange(img) {
 }
 
 function addToPastStates(id2state) {
+	id2state.set(stateMapUrlKey, baseLayoutUrl);
 	pastStates.push(id2state);
 	document.getElementById('undoButton').style.color = "#fff";
 	undoneStates = [];
