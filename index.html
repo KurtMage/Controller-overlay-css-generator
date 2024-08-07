@@ -70,14 +70,15 @@
         <div id="importButtonsTab" class="tabcontent">
             <p>Provide a URL for a <span class="tooltip"><span class="tooltiptext">A properly formatted image just needs to have twice as much height as width (e.g. 150px by 300px). The top half of the image is used as the unpressed version of the button and the bottom half is used as the pressed version.</span>properly formatted</span> image. Then click a button to make it into that image.</p>
             <label for="unpressedImportedUrlInput">URL:</label>
-            <input class="urlTextBox" type="text" id="unpressedImportedUrlInput" onChange="updatePreviewPicture()" value="https://imgur.com/xwCaQWn.png"><br><br>
-            <!-- <label for="pressedImportedUrlInput">URL:</label>
-            <input class="urlTextBox" type="text" id="pressedImportedUrlInput" onChange="updatePreviewPicture()" value="https://imgur.com/xwCaQWn.png"><br><br> -->
+            <input class="urlTextBox" type="text" id="unpressedImportedUrlInput" onChange="updatePreviewPicture(this.value)" value="https://imgur.com/xwCaQWn.png"><br><br>
+            <p>Or provide a second image to be used as the "pressed" version of the button.</p>
+            <label for="pressedImportedUrlInput">URL:</label>
+            <input class="urlTextBox" type="text" id="pressedImportedUrlInput" onChange="updatePreviewPicture(this.value)"><br><br>
             <div>
-                <div id="previewText">Preview (alternates between unpressed and pressed if formatted properly):<br><br></div>
+                <div id="previewText">Preview (alternates between unpressed and pressed if set up properly):<br><br></div>
                 <img src="https://imgur.com/xwCaQWn.png" 
                     style="width: 150px; height: 150px; object-fit: cover; object-position: 0% 0%; overflow: hidden" id="urlButtonPreview"
-                    onLoad="checkImage(true)" onError="checkImage(false)">
+                    >
                 <div class="alert" style="display: none">
                     <span id="closeErrorButton" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
                     <strong>Error:</strong> No image found at the provided URL.

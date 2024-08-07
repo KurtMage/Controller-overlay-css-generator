@@ -9,6 +9,7 @@ var lastKeyPressMove;
 var baseLayoutURL = "https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/2XKO/light-mode.css";
 var hiddenPressedImgUpdater;
 var hiddenUnpressedImgUpdater;
+var importButtonInterval;
 
 function init() {
 	document.onmousedown = clickAction;
@@ -36,7 +37,7 @@ function init() {
 					document.getElementById('pressedButtonMakerCloseErrorButton'));
 	};
 	
-	setInterval(alternatePreviewPicture, 1000);
+	importButtonInterval = setInterval(alternatePreviewPicture, 1000);
 
 	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
 		const state = getStateOfImg(img);
@@ -88,14 +89,28 @@ function onePxArrowKeyMove(e) {
 
 function alternatePreviewPicture() {
 	const img = document.getElementById("urlButtonPreview");
-	const pressButton = img.style.objectPosition === "0% 0%";
-	img.style.objectPosition = `0% ${pressButton ? '100%' : '0%'}`;
+	pressedUrl = document.getElementById("pressedImportedUrlInput").value;
+	if (pressedUrl === "") {
+		const pressButton = img.style.objectPosition === "0% 0%";
+		img.style.objectPosition = `0% ${pressButton ? '100%' : '0%'}`;
+	} else {
+		img.style.objectPosition = '0% 0%';
+		unpressedUrl = document.getElementById("unpressedImportedUrlInput").value;
+		if (img.src === pressedUrl || img.src === pressedUrl + ".png") {
+			const formattedUnpressedUrl = validImageUrlStyle(unpressedUrl) ? `${unpressedUrl}` : `${unpressedUrl}.png`;
+			img.src = formattedUnpressedUrl;
+		} else {
+			const formattedPressedUrl = validImageUrlStyle(pressedUrl) ? `${pressedUrl}` : `${pressedUrl}.png`
+			img.src = formattedPressedUrl;
+		}
+	}
 }
 
-function updatePreviewPicture() {
+function updatePreviewPicture(url) {
+	clearInterval(importButtonInterval);
 	const img = document.getElementById("urlButtonPreview");
-	const url = document.getElementById("unpressedImportedUrlInput").value;
 	img.src = validImageUrlStyle(url) ? url : `${url}.png`;
+	importButtonInterval = setInterval(alternatePreviewPicture, 1000);
 }
 
 function checkImage(success, 
