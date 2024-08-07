@@ -94,13 +94,13 @@ function alternatePreviewPicture() {
 
 function updatePreviewPicture() {
 	const img = document.getElementById("urlButtonPreview");
-	const url = document.getElementById("urlInput").value;
+	const url = document.getElementById("unpressedImportedUrlInput").value;
 	img.src = validImageUrlStyle(url) ? url : `${url}.png`;
 }
 
 function checkImage(success, 
 					img = document.getElementById("urlButtonPreview"),
-					urlInputBox = document.getElementById("urlInput"),
+					urlInputBox = document.getElementById("unpressedImportedUrlInput"),
 					closeErrorButton = document.getElementById("closeErrorButton"),
 					previewText = document.getElementById("previewText")) {
 	if (success || urlInputBox.value === '') {
@@ -120,7 +120,6 @@ function checkImage(success,
 		urlInputBox.style.background = "#fff0f4";
 		urlInputBox.style.borderColor = "#c51244";
 		closeErrorButton.parentElement.style.display = "block";
-		const url = document.getElementById("urlInput").value;
 		previewText.style.display = "none";
 		urlImageIsGood = false;
 	}
@@ -133,7 +132,7 @@ function clickAction(e) {
 	} else if (document.getElementById("deleteTab").style.display === 'block') {
 		deleteButton(e);
 	} else if (document.getElementById("importButtonsTab").style.display === 'block') {
-		changeButton(e);
+		importButton(e);
 	} else if (document.getElementById("changeSizeTab").style.display === 'block') {
 		resizeButton(e);
 	} else if (document.getElementById("makeButtonsTab").style.display === 'block') {
@@ -147,24 +146,24 @@ function applyMadeButton(e) {
 		return;
 	}
 
-	const img = document.getElementById(targ.id);
-	if (!img) { return; }
-
 	lastKeyPressMove = null;
+
+	// Reset anything that import may have done.
+	resetButtonAndPressedVersion(targ);
 
 	const unpressedStyle = getComputedStyle(document.getElementById("unpressedMadeButton"));
 	const pressedStyle = getComputedStyle(document.getElementById("pressedMadeButton"));
 
-	img.style.background = "none";
-	img.style.backgroundColor = unpressedStyle.backgroundColor;
-	img.style.height = unpressedStyle.height;
-	img.style.width = unpressedStyle.width;
-	img.style.borderRadius = unpressedStyle.borderRadius;
-	img.style.border = unpressedStyle.border;
-	img.style.backgroundImage = unpressedStyle.backgroundImage;
-	img.style.backgroundSize = unpressedStyle.backgroundSize;
-	img.style.backgroundRepeat = unpressedStyle.backgroundRepeat;
-	img.style.backgroundPosition = unpressedStyle.backgroundPosition;
+	targ.style.background = "none";
+	targ.style.backgroundColor = unpressedStyle.backgroundColor;
+	targ.style.height = unpressedStyle.height;
+	targ.style.width = unpressedStyle.width;
+	targ.style.borderRadius = unpressedStyle.borderRadius;
+	targ.style.border = unpressedStyle.border;
+	targ.style.backgroundImage = unpressedStyle.backgroundImage;
+	targ.style.backgroundSize = unpressedStyle.backgroundSize;
+	targ.style.backgroundRepeat = unpressedStyle.backgroundRepeat;
+	targ.style.backgroundPosition = unpressedStyle.backgroundPosition;
 
 	const pressedImg = document.getElementById(targ.id + ".pressed");
 
@@ -228,8 +227,8 @@ function resizeButton(e) {
 	document.getElementById("css-text").innerHTML = changedVariables;
 }
 
-function changeButton(e) {
-	const url = document.getElementById("urlInput").value;
+function importButton(e) {
+	const url = document.getElementById("unpressedImportedUrlInput").value;
 	targ = e.target ;
 	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN" || !urlImageIsGood) {
 		return;
@@ -243,13 +242,21 @@ function changeButton(e) {
 
 	lastKeyPressMove = null;
 
-	targ.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
+	// Reset anything that make button may have done.
+	resetButtonAndPressedVersion(targ);
 
+	targ.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
 	const imgSize = targ.offsetWidth;
 	targ.style.backgroundSize = `${imgSize}px`;
 	targ.style.width = `${imgSize}px`;
 	targ.style.height = `${imgSize}px`;
 
+	const pressedImg = document.getElementById(targ.id + ".pressed");
+	pressedImg.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
+	pressedImg.style.backgroundSize = `${imgSize}px`;
+	pressedImg.style.width = `${imgSize}px`;
+	pressedImg.style.height = `${imgSize}px`;
+	pressedImg.style.backgroundPositionY = `100%`;
 
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
@@ -563,6 +570,7 @@ function getChangedVariables(img) {
 		${style.backgroundSize !== originalStateOfImg.backgroundSize ? `background-size: ${style.backgroundSize};<br>` : ''}
 		${style.backgroundRepeat !== originalStateOfImg.backgroundRepeate ? `background-repeat: ${style.backgroundRepeat};<br>` : ''}
 		${style.backgroundPosition !== originalStateOfImg.backgroundPosition ? `background-image: ${style.backgroundPosition};<br>` : ''}
+		${style.borderRadius !== originalStateOfImg.borderRadius ? `border-radius: ${style.borderRadius};<br>` : ''}
 	}<br>
 	`
 	return changedVariables;
@@ -583,6 +591,7 @@ function getStateOfImg(img) {
 			backgroundSize: style.backgroundSize,
 			backgroundRepeat: style.backgroundRepeat,
 			backgroundPosition: style.backgroundPosition,
+			borderRadius: style.borderRadius,
 		};
 }
 
@@ -631,6 +640,30 @@ function initializeMadeButton(madeButton, url, imgSize, buttonColorValue, button
 
 function validImageUrlStyle(url) {
 	return url.match(".*(png|jpg|svg|gif|webp|jpeg)$");
+}
+
+function resetButtonAndPressedVersion(button) {
+	button.style.background = "";
+	button.style.backgroundColor = "";
+	button.style.borderRadius = "";
+	button.style.border = "";
+	button.style.backgroundImage = "";
+	button.style.backgroundSize = "";
+	button.style.backgroundRepeat = "";
+	button.style.backgroundPosition = "";
+
+	// Probably a redundant check, because Make/Import already can't be applies to pressed.
+	if (!button.id.endsWith(".pressed")) {
+		pressedButton = document.getElementById(button.id + ".pressed");
+		pressedButton.style.background = "";
+		pressedButton.style.backgroundColor = "";
+		pressedButton.style.borderRadius = "";
+		pressedButton.style.border = "";
+		pressedButton.style.backgroundImage = "";
+		pressedButton.style.backgroundSize = "";
+		pressedButton.style.backgroundRepeat = "";
+		pressedButton.style.backgroundPosition = "";
+	}
 }
 
 function openCity(evt, cityName) {

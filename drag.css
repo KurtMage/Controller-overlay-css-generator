@@ -1,7 +1,7 @@
 .layout-box {
     position: relative;
 	background-color: #ffffff;
-	height: 580px;
+	height: 600px;
     overflow: auto;
     resize: vertical;
     border-top: solid rgb(0, 0, 0);

@@ -69,11 +69,13 @@
         </div>
         <div id="importButtonsTab" class="tabcontent">
             <p>Provide a URL for a <span class="tooltip"><span class="tooltiptext">A properly formatted image just needs to have twice as much height as width (e.g. 150px by 300px). The top half of the image is used as the unpressed version of the button and the bottom half is used as the pressed version.</span>properly formatted</span> image. Then click a button to make it into that image.</p>
-            <label for="urlInput">URL:</label>
-            <input class="urlTextBox" type="text" id="urlInput" onChange="updatePreviewPicture()" value="https://imgur.com/KCkHaew"><br><br>
+            <label for="unpressedImportedUrlInput">URL:</label>
+            <input class="urlTextBox" type="text" id="unpressedImportedUrlInput" onChange="updatePreviewPicture()" value="https://imgur.com/xwCaQWn.png"><br><br>
+            <!-- <label for="pressedImportedUrlInput">URL:</label>
+            <input class="urlTextBox" type="text" id="pressedImportedUrlInput" onChange="updatePreviewPicture()" value="https://imgur.com/xwCaQWn.png"><br><br> -->
             <div>
                 <div id="previewText">Preview (alternates between unpressed and pressed if formatted properly):<br><br></div>
-                <img src="https://imgur.com/KCkHaew.png" 
+                <img src="https://imgur.com/xwCaQWn.png" 
                     style="width: 150px; height: 150px; object-fit: cover; object-position: 0% 0%; overflow: hidden" id="urlButtonPreview"
                     onLoad="checkImage(true)" onError="checkImage(false)">
                 <div class="alert" style="display: none">
@@ -89,7 +91,7 @@
         </div>
         <div id="tutorialTab" class="tabcontent" style="display: block;">
             <p>
-                1. In OBS, click the + in sources to add source. Select Browser type.<br>
+                1. In OBS, click the + in sources to add source. Select "Browser" type.<br>
 
                 
                 2. <span class="tooltip" id="layoutBaseURL" style="cursor: pointer" onclick="copyLayoutBaseURL()"><span class="tooltiptext" id="clickToCopy">Click to copy</span>Click here to copy the URL.</span> Then paste it into the URL box.<br>
@@ -100,7 +102,7 @@
                 7. Press OK and you're done!
             </p>
         </div>
-        <div style="background-color: #f1f1f1; border-bottom: 4px solid">
+        <div style="background-color: #f1f1f1;">
             <button class="btn-1" onclick="copyText()">Copy code to clipboard</button>
             <button class="btn-1" onclick="undo()" id="undoButton" style="color: #999;">Undo last action</button>
             <button class="btn-1" onclick="redo()" id="redoButton" style="color: #999;">Redo last undo</button>
