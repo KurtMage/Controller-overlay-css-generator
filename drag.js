@@ -51,6 +51,11 @@ function init() {
 }
 
 function switchBaseLayout(linkToGamepadviewerBaseLayout) {
+	// No switch.
+	if (baseLayoutUrl === linkToGamepadviewerBaseLayout) {
+		return;
+	}
+	
 	var request = new XMLHttpRequest();
 
 	request.addEventListener("load", function(evt){
@@ -69,6 +74,14 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout) {
 		};
 		const cssRules = parseCssRules(doc.body.textContent)
 		console.log(cssRules);
+
+		const layoutBox = document.getElementById("layout-box");
+		for (const img of layoutBox.getElementsByTagName('*')) {
+			img.style.width = originalState.get(img.id).size;
+			img.style.height = originalState.get(img.id).size;
+			resetButtonAndPressedVersion(img);
+		}
+
 		document.getElementById(".fight-stick .x").style.backgroundImage = cssRules["--top-row-index-finger-button-source-image"];
 		document.getElementById(".fight-stick .y").style.backgroundImage = cssRules["--top-row-middle-finger-button-source-image"];
 		document.getElementById(".fight-stick .a").style.backgroundImage = cssRules["--bot-row-index-finger-button-source-image"];
@@ -88,8 +101,6 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout) {
 
 		document.getElementById(".fight-stick .stick.left").style.backgroundImage = cssRules["--ls-button-source-image"];
 		document.getElementById(".fight-stick .stick.right").style.backgroundImage = cssRules["--rs-button-source-image"];
-
-		const layoutBox = document.getElementById("layout-box");
 
 		id2state = new Map();
 		var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
