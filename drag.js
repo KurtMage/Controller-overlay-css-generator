@@ -310,13 +310,13 @@ function resizeButton(e) {
 
 	lastKeyPressMove = null;
 
-	targ.style.backgroundSize = `${size}px`;
+	// targ.style.backgroundSize = `${size}px`;
 	targ.style.height = `${size}px`;
 	targ.style.width = `${size}px`;
 
 	const pressedImg = document.getElementById(targ.id + ".pressed");
 
-	pressedImg.style.backgroundSize = `${size}px`;
+	// pressedImg.style.backgroundSize = `${size}px`;
 	pressedImg.style.height = `${size}px`;
 	pressedImg.style.width = `${size}px`;
 	pressedImg.style.backgroundPositionY = `-${size}px`;
@@ -354,7 +354,7 @@ function importButton(e) {
 
 	targ.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
 	const imgSize = targ.offsetWidth;
-	targ.style.backgroundSize = `${imgSize}px`;
+	// targ.style.backgroundSize = `${imgSize}px`;
 	targ.style.width = `${imgSize}px`;
 	targ.style.height = `${imgSize}px`;
 

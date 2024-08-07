@@ -14,7 +14,7 @@
 	position: absolute;
 	width: 150px;
 	height: 150px;
-	background-size: 150px;
+	background-size: cover;
 	background-repeat: repeat;
 }
 
@@ -57,7 +57,6 @@
 .img.startback {
 	width: 100px;
 	height: 100px;
-	background-size: 100px;
 }
 
 .img.startback.start {

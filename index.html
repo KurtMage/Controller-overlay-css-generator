@@ -67,6 +67,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
         <button class="tablinks" onclick="openCity(event, 'makeButtonsTab')">Make buttons</button>
         <button class="tablinks" onclick="openCity(event, 'importButtonsTab')">Import buttons</button>
         <button class="tablinks" onclick="openCity(event, 'changeSizeTab')">Change size</button>
+        <button class="tablinks" onclick="openCity(event, 'stickTab')">Add/edit stick</button>
         <button class="tablinks active" onclick="openCity(event, 'tutorialTab')">How to use</button>
     </div>
     <div>
@@ -210,39 +211,42 @@ body {font-family: Arial, Helvetica, sans-serif;}
         </div>
     </div>
     <div class="layout-box" id="layout-box">
-        <span class="img button x" id=".fight-stick .x" style="background-size:150px"></span>
-        <span class="img button y" id=".fight-stick .y" style="background-size:150px"></span>
-        <span class="img button a" id=".fight-stick .a" style="background-size:150px"></span>
-        <span class="img button b" id=".fight-stick .b" style="background-size:150px"></span>
-        <span class="img button rb" id=".fight-stick .bumper.right" style="background-size:150px"></span>
-        <span class="img button lb" id=".fight-stick .bumper.left" style="background-size:150px"></span>
-        <span class="img button rt" id=".fight-stick .trigger-button.right" style="background-size:150px"></span>
-        <span class="img button lt" id=".fight-stick .trigger-button.left" style="background-size:150px"></span>
-        <span class="img arrow left" id=".fight-stick .face.left" style="background-size:150px"></span>
-        <span class="img arrow down" id=".fight-stick .face.down" style="background-size:150px"></span>
-        <span class="img arrow right" id=".fight-stick .face.right" style="background-size:150px"></span>
-        <span class="img arrow up" id=".fight-stick .face.up" style="background-size:150px"></span>
-        <span class="img startback start" id=".fight-stick .start" style="background-size:100px"></span>
-        <span class="img startback back" id=".fight-stick .back" style="background-size:100px"></span>
-        <span class="img ls" id=".fight-stick .stick.left" style="background-size:150px"></span>
-        <span class="img rs" id=".fight-stick .stick.right" style="background-size:150px"></span>
+        <span class="img button x" id=".fight-stick .x"></span>
+        <span class="img button y" id=".fight-stick .y"></span>
+        <span class="img button a" id=".fight-stick .a"></span>
+        <span class="img button b" id=".fight-stick .b"></span>
+        <span class="img button rb" id=".fight-stick .bumper.right"></span>
+        <span class="img button lb" id=".fight-stick .bumper.left"></span>
+        <span class="img button rt" id=".fight-stick .trigger-button.right"></span>
+        <span class="img button lt" id=".fight-stick .trigger-button.left"></span>
+        <span class="img arrow left" id=".fight-stick .face.left"></span>
+        <span class="img arrow down" id=".fight-stick .face.down"></span>
+        <span class="img arrow right" id=".fight-stick .face.right"></span>
+        <span class="img arrow up" id=".fight-stick .face.up"></span>
+        <span class="img startback start" id=".fight-stick .start"></span>
+        <span class="img startback back" id=".fight-stick .back"></span>
+        <span class="img ls" id=".fight-stick .stick.left"></span>
+        <span class="img rs" id=".fight-stick .stick.right"></span>
 
-        <span hidden class="img button x pressed" id=".fight-stick .x.pressed" style="background-size:150px"></span>
-        <span hidden class="img button y pressed" id=".fight-stick .y.pressed" style="background-size:150px"></span>
-        <span hidden class="img button a pressed" id=".fight-stick .a.pressed" style="background-size:150px"></span>
-        <span hidden class="img button b pressed" id=".fight-stick .b.pressed" style="background-size:150px"></span>
-        <span hidden class="img button rb pressed" id=".fight-stick .bumper.right.pressed" style="background-size:150px"></span>
-        <span hidden class="img button lb pressed" id=".fight-stick .bumper.left.pressed" style="background-size:150px"></span>
-        <span hidden class="img button rt pressed" id=".fight-stick .trigger-button.right.pressed" style="background-size:150px"></span>
-        <span hidden class="img button lt pressed" id=".fight-stick .trigger-button.left.pressed" style="background-size:150px"></span>
-        <span hidden class="img arrow left pressed" id=".fight-stick .face.left.pressed" style="background-size:150px"></span>
-        <span hidden class="img arrow down pressed" id=".fight-stick .face.down.pressed" style="background-size:150px"></span>
-        <span hidden class="img arrow  pressedright" id=".fight-stick .face.right.pressed" style="background-size:150px"></span>
-        <span hidden class="img arrow up pressed" id=".fight-stick .face.up.pressed" style="background-size:150px"></span>
-        <span hidden class="img startback start pressed" id=".fight-stick .start.pressed" style="background-size:100px"></span>
-        <span hidden class="img startback back pressed" id=".fight-stick .back.pressed" style="background-size:100px"></span>
-        <span hidden class="img ls pressed" id=".fight-stick .stick.left.pressed" style="background-size:150px"></span>
-        <span hidden class="img rs pressed" id=".fight-stick .stick.right.pressed" style="background-size:150px"></span>
+        <span hidden class="img button x pressed" id=".fight-stick .x.pressed"></span>
+        <span hidden class="img button y pressed" id=".fight-stick .y.pressed"></span>
+        <span hidden class="img button a pressed" id=".fight-stick .a.pressed"></span>
+        <span hidden class="img button b pressed" id=".fight-stick .b.pressed"></span>
+        <span hidden class="img button rb pressed" id=".fight-stick .bumper.right.pressed"></span>
+        <span hidden class="img button lb pressed" id=".fight-stick .bumper.left.pressed"></span>
+        <span hidden class="img button rt pressed" id=".fight-stick .trigger-button.right.pressed"></span>
+        <span hidden class="img button lt pressed" id=".fight-stick .trigger-button.left.pressed"></span>
+        <span hidden class="img arrow left pressed" id=".fight-stick .face.left.pressed"></span>
+        <span hidden class="img arrow down pressed" id=".fight-stick .face.down.pressed"></span>
+        <span hidden class="img arrow  pressedright" id=".fight-stick .face.right.pressed"></span>
+        <span hidden class="img arrow up pressed" id=".fight-stick .face.up.pressed"></span>
+        <span hidden class="img startback start pressed" id=".fight-stick .start.pressed"></span>
+        <span hidden class="img startback back pressed" id=".fight-stick .back.pressed"></span>
+        <span hidden class="img ls pressed" id=".fight-stick .stick.left.pressed"></span>
+        <span hidden class="img rs pressed" id=".fight-stick .stick.right.pressed"></span>
+
+        <!-- resetButtonAndPressedVersion checkes for a "pressed" version and stick breaks that -->
+        <!-- <span hidden class="img fstick" id=".fight-stick .fstick" style="background-size:150px"></span> -->
 
     </div>
 
