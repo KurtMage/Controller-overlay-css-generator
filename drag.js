@@ -1,4 +1,5 @@
 var originalState = new Map();
+var baseLayoutUrl2OriginalState = new Map();
 var pastStates = [];
 var undoneStates = [];
 var selectedButton;
@@ -77,9 +78,10 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout) {
 
 		const layoutBox = document.getElementById("layout-box");
 		for (const img of layoutBox.getElementsByTagName('*')) {
+			resetButtonAndPressedVersion(img);
 			img.style.width = originalState.get(img.id).size;
 			img.style.height = originalState.get(img.id).size;
-			resetButtonAndPressedVersion(img);
+			img.style.backgroundSize = originalState.get(img.id).backgroundSize;
 		}
 
 		document.getElementById(".fight-stick .x").style.backgroundImage = cssRules["--top-row-index-finger-button-source-image"];
@@ -660,7 +662,7 @@ function getChangedVariables(img) {
 	<br>${img.id} {<br>
 		${style.top !== originalStateOfImg.top ? `top: ${img.offsetTop}px;<br>` : ''}
 		${style.left !== originalStateOfImg.left ? `left: ${img.offsetLeft}px;<br>` : ''}
-		${!style.visibility && backgroundChanged ? `background: ${style.background};<br>` : ''}
+		${style.visibility === 'hidden' && backgroundChanged ? `background: ${style.background};<br>` : ''}
 		${style.visibility === 'hidden' && !img.id.endsWith(".pressed") ? `background: none;<br>` : ''}
 		${style.width !== originalStateOfImg.size ? `width: ${style.width};<br>` : ''}
 		${style.width !== originalStateOfImg.size ? `height: ${style.width};<br>` : ''}
@@ -668,7 +670,6 @@ function getChangedVariables(img) {
 		${style.border !== originalStateOfImg.border ? `border: ${style.border};<br>` : ''}
 		${style.borderRadius !== originalStateOfImg.borderRadius ? `border-radius: ${style.borderRadius};<br>` : ''}
 		${style.backgroundPositionY !== originalStateOfImg.backgroundPositionY ? `background-position-y: ${style.backgroundPositionY};<br>` : ''}
-		${style.background !== originalStateOfImg.background ? `background: ${style.background};<br>` : ''}
 		${style.backgroundImage !== originalStateOfImg.backgroundImage ? `background-image: ${style.backgroundImage};<br>` : ''}
 		${style.backgroundSize !== originalStateOfImg.backgroundSize ? `background-size: ${style.backgroundSize};<br>` : ''}
 		${style.backgroundRepeat !== originalStateOfImg.backgroundRepeate ? `background-repeat: ${style.backgroundRepeat};<br>` : ''}

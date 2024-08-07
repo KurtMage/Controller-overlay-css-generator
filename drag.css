@@ -15,6 +15,7 @@
 	width: 150px;
 	height: 150px;
 	background-size: 150px;
+	background-repeat: no-repeat;
 }
 
 :root {
@@ -92,7 +93,7 @@
 }
 
 .img.button.x {
-	background: url("https://imgur.com/rnS7cgc.png");
+	background-image: url("https://imgur.com/rnS7cgc.png");
 	top:var(--x-top);
 	left:var(--x-left);
 }
