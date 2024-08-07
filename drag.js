@@ -662,7 +662,7 @@ function getChangedVariables(img) {
 	<br>${img.id} {<br>
 		${style.top !== originalStateOfImg.top ? `top: ${img.offsetTop}px;<br>` : ''}
 		${style.left !== originalStateOfImg.left ? `left: ${img.offsetLeft}px;<br>` : ''}
-		${style.visibility === 'hidden' && backgroundChanged ? `background: ${style.background};<br>` : ''}
+		${style.visibility !== 'hidden' && backgroundChanged ? `background: ${style.background};<br>` : ''}
 		${style.visibility === 'hidden' && !img.id.endsWith(".pressed") ? `visibility: hidden;<br>` : ''}
 		${style.width !== originalStateOfImg.size ? `width: ${style.width};<br>` : ''}
 		${style.width !== originalStateOfImg.size ? `height: ${style.width};<br>` : ''}
@@ -692,6 +692,7 @@ function getStateOfImg(img) {
 			border: style.border,
 			backgroundPositionY: style.backgroundPositionY,
 			backgroundImage: style.backgroundImage,
+			// backgroundColor: style.backgroundColor,
 			backgroundSize: style.backgroundSize,
 			backgroundRepeat: style.backgroundRepeat,
 			backgroundPosition: style.backgroundPosition,
