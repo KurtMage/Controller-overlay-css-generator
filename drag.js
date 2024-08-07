@@ -663,7 +663,7 @@ function getChangedVariables(img) {
 		${style.top !== originalStateOfImg.top ? `top: ${img.offsetTop}px;<br>` : ''}
 		${style.left !== originalStateOfImg.left ? `left: ${img.offsetLeft}px;<br>` : ''}
 		${style.visibility === 'hidden' && backgroundChanged ? `background: ${style.background};<br>` : ''}
-		${style.visibility === 'hidden' && !img.id.endsWith(".pressed") ? `background: none;<br>` : ''}
+		${style.visibility === 'hidden' && !img.id.endsWith(".pressed") ? `visibility: hidden;<br>` : ''}
 		${style.width !== originalStateOfImg.size ? `width: ${style.width};<br>` : ''}
 		${style.width !== originalStateOfImg.size ? `height: ${style.width};<br>` : ''}
 		${style.width !== originalStateOfImg.size ? `background-size: ${style.width};<br>` : ''}
