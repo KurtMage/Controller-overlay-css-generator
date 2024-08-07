@@ -360,7 +360,7 @@ function importButton(e) {
 
 	const pressedImg = document.getElementById(targ.id + ".pressed");
 	pressedImg.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
-	pressedImg.style.backgroundSize = `${imgSize}px`;
+	// pressedImg.style.backgroundSize = `${imgSize}px`;
 	pressedImg.style.width = `${imgSize}px`;
 	pressedImg.style.height = `${imgSize}px`;
 	pressedImg.style.backgroundPositionY = `100%`;
