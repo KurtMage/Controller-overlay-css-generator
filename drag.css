@@ -103,68 +103,68 @@
 }
 
 .img.button.y {
-	background: url("https://imgur.com/KX5MAP0.png");
+	background-image: url("https://imgur.com/KX5MAP0.png");
 	top:var(--y-top);
 	left:var(--y-left);
 }
 
 .img.button.a {
-	background: url("https://imgur.com/hdeC2vb.png");
+	background-image: url("https://imgur.com/hdeC2vb.png");
 	top:var(--a-top);
 	left:var(--a-left);
 }
 
 .img.button.b {
-	background: url("https://imgur.com/YcM0VWU.png");
+	background-image: url("https://imgur.com/YcM0VWU.png");
 	top:var(--b-top);
 	left:var(--b-left);
 }
 
 
 .img.button.rb {
-	background: url("https://imgur.com/KPUJ4bG.png");
+	background-image: url("https://imgur.com/KPUJ4bG.png");
 	top:var(--rb-top);
 	left:var(--rb-left);
 }
 
 .img.button.lb {
-	background: url("https://imgur.com/OCUcLGj.png");
+	background-image: url("https://imgur.com/OCUcLGj.png");
 	top:var(--lb-top);
 	left:var(--lb-left);
 }
 
 .img.button.rt {
-	background: url("https://imgur.com/ZtgNfxW.png");
+	background-image: url("https://imgur.com/ZtgNfxW.png");
 	top:var(--rt-top);
 	left:var(--rt-left);
 }
 
 .img.button.lt {
-	background: url("https://imgur.com/bAr122G.png");
+	background-image: url("https://imgur.com/bAr122G.png");
 	top:var(--lt-top);
 	left:var(--lt-left);
 }
 
 .img.arrow.left {
-	background: url("https://imgur.com/krEVQ0L.png");
+	background-image: url("https://imgur.com/krEVQ0L.png");
 	top:var(--dir-left-top);
 	left:var(--dir-left-left);
 }
 
 .img.arrow.down {
-	background: url("https://imgur.com/v1zCdFS.png");
+	background-image: url("https://imgur.com/v1zCdFS.png");
 	top:var(--dir-down-top);
 	left:var(--dir-down-left);
 }
 
 .img.arrow.right {
-	background: url("https://imgur.com/fqY6vke.png");
+	background-image: url("https://imgur.com/fqY6vke.png");
 	top:var(--dir-right-top);
 	left:var(--dir-right-left);
 }
 
 .img.arrow.up {
-	background: url("https://imgur.com/bSo4Fso.png");
+	background-image: url("https://imgur.com/bSo4Fso.png");
 	top:var(--dir-up-top);
 	left:var(--dir-up-left);
 }
