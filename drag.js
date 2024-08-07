@@ -48,7 +48,7 @@ function init() {
 	pastStates.push(originalState);
 	
 	importButtonInterval = setInterval(alternatePreviewPicture, 1000);
-
+	importButtonInterval = setInterval(rotateStickPreviewPicture, 300);
 }
 
 function switchBaseLayout(linkToGamepadviewerBaseLayout) {
@@ -178,6 +178,16 @@ function onePxArrowKeyMove(e) {
 	lastKeyPressMove = e.key;
 }
 
+function displayStickExample() {
+	img = document.getElementById("stickExampleImage");
+	img.hidden = false;
+	document.getElementById("stickToolTip").style.top = img.height + " px";
+}
+
+function hideStickExample() {
+	document.getElementById("stickExampleImage").hidden = true;
+}
+
 function alternatePreviewPicture() {
 	const img = document.getElementById("urlButtonPreview");
 	// pressedUrl = document.getElementById("pressedImportedUrlInput").value;
@@ -198,22 +208,35 @@ function alternatePreviewPicture() {
 	}
 }
 
-function updatePreviewPicture(url) {
+function rotateStickPreviewPicture() {
+	const img = document.getElementById("stickPreview");
+
+	const curPosition = parseFloat(img.style.objectPosition);
+	const newPos = (curPosition + 12.5 > 100)  ? 0 : curPosition + 12.5;
+	img.style.objectPosition = newPos + "% 0%";
+}
+
+function updatePreviewPicture(url, previewPicture) {
 	clearInterval(importButtonInterval);
-	const img = document.getElementById("urlButtonPreview");
+	const img = previewPicture;
 	img.src = validImageUrlStyle(url) ? url : `${url}.png`;
-	importButtonInterval = setInterval(alternatePreviewPicture, 1000);
+	if (previewPicture.id === "urlButtonPreview") {
+		importButtonInterval = setInterval(alternatePreviewPicture, 1000);
+	} else if (previewPicture.id === "stickPreview") {
+		importButtonInterval = setInterval(rotateStickPreviewPicture, 300);
+	}
 }
 
 function checkImage(success, 
 					img = document.getElementById("urlButtonPreview"),
-					urlInputBox = document.getElementById("unpressedImportedUrlInput"),
+					urlInputBox = document.getElementById("importedUrlInput"),
 					closeErrorButton = document.getElementById("closeErrorButton"),
 					previewText = document.getElementById("previewText")) {
 	if (success || urlInputBox.value === '') {
 		img.visibility = urlInputBox.value === '' ? "hidden" : "visible";
-		img.style.width = urlInputBox.value === '' ? "0px" : "150px";
-		img.style.height = urlInputBox.value === '' ? "0px" : "150px";
+		const imgSize =  img.id === "stickPreview" ? "250px" : "150px"
+		img.style.width = urlInputBox.value === '' ? "0px" : imgSize;
+		img.style.height = urlInputBox.value === '' ? "0px" : imgSize;
 		urlInputBox.style.background = "#ffffff";
 		urlInputBox.style.borderColor = "#000000";
 		previewText.style.display = urlInputBox.value === '' ? "none" : "block";
@@ -335,7 +358,7 @@ function resizeButton(e) {
 }
 
 function importButton(e) {
-	const url = document.getElementById("unpressedImportedUrlInput").value;
+	const url = document.getElementById("importedUrlInput").value;
 	targ = e.target ;
 	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN" || !urlImageIsGood) {
 		return;

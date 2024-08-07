@@ -67,7 +67,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
         <button class="tablinks" onclick="openCity(event, 'makeButtonsTab')">Make buttons</button>
         <button class="tablinks" onclick="openCity(event, 'importButtonsTab')">Import buttons</button>
         <button class="tablinks" onclick="openCity(event, 'changeSizeTab')">Change size</button>
-        <button class="tablinks" onclick="openCity(event, 'stickTab')">Add/edit stick</button>
+        <button class="tablinks" onclick="openCity(event, 'stickTab')">Import stick</button>
         <button class="tablinks active" onclick="openCity(event, 'tutorialTab')">How to use</button>
     </div>
     <div>
@@ -122,8 +122,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
         </div>
         <div id="importButtonsTab" class="tabcontent">
             <p>Provide a URL for a <span class="tooltip"><span class="tooltiptext">A properly formatted image just needs to have the unpressed button above the pressed button. The unpressed version is taken by cropping a square from the top of the image and the unpressed version does is from the bottom. The width/height of the square are just the width of the image.<img src="https://imgur.com/hNxfRJI.png"></span>properly formatted</span> image. Then click a button to make it into that image.</p>
-            <label for="unpressedImportedUrlInput">URL:</label>
-            <input class="urlTextBox" type="text" id="unpressedImportedUrlInput" onChange="updatePreviewPicture(this.value)" value="https://imgur.com/xwCaQWn.png"><br><br>
+            <label for="importedUrlInput">URL:</label>
+            <input class="urlTextBox" type="text" id="importedUrlInput" onChange="updatePreviewPicture(this.value, document.getElementById('urlButtonPreview'))" value="https://imgur.com/xwCaQWn.png"><br><br>
             <!-- <p>Or provide a second image to be used as the "pressed" version of the button.</p>
             <label for="pressedImportedUrlInput">URL:</label>
             <input class="urlTextBox" type="text" id="pressedImportedUrlInput" onChange="updatePreviewPicture(this.value)"><br><br> -->
@@ -142,6 +142,29 @@ body {font-family: Arial, Helvetica, sans-serif;}
             <p>Choose a size (in px) for the buttons to change to, then click them to make them that size.<br>NOTE: If you made a button in the "Make buttons" tab, this size does not take your border thickness into account.</p>
             <label for="sizeInput">Size:</label>
             <input class="urlTextBox" type="number" id="sizeInput" value="150"><br><br>
+        </div>
+        <div id="stickTab" class="tabcontent">
+            <p>Provide a URL for a <span class="tooltip" onmouseover="displayStickExample()" onmouseout="hideStickExample()">
+                <span id="stickToolTip" class="tooltiptext" style="display: inline-block">
+                    A properly formatted stick example:
+                </span>
+                properly formatted</span> image. Then click a button to make it into that image.</p>
+
+            <img hidden id="stickExampleImage" style="width:100%" src="https://imgur.com/ZLzZ9mY.png">
+            <label for="stickImportedUrlInput">URL:</label>
+            <input class="urlTextBox" type="text" id="stickImportedUrlInput" onChange="updatePreviewPicture(this.value, document.getElementById('stickPreview'))" value="https://imgur.com/7bIsLfh.png"><br><br>
+            <div>
+                <div id="stickPreviewText">Preview (alternates between unpressed and pressed if set up properly):<br><br></div>
+                <img src="https://imgur.com/7bIsLfh.png" 
+                    style="width: 250px; height: 250px; object-fit: cover; object-position: 0% 0%; overflow: hidden" id="stickPreview"
+                    onLoad="checkImage(true, this, document.getElementById('stickImportedUrlInput'), document.getElementById('stickCloseErrorButton'), document.getElementById('stickPreviewText'))"
+                    onError="checkImage(false, this, document.getElementById('stickImportedUrlInput'), document.getElementById('stickCloseErrorButton'), document.getElementById('stickPreviewText'))"
+                >
+                <div class="alert" style="display: none">
+                    <span id="stickCloseErrorButton" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                    <strong>Error:</strong> No image found at the provided URL.
+                </div>
+            </div>
         </div>
         <div id="tutorialTab" class="tabcontent" style="display: block;">
 
