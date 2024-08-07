@@ -79,9 +79,9 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout) {
 		const layoutBox = document.getElementById("layout-box");
 		for (const img of layoutBox.getElementsByTagName('*')) {
 			resetButtonAndPressedVersion(img);
-			img.style.width = originalState.get(img.id).size;
-			img.style.height = originalState.get(img.id).size;
-			img.style.backgroundSize = originalState.get(img.id).backgroundSize;
+			// img.style.width = originalState.get(img.id).size;
+			// img.style.height = originalState.get(img.id).size;
+			img.style.backgroundSize = img.style.width;
 		}
 
 		document.getElementById(".fight-stick .x").style.backgroundImage = cssRules["--top-row-index-finger-button-source-image"];
@@ -117,8 +117,6 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout) {
 		document.getElementById("css-text").innerHTML = changedVariables;
 
 		// document.getElementById("baseLayoutPreview").innerHTML = layoutBox.innerHTML;
-		console.log(pastStates);
-
 	}, false);
 
 	baseLayoutUrl = linkToGamepadviewerBaseLayout;
@@ -145,6 +143,8 @@ function onePxArrowKeyMove(e) {
 		case "ArrowUp":
 			lastMovedButton.style.top = (parseInt(lastMovedButton.style.top) - 1) + "px";
 			break;
+		default:
+			return;
 	}
 
 	id2state = new Map();
@@ -162,10 +162,6 @@ function onePxArrowKeyMove(e) {
 		pastStates.pop();
 	}
 	addToPastStates(id2state);
-
-	document.getElementById('undoButton').style.color = "#fff";
-	undoneStates = [];
-	document.getElementById('redoButton').style.color = "#999";
 	lastKeyPressMove = e.key;
 }
 
@@ -548,6 +544,8 @@ function undo() {
 	if (pastStates.length <= 1) {
 		document.getElementById('undoButton').style.color = "#999";
 	}
+	console.log(pastStates);
+	console.log(undoneStates);
 }
 
 function redo() {
@@ -611,6 +609,8 @@ function redo() {
 	if (undoneStates.length < 1) {
 		document.getElementById('redoButton').style.color = "#999";
 	}
+	console.log(pastStates);
+	console.log(undoneStates);
 }
 
 function copyText() {
@@ -650,6 +650,8 @@ function addToPastStates(id2state) {
 	document.getElementById('undoButton').style.color = "#fff";
 	undoneStates = [];
 	document.getElementById('redoButton').style.color = "#999";
+	console.log(pastStates);
+	console.log(undoneStates);
 }
 
 function getChangedVariables(img) {
