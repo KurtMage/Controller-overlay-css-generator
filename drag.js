@@ -56,7 +56,7 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout) {
 	if (baseLayoutUrl === linkToGamepadviewerBaseLayout) {
 		return;
 	}
-	
+
 	var request = new XMLHttpRequest();
 
 	request.addEventListener("load", function(evt){
@@ -104,9 +104,22 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout) {
 		document.getElementById(".fight-stick .stick.left").style.backgroundImage = cssRules["--ls-button-source-image"];
 		document.getElementById(".fight-stick .stick.right").style.backgroundImage = cssRules["--rs-button-source-image"];
 
+		// if (!baseLayoutUrl2OriginalState.has(linkToGamepadviewerBaseLayout)) {
+		// 	originalStateForThisLayout = new Map();
+		// 	for (const button of layoutBox.getElementsByTagName('*')) {
+		// 		backgroundImageForThisButtonOnThisBaseLayout = document.getElementById(button.id).style.backgroundImage;
+		// 		const state = getStateOfImgWithSpecifiedBackgroundImg(button, backgroundImageForThisButtonOnThisBaseLayout);
+		// 		id2state.set(button.id, state);
+		// 	}
+		// }
+	
+
 		id2state = new Map();
 		var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 		for (const img of layoutBox.getElementsByTagName('*')) {
+			if (!img.id.endsWith(".pressed")) {
+				document.getElementById(img.id + ".pressed").style.backgroundImage = img.style.backgroundImage;
+			}
 			if (doesButtonHaveChange(img)) {
 				changedVariables += getChangedVariables(img);
 			}
@@ -680,6 +693,29 @@ function getChangedVariables(img) {
 	}<br>
 	`
 	return changedVariables;
+}
+
+function getStateOfImgWithSpecifiedBackgroundImg(img, backgroundImage) {
+		const originalBackgroundImage = img.backgroundImage;
+		img.backgroundImage = backgroundImage;
+		const style = getComputedStyle(img);
+		return {
+			top: style.top,
+			left: style.left,
+			isVisible: style.visibility === 'visible' || style.visibility === '',
+			background: style.background,
+			size: style.width,
+			borderRadius: style.borderRadius,
+			border: style.border,
+			backgroundPositionY: style.backgroundPositionY,
+			backgroundImage: style.backgroundImage,
+			// backgroundColor: style.backgroundColor,
+			backgroundSize: style.backgroundSize,
+			backgroundRepeat: style.backgroundRepeat,
+			backgroundPosition: style.backgroundPosition,
+			borderRadius: style.borderRadius,
+		};
+		img.backgroundImage = originalBackgroundImage;
 }
 
 function getStateOfImg(img) {

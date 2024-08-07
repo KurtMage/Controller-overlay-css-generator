@@ -66,10 +66,18 @@
 	left: 439px;
 }
 
+.img.startback.start.pressed {
+	background-position-y: 100%;
+}
+
 .img.startback.back {
 	background-image: url(https://imgur.com/h4FYoR5.png);
 	top: 70px;
 	left: 335px;
+}
+
+.img.startback.back.pressed {
+	background-position-y: 100%;
 }
 
 .img.ls {
@@ -79,7 +87,7 @@
 }
 
 .img.ls.pressed {
-	background-position-y: -150px;
+	background-position-y: 100%;
 }
 
 .img.rs {
@@ -89,7 +97,7 @@
 }
 
 .img.rs.pressed {
-	background-position-y: -150px;
+	background-position-y: 100%;
 }
 
 .img.button.x {
@@ -99,7 +107,7 @@
 }
 
 .img.button.x.pressed {
-	background-position-y: -150px;
+	background-position-y: 100%;
 }
 
 .img.button.y {
@@ -108,10 +116,18 @@
 	left:var(--y-left);
 }
 
+.img.button.y.pressed {
+	background-position-y: 100%;
+}
+
 .img.button.a {
 	background-image: url("https://imgur.com/hdeC2vb.png");
 	top:var(--a-top);
 	left:var(--a-left);
+}
+
+.img.button.a.pressed {
+	background-position-y: 100%;
 }
 
 .img.button.b {
@@ -120,11 +136,18 @@
 	left:var(--b-left);
 }
 
+.img.button.b.pressed {
+	background-position-y: 100%;
+}
 
 .img.button.rb {
 	background-image: url("https://imgur.com/KPUJ4bG.png");
 	top:var(--rb-top);
 	left:var(--rb-left);
+}
+
+.img.button.rb.pressed {
+	background-position-y: 100%;
 }
 
 .img.button.lb {
@@ -133,10 +156,18 @@
 	left:var(--lb-left);
 }
 
+.img.button.lb.pressed {
+	background-position-y: 100%;
+}
+
 .img.button.rt {
 	background-image: url("https://imgur.com/ZtgNfxW.png");
 	top:var(--rt-top);
 	left:var(--rt-left);
+}
+
+.img.button.rt.pressed {
+	background-position-y: 100%;
 }
 
 .img.button.lt {
@@ -145,10 +176,18 @@
 	left:var(--lt-left);
 }
 
+.img.button.lt.pressed {
+	background-position-y: 100%;
+}
+
 .img.arrow.left {
 	background-image: url("https://imgur.com/krEVQ0L.png");
 	top:var(--dir-left-top);
 	left:var(--dir-left-left);
+}
+
+.img.arrow.left.pressed {
+	background-position-y: 100%;
 }
 
 .img.arrow.down {
@@ -157,16 +196,28 @@
 	left:var(--dir-down-left);
 }
 
+.img.arrow.down.pressed {
+	background-position-y: 100%;
+}
+
 .img.arrow.right {
 	background-image: url("https://imgur.com/fqY6vke.png");
 	top:var(--dir-right-top);
 	left:var(--dir-right-left);
 }
 
+.img.arrow.right.pressed {
+	background-position-y: 100%;
+}
+
 .img.arrow.up {
 	background-image: url("https://imgur.com/bSo4Fso.png");
 	top:var(--dir-up-top);
 	left:var(--dir-up-left);
+}
+
+.img.arrow.up.pressed {
+	background-position-y: 100%;
 }
 
 .code-box {
