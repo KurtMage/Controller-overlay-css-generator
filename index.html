@@ -62,12 +62,12 @@ body {font-family: Arial, Helvetica, sans-serif;}
 
     
     <div class="tab">
-        <button class="tablinks" onclick="openCity(event, 'moveTab')">Move buttons</button>
-        <button class="tablinks" onclick="openCity(event, 'deleteTab')">Delete buttons</button>
+        <button class="tablinks" onclick="openCity(event, 'moveTab')">Move</button>
+        <button class="tablinks" onclick="openCity(event, 'deleteTab')">Delete</button>
         <button class="tablinks" onclick="openCity(event, 'makeButtonsTab')">Make buttons</button>
         <button class="tablinks" onclick="openCity(event, 'importButtonsTab')">Import buttons</button>
         <button class="tablinks" onclick="openCity(event, 'changeSizeTab')">Change size</button>
-        <button class="tablinks" onclick="openCity(event, 'stickTab')">Import stick</button>
+        <button class="tablinks" onclick="openCity(event, 'importStickTab')">Import stick</button>
         <button class="tablinks active" onclick="openCity(event, 'tutorialTab')">How to use</button>
     </div>
     <div>
@@ -143,7 +143,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
             <label for="sizeInput">Size:</label>
             <input class="urlTextBox" type="number" id="sizeInput" value="150"><br><br>
         </div>
-        <div id="stickTab" class="tabcontent">
+        <div id="importStickTab" class="tabcontent">
             <p>Provide a URL for a <span class="tooltip" onmouseover="displayStickExample()" onmouseout="hideStickExample()">
                 <span id="stickToolTip" class="tooltiptext" style="display: inline-block">
                     A properly formatted stick example:
@@ -269,7 +269,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
         <span hidden class="img rs pressed" id=".fight-stick .stick.right.pressed"></span>
 
         <!-- resetButtonAndPressedVersion checkes for a "pressed" version and stick breaks that -->
-        <!-- <span hidden class="img fstick" id=".fight-stick .fstick" style="background-size:150px"></span> -->
+        <span hidden class="img fstick" id=".fight-stick .fstick"></span>
 
     </div>
 

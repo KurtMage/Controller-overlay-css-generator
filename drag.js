@@ -78,10 +78,13 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout) {
 
 		const layoutBox = document.getElementById("layout-box");
 		for (const img of layoutBox.getElementsByTagName('*')) {
+			if (img.id === ".fight-stick .fstick") {
+				continue;
+			}
 			resetButtonAndPressedVersion(img);
 			// img.style.width = originalState.get(img.id).size;
 			// img.style.height = originalState.get(img.id).size;
-			img.style.backgroundSize = img.style.width;
+			img.style.backgroundSize = "cover";
 		}
 
 		document.getElementById(".fight-stick .x").style.backgroundImage = cssRules["--top-row-index-finger-button-source-image"];
@@ -117,7 +120,7 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout) {
 		id2state = new Map();
 		var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 		for (const img of layoutBox.getElementsByTagName('*')) {
-			if (!img.id.endsWith(".pressed")) {
+			if (!img.id.endsWith(".pressed") && img.id !== (".fight-stick .fstick")) {
 				document.getElementById(img.id + ".pressed").style.backgroundImage = img.style.backgroundImage;
 			}
 			if (doesButtonHaveChange(img)) {
@@ -267,12 +270,63 @@ function clickAction(e) {
 		resizeButton(e);
 	} else if (document.getElementById("makeButtonsTab").style.display === 'block') {
 		applyMadeButton(e);
+	} else if (document.getElementById("importStickTab").style.display === 'block') {
+		importStick(e);
 	}
+}
+
+function importStick(e) {
+	const url = document.getElementById("stickImportedUrlInput").value;
+	targ = e.target ;
+	if (!targ.className?.startsWith("img ")
+		|| targ.tagName?.toUpperCase() != "SPAN"
+		|| !urlImageIsGood) {
+		return;
+	}
+
+	if (!targ) { return; }
+	const urlCss = validImageUrlStyle(url) ? `url(\"${url}\")` : `url(\"${url}.png\")`;
+	if (targ.style.backgroundImage === urlCss) {
+		return;
+	}
+
+	lastKeyPressMove = null;
+
+	// Reset anything that make button may have done.
+	resetButtonAndPressedVersion(targ);
+
+	targ.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
+	const imgSize = targ.offsetWidth;
+	// targ.style.backgroundSize = `${imgSize}px`;
+	targ.style.width = `${imgSize}px`;
+	targ.style.height = `${imgSize}px`;
+
+	const pressedImg = document.getElementById(targ.id + ".pressed");
+	pressedImg.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
+	// pressedImg.style.backgroundSize = `${imgSize}px`;
+	pressedImg.style.width = `${imgSize}px`;
+	pressedImg.style.height = `${imgSize}px`;
+	pressedImg.style.backgroundPositionY = `100%`;
+
+	id2state = new Map();
+	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
+	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
+		if (doesButtonHaveChange(img)) {
+			changedVariables += getChangedVariables(img);
+		}
+		const state = getStateOfImg(img);
+		id2state.set(img.id, state);
+	}
+	addToPastStates(id2state);
+	document.getElementById("css-text").innerHTML = changedVariables;
 }
 
 function applyMadeButton(e) {
 	targ = e.target ;
-	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN") {
+	// TODO give error if they try to do this on a stick
+	if (!targ.className?.startsWith("img ")
+		|| targ.tagName?.toUpperCase() != "SPAN"
+		|| targ.id.includes("fstick")) {
 		return;
 	}
 
@@ -328,8 +382,11 @@ function resizeButton(e) {
 		return;
 	}
 
+	console.log('resize');
+
+	style = getComputedStyle(targ);
 	const size = parseInt(document.getElementById("sizeInput").value);
-	if (isNaN(size) || parseInt(targ.style.backgroundSize) === size) { return; }
+	if (isNaN(size) || style.width === size) { return; }
 
 	lastKeyPressMove = null;
 
@@ -337,12 +394,15 @@ function resizeButton(e) {
 	targ.style.height = `${size}px`;
 	targ.style.width = `${size}px`;
 
-	const pressedImg = document.getElementById(targ.id + ".pressed");
+	// There's no pressed version of stick.
+	if (targ.id !==  ".fight-stick .fstick") {
+		const pressedImg = document.getElementById(targ.id + ".pressed");
 
-	// pressedImg.style.backgroundSize = `${size}px`;
-	pressedImg.style.height = `${size}px`;
-	pressedImg.style.width = `${size}px`;
-	pressedImg.style.backgroundPositionY = `-${size}px`;
+		// pressedImg.style.backgroundSize = `${size}px`;
+		pressedImg.style.height = `${size}px`;
+		pressedImg.style.width = `${size}px`;
+		// pressedImg.style.backgroundPositionY = `-${size}px`;
+	}
 
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
@@ -360,7 +420,10 @@ function resizeButton(e) {
 function importButton(e) {
 	const url = document.getElementById("importedUrlInput").value;
 	targ = e.target ;
-	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN" || !urlImageIsGood) {
+	if (!targ.className?.startsWith("img ")
+		|| targ.tagName?.toUpperCase() != "SPAN"
+		|| targ.id.includes("fstick")
+		|| !urlImageIsGood) {
 		return;
 	}
 
@@ -704,7 +767,6 @@ function getChangedVariables(img) {
 		${style.visibility === 'hidden' && !img.id.endsWith(".pressed") ? `visibility: hidden;<br>` : ''}
 		${style.width !== originalStateOfImg.size ? `width: ${style.width};<br>` : ''}
 		${style.width !== originalStateOfImg.size ? `height: ${style.width};<br>` : ''}
-		${style.width !== originalStateOfImg.size ? `background-size: ${style.width};<br>` : ''}
 		${style.border !== originalStateOfImg.border ? `border: ${style.border};<br>` : ''}
 		${style.borderRadius !== originalStateOfImg.borderRadius ? `border-radius: ${style.borderRadius};<br>` : ''}
 		${style.backgroundPositionY !== originalStateOfImg.backgroundPositionY ? `background-position-y: ${style.backgroundPositionY};<br>` : ''}
@@ -715,6 +777,10 @@ function getChangedVariables(img) {
 		${style.borderRadius !== originalStateOfImg.borderRadius ? `border-radius: ${style.borderRadius};<br>` : ''}
 	}<br>
 	`
+	console.log(`kurttm debug style.backgroundSize: ` + style.backgroundSize);
+	console.log(`kurttm debug originalStateOfImg.backgroundSize: ` + originalStateOfImg.backgroundSize);
+	console.log(`kurttm debug style.backgroundSize !== originalStateOfImg.backgroundSize: ` + style.backgroundSize !== originalStateOfImg.backgroundSize);
+	console.log(`kurttm debug: ` + style.backgroundSize === originalStateOfImg.backgroundSize ? `background-size: ${style.backgroundSize};<br>` : '');
 	return changedVariables;
 }
 
@@ -789,7 +855,7 @@ function updateMadeButtonImg(url, button) {
 	}
 	button.style.backgroundRepeat = "no-repeat";
 	button.style.backgroundPosition = "center";
-	updateMadeButtonImgSize(document.getElementById("unpressedImgSize").value, button);
+	// updateMadeButtonImgSize(document.getElementById("unpressedImgSize").value, button);
 }
 
 function updateMadeButtonImgSize(size, button) {
@@ -798,7 +864,7 @@ function updateMadeButtonImgSize(size, button) {
 
 function initializeMadeButton(madeButton, url, imgSize, buttonColorValue, buttonSize, borderColorValue, borderSize) {
 	updateMadeButtonImg(url, madeButton);
-	updateMadeButtonImgSize(imgSize, madeButton);
+	// updateMadeButtonImgSize(imgSize, madeButton);
 	updateMadeButtonColor(buttonColorValue, madeButton);
 	updateMadeButtonSize(buttonSize, madeButton);
 	updateMadeButtonBorderColor(borderColorValue, madeButton);
@@ -820,7 +886,7 @@ function resetButtonAndPressedVersion(button) {
 	button.style.backgroundPosition = "";
 
 	// Probably a redundant check, because Make/Import already can't be applies to pressed.
-	if (!button.id.endsWith(".pressed")) {
+	if (!button.id.endsWith(".pressed") && button.id !== ".fight-stick .fstick") {
 		pressedButton = document.getElementById(button.id + ".pressed");
 		pressedButton.style.background = "";
 		pressedButton.style.backgroundColor = "";
