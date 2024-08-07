@@ -285,6 +285,12 @@ function importStick(e) {
 	}
 
 	if (!targ) { return; }
+	const fstick = document.getElementById(".fight-stick .fstick");
+	if (!fstick.hidden) {
+		// TODO error;
+		return;
+	}
+
 	const urlCss = validImageUrlStyle(url) ? `url(\"${url}\")` : `url(\"${url}.png\")`;
 	if (targ.style.backgroundImage === urlCss) {
 		return;
@@ -292,33 +298,22 @@ function importStick(e) {
 
 	lastKeyPressMove = null;
 
-	// Reset anything that make button may have done.
-	resetButtonAndPressedVersion(targ);
+	const targStyle = getComputedStyle(targ);
 
-	targ.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
-	const imgSize = targ.offsetWidth;
-	// targ.style.backgroundSize = `${imgSize}px`;
-	targ.style.width = `${imgSize}px`;
-	targ.style.height = `${imgSize}px`;
+	// Move fstick to location and size of button it replaced.
+	fstick.style.top = targStyle.top;
+	fstick.style.left = targStyle.left;
+	fstick.style.width = targStyle.width;
+	fstick.style.height = targStyle.height;
+	fstick.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
+	fstick.style.visibility = "visible";
+	fstick.hidden = false;
+	fstick.style.display = "block";
 
-	const pressedImg = document.getElementById(targ.id + ".pressed");
-	pressedImg.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
-	// pressedImg.style.backgroundSize = `${imgSize}px`;
-	pressedImg.style.width = `${imgSize}px`;
-	pressedImg.style.height = `${imgSize}px`;
-	pressedImg.style.backgroundPositionY = `100%`;
+	// Fstick replaces the button, so delete it.
+	deleteButton(e);
 
-	id2state = new Map();
-	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
-	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
-		if (doesButtonHaveChange(img)) {
-			changedVariables += getChangedVariables(img);
-		}
-		const state = getStateOfImg(img);
-		id2state.set(img.id, state);
-	}
-	addToPastStates(id2state);
-	document.getElementById("css-text").innerHTML = changedVariables;
+	// We do not need to capture state, because deleteButton() does it for us.
 }
 
 function applyMadeButton(e) {
@@ -326,7 +321,7 @@ function applyMadeButton(e) {
 	// TODO give error if they try to do this on a stick
 	if (!targ.className?.startsWith("img ")
 		|| targ.tagName?.toUpperCase() != "SPAN"
-		|| targ.id.includes("fstick")) {
+		|| targ.id === ".fight-stick .fstick") {
 		return;
 	}
 
@@ -422,7 +417,7 @@ function importButton(e) {
 	targ = e.target ;
 	if (!targ.className?.startsWith("img ")
 		|| targ.tagName?.toUpperCase() != "SPAN"
-		|| targ.id.includes("fstick")
+		|| targ.id === ".fight-stick .fstick"
 		|| !urlImageIsGood) {
 		return;
 	}
@@ -612,9 +607,8 @@ function undo() {
 		if (locationToReturnTo.left === originalState.get(id).left) {
 			img.style.left = null;
 		}
-		if (locationToReturnTo.isVisible) {
-			img.style.visibility = null;
-			img.style.zIndex = 0;
+		if (locationToReturnTo.visibility !== originalState.visibility) {
+			img.style.visibility = locationToReturnTo.visibility;
 		}
 		if (locationToReturnTo.background !== currentLocation.background) {
 			img.style.background = locationToReturnTo.background;
@@ -674,9 +668,8 @@ function redo() {
 		if (locationToReturnTo.left === originalState.get(id).left) {
 			img.style.left = null;
 		}
-		if (locationToReturnTo.isVisible) {
-			img.style.visibility = null;
-			img.style.zIndex = 0;
+		if (locationToReturnTo.visibility !== originalState.visibility) {
+			img.style.visibility = locationToReturnTo.visibility;
 		} else {
 			img.style.visibility = 'hidden';
 			img.style.zIndex = -1;
@@ -764,7 +757,7 @@ function getChangedVariables(img) {
 		${style.top !== originalStateOfImg.top ? `top: ${img.offsetTop}px;<br>` : ''}
 		${style.left !== originalStateOfImg.left ? `left: ${img.offsetLeft}px;<br>` : ''}
 		${style.visibility !== 'hidden' && backgroundChanged ? `background: ${style.background};<br>` : ''}
-		${style.visibility === 'hidden' && !img.id.endsWith(".pressed") ? `visibility: hidden;<br>` : ''}
+		${style.visibility !== originalStateOfImg.visibility ? `visibility: ${style.visibility};<br>` : ''}
 		${style.width !== originalStateOfImg.size ? `width: ${style.width};<br>` : ''}
 		${style.width !== originalStateOfImg.size ? `height: ${style.width};<br>` : ''}
 		${style.border !== originalStateOfImg.border ? `border: ${style.border};<br>` : ''}
@@ -791,7 +784,7 @@ function getStateOfImgWithSpecifiedBackgroundImg(img, backgroundImage) {
 		return {
 			top: style.top,
 			left: style.left,
-			isVisible: style.visibility === 'visible' || style.visibility === '',
+			visibility: style.visibility,
 			background: style.background,
 			size: style.width,
 			borderRadius: style.borderRadius,
@@ -812,7 +805,7 @@ function getStateOfImg(img) {
 		return {
 			top: style.top,
 			left: style.left,
-			isVisible: style.visibility === 'visible' || style.visibility === '',
+			visibility: style.visibility,
 			background: style.background,
 			size: style.width,
 			borderRadius: style.borderRadius,

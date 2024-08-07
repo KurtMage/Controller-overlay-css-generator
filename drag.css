@@ -215,6 +215,10 @@
 	left:var(--dir-up-left);
 }
 
+.img.fstick {
+	visibility: hidden;
+}
+
 .img.arrow.up.pressed {
 	background-position-y: 100%;
 }
