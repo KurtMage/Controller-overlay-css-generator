@@ -859,8 +859,8 @@ function getChangedVariables(img) {
 	changedVariables +=
 	`
 	<br>${img.id} {<br>
-		${style.top !== originalStateOfImg.top ? `top: ${style.top}px;<br>` : ''}
-		${style.left !== originalStateOfImg.left ? `left: ${style.left}px;<br>` : ''}
+		${style.top !== originalStateOfImg.top ? `top: ${style.top};<br>` : ''}
+		${style.left !== originalStateOfImg.left ? `left: ${style.left};<br>` : ''}
 		${style.visibility !== 'hidden' && backgroundChanged ? `background: ${style.background};<br>` : ''}
 		${style.visibility !== originalStateOfImg.visibility ? `visibility: ${style.visibility};<br>` : ''}
 		${style.width !== originalStateOfImg.size ? `width: ${style.width};<br>` : ''}
