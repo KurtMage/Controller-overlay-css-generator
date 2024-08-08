@@ -155,18 +155,12 @@ function arrowKeyMove(e) {
 		// Not on move tab.
 		return;
 	}
-	function applyMoveButtonValues(btn, amount, moveVertically, overrideStartingLocation) {
+	function applyMoveButtonValues(btn, amount, moveVertically) {
 		const computedStyle = getComputedStyle(btn);
-		var startingTop = parseInt(computedStyle.top);
-		var startingLeft = parseInt(computedStyle.left);
-		if (overrideStartingLocation) {
-			startingTop = overrideStartingLocation;
-			startingTop = overrideStartingLocation;
-		}
 		if (moveVertically) {
-			btn.style.top = (startingTop - amount) + "px";
+			btn.style.top = (parseInt(computedStyle.top) - amount) + "px";
 		} else {
-			btn.style.left = (startingLeft - amount) + "px";
+			btn.style.left = (parseInt(computedStyle.left) - amount) + "px";
 		}
 	}
 	function moveButton(e, button, moveAmount) {
@@ -174,30 +168,18 @@ function arrowKeyMove(e) {
 			case "ArrowLeft":
 				e.preventDefault();
 				applyMoveButtonValues(button, moveAmount, false);
-				if (!button.id.endsWith(".pressed") && button.id !== (".fight-stick .fstick")) {
-					applyMoveButtonValues(document.getElementById(button.id + ".pressed"), moveAmount, false);
-				}
 				break;
 			case "ArrowDown":
 				e.preventDefault();
 				applyMoveButtonValues(button, -moveAmount, true);
-				if (!button.id.endsWith(".pressed") && button.id !== (".fight-stick .fstick")) {
-					applyMoveButtonValues(document.getElementById(button.id + ".pressed"), -moveAmount, true);
-				}
 				break;
 			case "ArrowRight":
 				e.preventDefault();
 				applyMoveButtonValues(button, -moveAmount, false);
-				if (!button.id.endsWith(".pressed") && button.id !== (".fight-stick .fstick")) {
-					applyMoveButtonValues(document.getElementById(button.id + ".pressed"), -moveAmount, false);
-				}
 				break;
 			case "ArrowUp":
 				e.preventDefault();
 				applyMoveButtonValues(button, moveAmount, true);
-				if (!button.id.endsWith(".pressed") && button.id !== (".fight-stick .fstick")) {
-					applyMoveButtonValues(document.getElementById(button.id + ".pressed"), moveAmount, true);
-				}
 				break;
 			default:
 				return;
@@ -221,18 +203,42 @@ function arrowKeyMove(e) {
 					document.getElementById(".fight-stick .bumper.left"), 
 					document.getElementById(".fight-stick .trigger-button.right"), 
 					document.getElementById(".fight-stick .trigger-button.left"), 
+					document.getElementById(".fight-stick .x.pressed"), 
+					document.getElementById(".fight-stick .y.pressed"), 
+					document.getElementById(".fight-stick .a.pressed"), 
+					document.getElementById(".fight-stick .b.pressed"), 
+					document.getElementById(".fight-stick .bumper.right.pressed"), 
+					document.getElementById(".fight-stick .bumper.left.pressed"), 
+					document.getElementById(".fight-stick .trigger-button.right.pressed"), 
+					document.getElementById(".fight-stick .trigger-button.left.pressed"), 
+				];
+				break;
+			case "directionalButtons":
+				elementsToMove = [
+					document.getElementById(".fight-stick .face.left"), 
+					document.getElementById(".fight-stick .face.down"), 
+					document.getElementById(".fight-stick .face.right"), 
+					document.getElementById(".fight-stick .face.up"), 
+					document.getElementById(".fight-stick .face.left.pressed"), 
+					document.getElementById(".fight-stick .face.down.pressed"), 
+					document.getElementById(".fight-stick .face.right.pressed"), 
+					document.getElementById(".fight-stick .face.up.pressed"), 
 				];
 				break;
 			case "startAndBack":
 				elementsToMove = [
 					document.getElementById(".fight-stick .start"), 
 					document.getElementById(".fight-stick .back"), 
+					document.getElementById(".fight-stick .start.pressed"), 
+					document.getElementById(".fight-stick .back.pressed"), 
 				];
 				break;
 			case "lsRs":
 				elementsToMove = [
 					document.getElementById(".fight-stick .stick.right"), 
 					document.getElementById(".fight-stick .stick.left"), 
+					document.getElementById(".fight-stick .stick.right.pressed"), 
+					document.getElementById(".fight-stick .stick.left.pressed"), 
 				];
 				break;
 			default:
