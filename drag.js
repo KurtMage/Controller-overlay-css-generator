@@ -151,6 +151,10 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout,
 
 
 function arrowKeyMove(e) {
+	if (document.getElementById("moveTab").style.display !== 'block') {
+		// Not on move tab.
+		return;
+	}
 	function applyMoveButtonValues(btn, amount, moveVertically) {
 		const computedStyle = getComputedStyle(btn);
 		if (moveVertically) {
@@ -178,13 +182,45 @@ function arrowKeyMove(e) {
 				applyMoveButtonValues(button, moveAmount, true);
 				break;
 			default:
-				break;
+				return;
 		}
 	}
 
 	const moveAmount = parseInt(document.getElementById("moveAmountBox").value);
 	if (e.ctrlKey) {
-		for (const button of document.getElementById("layout-box").getElementsByTagName('*')) {
+		var elementsToMove = [];
+		switch (document.getElementById("moveSelectType").value) {
+			case "allElements":
+				elementsToMove = document.getElementById("layout-box").getElementsByTagName('*');
+				break;
+			case "faceButtons":
+				elementsToMove = [
+					document.getElementById(".fight-stick .x"), 
+					document.getElementById(".fight-stick .y"), 
+					document.getElementById(".fight-stick .a"), 
+					document.getElementById(".fight-stick .b"), 
+					document.getElementById(".fight-stick .bumper.right"), 
+					document.getElementById(".fight-stick .bumper.left"), 
+					document.getElementById(".fight-stick .trigger-button.right"), 
+					document.getElementById(".fight-stick .trigger-button.left"), 
+				];
+				break;
+			case "startAndBack":
+				elementsToMove = [
+					document.getElementById(".fight-stick .start"), 
+					document.getElementById(".fight-stick .back"), 
+				];
+				break;
+			case "lsRs":
+				elementsToMove = [
+					document.getElementById(".fight-stick .stick.right"), 
+					document.getElementById(".fight-stick .stick.left"), 
+				];
+				break;
+			default:
+				break;
+		}
+		for (const button of elementsToMove) {
 			moveButton(e, button, moveAmount);
 		}
 	} else {
