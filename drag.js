@@ -18,7 +18,7 @@ const stateMapUrlKey = "baseLayoutUrl";
 function init() {
 	document.onmousedown = clickAction;
 	document.onmouseup = stopDrag;
-	document.onkeydown = onePxArrowKeyMove;
+	document.onkeydown = arrowKeyMove;
 
 	hiddenUnpressedImgUpdater = new Image();
 	hiddenUnpressedImgUpdater.onload = function() {
@@ -142,22 +142,23 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout) {
 	request.send();
 }
 
-function onePxArrowKeyMove(e) {
+function arrowKeyMove(e) {
 	if (!lastMovedButton) {
 		return;
 	}
+	const moveAmount = parseInt(document.getElementById("moveAmountBox").value);
 	switch (e.key) {
 		case "ArrowLeft":
-			lastMovedButton.style.left = (parseInt(lastMovedButton.style.left) - 1) + "px";
+			lastMovedButton.style.left = (parseInt(lastMovedButton.style.left) - moveAmount) + "px";
 			break;
 		case "ArrowDown":
-			lastMovedButton.style.top = (parseInt(lastMovedButton.style.top) + 1) + "px";
+			lastMovedButton.style.top = (parseInt(lastMovedButton.style.top) + moveAmount) + "px";
 			break;
 		case "ArrowRight":
-			lastMovedButton.style.left = (parseInt(lastMovedButton.style.left) + 1) + "px";
+			lastMovedButton.style.left = (parseInt(lastMovedButton.style.left) + moveAmount) + "px";
 			break;
 		case "ArrowUp":
-			lastMovedButton.style.top = (parseInt(lastMovedButton.style.top) - 1) + "px";
+			lastMovedButton.style.top = (parseInt(lastMovedButton.style.top) - moveAmount) + "px";
 			break;
 		default:
 			return;

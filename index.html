@@ -72,7 +72,12 @@ body {font-family: Arial, Helvetica, sans-serif;}
     </div>
     <div>
         <div id="moveTab" class="tabcontent">
-            <p>Click and drag buttons to move them.<br>You can also click a button and then use arrow keys to move them 1px at a time.</p>
+            <p>Click and drag buttons to move them.<br>You can also click a button and then use arrow keys to move them
+                <span>
+                    <label for="moveAmountBox"></label>
+                        <input class="buttonMakerTextBox" type="number" id="moveAmountBox" value="1">
+                </span>
+                px at a time.</p>
         </div>
         <div id="deleteTab" class="tabcontent">
             <p>Click buttons to delete them.</p>
