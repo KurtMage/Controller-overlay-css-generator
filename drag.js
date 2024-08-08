@@ -156,15 +156,19 @@ function arrowKeyMove(e) {
 	const moveAmount = parseInt(document.getElementById("moveAmountBox").value);
 	switch (e.key) {
 		case "ArrowLeft":
+			e.preventDefault();
 			lastMovedButton.style.left = (parseInt(lastMovedButton.style.left) - moveAmount) + "px";
 			break;
 		case "ArrowDown":
+			e.preventDefault();
 			lastMovedButton.style.top = (parseInt(lastMovedButton.style.top) + moveAmount) + "px";
 			break;
 		case "ArrowRight":
+			e.preventDefault();
 			lastMovedButton.style.left = (parseInt(lastMovedButton.style.left) + moveAmount) + "px";
 			break;
 		case "ArrowUp":
+			e.preventDefault();
 			lastMovedButton.style.top = (parseInt(lastMovedButton.style.top) - moveAmount) + "px";
 			break;
 		default:
