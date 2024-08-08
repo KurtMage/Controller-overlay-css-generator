@@ -187,13 +187,13 @@ function arrowKeyMove(e) {
 		for (const button of document.getElementById("layout-box").getElementsByTagName('*')) {
 			moveButton(e, button, moveAmount);
 		}
-		return;
+	} else {
+		if (!lastMovedButton) {
+			return;
+		}
+		e.preventDefault();
+		moveButton(e, lastMovedButton, moveAmount);
 	}
-	if (!lastMovedButton) {
-		return;
-	}
-	e.preventDefault();
-	moveButton(e, lastMovedButton, moveAmount);
 
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
