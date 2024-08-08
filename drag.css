@@ -230,11 +230,11 @@
 }
 
 .made-button {
-	height: 130px;
-	width: 130px;
+	height: 140px;
+	width: 140px;
 	background: #666666;
 	border-radius: 100%;
-	border: 10px solid #000000;
+	border: 5px solid #000000;
 	display: block;
 	background-repeat: no-repeat;
 	background-position: center;

@@ -97,11 +97,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
                 <label for="unpressedButtonColorPicker">Color:</label>
                     <input type="color" id="colorpicker" value="#666666" onInput="updateMadeButtonColor(this.value, document.getElementById('unpressedMadeButton'))">
                 <label for="unpressedSize">Size:</label>
-                    <input class="buttonMakerTextBox" type="number" id="unpressedSize" value="130" onInput="updateMadeButtonSize(this.value, document.getElementById('unpressedMadeButton'))">px<br>
+                    <input class="buttonMakerTextBox" type="number" id="unpressedSize" value="140" onInput="updateMadeButtonSize(this.value, document.getElementById('unpressedMadeButton'))">px<br>
                 <label for="unpressedBorderColorPicker">Border color:</label>
                     <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this.value, document.getElementById('unpressedMadeButton'))">
                 <label for="unpressedBorderThickness">Border thickness:</label>
-                    <input class="buttonMakerTextBox" type="number" id="unpressedBorderThickness" value="10" onInput="updateMadeButtonBorderSize(this.value, document.getElementById('unpressedMadeButton'))">px<br>
+                    <input class="buttonMakerTextBox" type="number" id="unpressedBorderThickness" value="5" onInput="updateMadeButtonBorderSize(this.value, document.getElementById('unpressedMadeButton'))">px<br>
                 <span class="made-button" id="unpressedMadeButton"></span>
             </div>
             <div>
@@ -113,11 +113,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
                 <label for="colorpicker">Color:</label>
                     <input type="color" id="colorpicker" value="#ffffff" onInput="updateMadeButtonColor(this.value, document.getElementById('pressedMadeButton'))">
                 <label for="pressedSize">Size:</label>
-                    <input class="buttonMakerTextBox" type="number" id="pressedSize" value="130" onInput="updateMadeButtonSize(this.value, document.getElementById('pressedMadeButton'))">px<br>
+                    <input class="buttonMakerTextBox" type="number" id="pressedSize" value="140" onInput="updateMadeButtonSize(this.value, document.getElementById('pressedMadeButton'))">px<br>
                 <label for="colorpicker">Border color:</label>
                     <input type="color" id="colorpicker" value="#000000" onInput="updateMadeButtonBorderColor(this.value, document.getElementById('pressedMadeButton'))">
                 <label for="pressedBorderThickness">Border thickness:</label>
-                    <input class="buttonMakerTextBox" type="number" id="pressedBorderThickness" value="10" onInput="updateMadeButtonBorderSize(this.value, document.getElementById('pressedMadeButton'))">px<br>
+                    <input class="buttonMakerTextBox" type="number" id="pressedBorderThickness" value="5" onInput="updateMadeButtonBorderSize(this.value, document.getElementById('pressedMadeButton'))">px<br>
                 <div class="alert" style="display: none">
                     <span id="pressedButtonMakerCloseErrorButton" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
                     <strong>Error:</strong> No image found at the provided URL.

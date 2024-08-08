@@ -441,6 +441,7 @@ function importButton(e) {
 	}
 
 	if (e.button === 2) {
+		// e.preventDefault();
 		const newUri = targ.style.backgroundImage.slice(4, -1).replace(/"/g, "").replace('"', '');
 		const newEncodedUri = newUri === decodeURI(newUri) ? encodeURI(newUri) : newUri ;
 		urlBox.value = newEncodedUri;
@@ -796,6 +797,7 @@ function getChangedVariables(img) {
 		${style.backgroundRepeat !== originalStateOfImg.backgroundRepeate ? `background-repeat: ${style.backgroundRepeat};<br>` : ''}
 		${style.backgroundPosition !== originalStateOfImg.backgroundPosition ? `background-image: ${style.backgroundPosition};<br>` : ''}
 		${style.borderRadius !== originalStateOfImg.borderRadius ? `border-radius: ${style.borderRadius};<br>` : ''}
+		${style.borderColor !== originalStateOfImg.borderColor ? `border-color: ${style.borderColor};<br>` : ''}
 	}<br>
 	`
 	return changedVariables;
@@ -805,6 +807,7 @@ function getStateOfImgWithSpecifiedBackgroundImg(img, backgroundImage) {
 		const originalBackgroundImage = img.backgroundImage;
 		img.backgroundImage = backgroundImage;
 		const style = getComputedStyle(img);
+		// TODO call getstateofimg and change background
 		return {
 			top: style.top,
 			left: style.left,
@@ -820,6 +823,7 @@ function getStateOfImgWithSpecifiedBackgroundImg(img, backgroundImage) {
 			backgroundRepeat: style.backgroundRepeat,
 			backgroundPosition: style.backgroundPosition,
 			borderRadius: style.borderRadius,
+			background: style.borderColor,
 		};
 		img.backgroundImage = originalBackgroundImage;
 }
@@ -841,6 +845,7 @@ function getStateOfImg(img) {
 			backgroundRepeat: style.backgroundRepeat,
 			backgroundPosition: style.backgroundPosition,
 			borderRadius: style.borderRadius,
+			borderColor: style.borderColor,
 		};
 }
 
@@ -901,6 +906,7 @@ function resetButtonAndPressedVersion(button) {
 	button.style.backgroundSize = "";
 	button.style.backgroundRepeat = "";
 	button.style.backgroundPosition = "";
+	button.style.borderColor = "";
 
 	// Probably a redundant check, because Make/Import already can't be applies to pressed.
 	if (!button.id.endsWith(".pressed") && button.id !== ".fight-stick .fstick") {
@@ -913,6 +919,7 @@ function resetButtonAndPressedVersion(button) {
 		pressedButton.style.backgroundSize = "";
 		pressedButton.style.backgroundRepeat = "";
 		pressedButton.style.backgroundPosition = "";
+		pressedButton.style.borderColor = "";
 	}
 }
 
