@@ -770,10 +770,6 @@ function getChangedVariables(img) {
 		${style.borderRadius !== originalStateOfImg.borderRadius ? `border-radius: ${style.borderRadius};<br>` : ''}
 	}<br>
 	`
-	console.log(`kurttm debug style.backgroundSize: ` + style.backgroundSize);
-	console.log(`kurttm debug originalStateOfImg.backgroundSize: ` + originalStateOfImg.backgroundSize);
-	console.log(`kurttm debug style.backgroundSize !== originalStateOfImg.backgroundSize: ` + style.backgroundSize !== originalStateOfImg.backgroundSize);
-	console.log(`kurttm debug: ` + style.backgroundSize === originalStateOfImg.backgroundSize ? `background-size: ${style.backgroundSize};<br>` : '');
 	return changedVariables;
 }
 

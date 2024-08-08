@@ -64,9 +64,9 @@ body {font-family: Arial, Helvetica, sans-serif;}
     <div class="tab">
         <button class="tablinks" onclick="openCity(event, 'moveTab')">Move</button>
         <button class="tablinks" onclick="openCity(event, 'deleteTab')">Delete</button>
+        <button class="tablinks" onclick="openCity(event, 'changeSizeTab')">Change size</button>
         <button class="tablinks" onclick="openCity(event, 'makeButtonsTab')">Make buttons</button>
         <button class="tablinks" onclick="openCity(event, 'importButtonsTab')">Import buttons</button>
-        <button class="tablinks" onclick="openCity(event, 'changeSizeTab')">Change size</button>
         <button class="tablinks" onclick="openCity(event, 'importStickTab')">Import stick</button>
         <button class="tablinks active" onclick="openCity(event, 'tutorialTab')">How to use</button>
     </div>
@@ -148,13 +148,13 @@ body {font-family: Arial, Helvetica, sans-serif;}
                 <span id="stickToolTip" class="tooltiptext" style="display: inline-block">
                     A properly formatted stick example:
                 </span>
-                properly formatted</span> image. Then click a button to make it into that image.</p>
+                properly formatted</span> image. Then click a button to replace it with your stick.</p>
 
             <img hidden id="stickExampleImage" style="width:100%" src="https://imgur.com/ZLzZ9mY.png">
             <label for="stickImportedUrlInput">URL:</label>
             <input class="urlTextBox" type="text" id="stickImportedUrlInput" onChange="updatePreviewPicture(this.value, document.getElementById('stickPreview'))" value="https://imgur.com/7bIsLfh.png"><br><br>
             <div>
-                <div id="stickPreviewText">Preview (alternates between unpressed and pressed if set up properly):<br><br></div>
+                <div id="stickPreviewText">Preview:<br><br></div>
                 <img src="https://imgur.com/7bIsLfh.png" 
                     style="width: 250px; height: 250px; object-fit: cover; object-position: 0% 0%; overflow: hidden" id="stickPreview"
                     onLoad="checkImage(true, this, document.getElementById('stickImportedUrlInput'), document.getElementById('stickCloseErrorButton'), document.getElementById('stickPreviewText'))"
@@ -188,11 +188,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
                         </div>
                         <div>
                             <h4>Street Fighter</h4>
-                            <button id="select2XKOLightLayout" class="btn-1" onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/street%20fighter/3d%20buttons.css')">3d Buttons</button>
+                            <button id="selectStreetFighter3dLayout" class="btn-1" onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/street%20fighter/3d%20buttons.css')">Arcade Buttons</button>
                         </div>
                         <div>
                             <h4>Misc</h4>
-                            <button id="select3dGreyAndRedLayout" class="btn-1" onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/misc%20controllers/3d%20buttons%20red%20and%20grey.css')">3D grey and red</button>
+                            <button id="select3dGreyAndRedLayout" class="btn-1" onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/misc%20controllers/3d%20buttons%20red%20and%20grey.css')">Arcade grey and red</button>
                         </div>
                     </div>
                 </div>
