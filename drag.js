@@ -305,7 +305,7 @@ function importStick(e) {
 	fstick.style.left = targStyle.left;
 	fstick.style.width = targStyle.width;
 	fstick.style.height = targStyle.height;
-	fstick.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
+	fstick.style.backgroundImage = validImageUrlStyle(url) ? `url("${url}")` : `url("${url}.png")`;
 	fstick.style.visibility = "visible";
 	fstick.hidden = false;
 	fstick.style.display = "block";
@@ -433,14 +433,15 @@ function importButton(e) {
 	// Reset anything that make button may have done.
 	resetButtonAndPressedVersion(targ);
 
-	targ.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
+	// targ.style.backgroundImage = `url(https://imgur.com/hNxfRJI.png)`;
+	targ.style.backgroundImage = validImageUrlStyle(url) ? `url("${url}")` : `url("${url}.png")`;
 	const imgSize = targ.offsetWidth;
 	// targ.style.backgroundSize = `${imgSize}px`;
 	targ.style.width = `${imgSize}px`;
 	targ.style.height = `${imgSize}px`;
 
 	const pressedImg = document.getElementById(targ.id + ".pressed");
-	pressedImg.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
+	pressedImg.style.backgroundImage = validImageUrlStyle(url) ? `url("${url}")` : `url("${url}.png")`;
 	// pressedImg.style.backgroundSize = `${imgSize}px`;
 	pressedImg.style.width = `${imgSize}px`;
 	pressedImg.style.height = `${imgSize}px`;
@@ -837,7 +838,7 @@ function updateMadeButtonBorderSize(value, button) {
 
 function updateMadeButtonImg(url, button) {
 	mostRecentlyChangedTextBox = button;
-	button.style.backgroundImage = validImageUrlStyle(url) ? `url(${url})` : `url(${url}.png)`;
+	button.style.backgroundImage = validImageUrlStyle(url) ? `url("${url}")` : `url("${url}.png")`;
 	const fixedUrl = validImageUrlStyle(url) ? url : `${url}.png`;
 	if (button.id.startsWith("unpressed")) {
 		hiddenUnpressedImgUpdater.src = fixedUrl;
@@ -863,7 +864,7 @@ function initializeMadeButton(madeButton, url, imgSize, buttonColorValue, button
 }
 
 function validImageUrlStyle(url) {
-	return url.match(".*(png|jpg|svg|gif|webp|jpeg)$");
+	return /.*(png|jpg|svg|gif|webp|jpeg)$/.test(url);
 }
 
 function resetButtonAndPressedVersion(button) {
