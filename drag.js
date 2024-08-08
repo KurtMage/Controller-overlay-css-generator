@@ -609,6 +609,7 @@ function undo() {
 		}
 		if (locationToReturnTo.visibility !== originalState.visibility) {
 			img.style.visibility = locationToReturnTo.visibility;
+			img.style.zIndex = 0;
 		}
 		if (locationToReturnTo.background !== currentLocation.background) {
 			img.style.background = locationToReturnTo.background;
@@ -670,6 +671,7 @@ function redo() {
 		}
 		if (locationToReturnTo.visibility !== originalState.visibility) {
 			img.style.visibility = locationToReturnTo.visibility;
+			img.style.zIndex = 0;
 		} else {
 			img.style.visibility = 'hidden';
 			img.style.zIndex = -1;
