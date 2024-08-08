@@ -159,8 +159,16 @@ function arrowKeyMove(e) {
 		const computedStyle = getComputedStyle(btn);
 		if (moveVertically) {
 			btn.style.top = (parseInt(computedStyle.top) - amount) + "px";
+			if (!btn.id.endsWith(".pressed") && btn.id !== ".fight-stick .fstick") {
+				const pressedButton = document.getElementById(btn.id + ".pressed");
+				pressedButton.style.top = btn.style.top;
+			}
 		} else {
 			btn.style.left = (parseInt(computedStyle.left) - amount) + "px";
+			if (!btn.id.endsWith(".pressed") && btn.id !== ".fight-stick .fstick") {
+				pressedButton = document.getElementById(btn.id + ".pressed");
+				pressedButton.style.left = btn.style.left;
+			}
 		}
 	}
 	function moveButton(e, button, moveAmount) {
@@ -203,14 +211,6 @@ function arrowKeyMove(e) {
 					document.getElementById(".fight-stick .bumper.left"), 
 					document.getElementById(".fight-stick .trigger-button.right"), 
 					document.getElementById(".fight-stick .trigger-button.left"), 
-					document.getElementById(".fight-stick .x.pressed"), 
-					document.getElementById(".fight-stick .y.pressed"), 
-					document.getElementById(".fight-stick .a.pressed"), 
-					document.getElementById(".fight-stick .b.pressed"), 
-					document.getElementById(".fight-stick .bumper.right.pressed"), 
-					document.getElementById(".fight-stick .bumper.left.pressed"), 
-					document.getElementById(".fight-stick .trigger-button.right.pressed"), 
-					document.getElementById(".fight-stick .trigger-button.left.pressed"), 
 				];
 				break;
 			case "directionalButtons":
@@ -219,26 +219,18 @@ function arrowKeyMove(e) {
 					document.getElementById(".fight-stick .face.down"), 
 					document.getElementById(".fight-stick .face.right"), 
 					document.getElementById(".fight-stick .face.up"), 
-					document.getElementById(".fight-stick .face.left.pressed"), 
-					document.getElementById(".fight-stick .face.down.pressed"), 
-					document.getElementById(".fight-stick .face.right.pressed"), 
-					document.getElementById(".fight-stick .face.up.pressed"), 
 				];
 				break;
 			case "startAndBack":
 				elementsToMove = [
 					document.getElementById(".fight-stick .start"), 
 					document.getElementById(".fight-stick .back"), 
-					document.getElementById(".fight-stick .start.pressed"), 
-					document.getElementById(".fight-stick .back.pressed"), 
 				];
 				break;
 			case "lsRs":
 				elementsToMove = [
 					document.getElementById(".fight-stick .stick.right"), 
 					document.getElementById(".fight-stick .stick.left"), 
-					document.getElementById(".fight-stick .stick.right.pressed"), 
-					document.getElementById(".fight-stick .stick.left.pressed"), 
 				];
 				break;
 			default:
