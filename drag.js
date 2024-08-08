@@ -224,7 +224,7 @@ function arrowKeyMove(e) {
 			moveButton(e, button, moveAmount);
 		}
 	} else {
-		if (!lastMovedButton) {
+		if (!lastMovedButton || !["ArrowLeft", "ArrowDown", "ArrowRight", "ArrowUp"].includes(e.key)) {
 			return;
 		}
 		e.preventDefault();
