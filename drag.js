@@ -149,31 +149,51 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout,
 	request.send();
 }
 
+
 function arrowKeyMove(e) {
+	function applyMoveButtonValues(btn, amount, moveVertically) {
+		const computedStyle = getComputedStyle(btn);
+		if (moveVertically) {
+			btn.style.top = (parseInt(computedStyle.top) - amount) + "px";
+		} else {
+			btn.style.left = (parseInt(computedStyle.left) - amount) + "px";
+		}
+	}
+	function moveButton(e, button, moveAmount) {
+		switch (e.key) {
+			case "ArrowLeft":
+				e.preventDefault();
+				applyMoveButtonValues(button, moveAmount, false);
+				break;
+			case "ArrowDown":
+				e.preventDefault();
+				applyMoveButtonValues(button, -moveAmount, true);
+				break;
+			case "ArrowRight":
+				e.preventDefault();
+				applyMoveButtonValues(button, -moveAmount, false);
+				break;
+			case "ArrowUp":
+				e.preventDefault();
+				applyMoveButtonValues(button, moveAmount, true);
+				break;
+			default:
+				break;
+		}
+	}
+
+	const moveAmount = parseInt(document.getElementById("moveAmountBox").value);
+	if (e.ctrlKey) {
+		for (const button of document.getElementById("layout-box").getElementsByTagName('*')) {
+			moveButton(e, button, moveAmount);
+		}
+		return;
+	}
 	if (!lastMovedButton) {
 		return;
 	}
-	const moveAmount = parseInt(document.getElementById("moveAmountBox").value);
-	switch (e.key) {
-		case "ArrowLeft":
-			e.preventDefault();
-			lastMovedButton.style.left = (parseInt(lastMovedButton.style.left) - moveAmount) + "px";
-			break;
-		case "ArrowDown":
-			e.preventDefault();
-			lastMovedButton.style.top = (parseInt(lastMovedButton.style.top) + moveAmount) + "px";
-			break;
-		case "ArrowRight":
-			e.preventDefault();
-			lastMovedButton.style.left = (parseInt(lastMovedButton.style.left) + moveAmount) + "px";
-			break;
-		case "ArrowUp":
-			e.preventDefault();
-			lastMovedButton.style.top = (parseInt(lastMovedButton.style.top) - moveAmount) + "px";
-			break;
-		default:
-			return;
-	}
+	e.preventDefault();
+	moveButton(e, lastMovedButton, moveAmount);
 
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
