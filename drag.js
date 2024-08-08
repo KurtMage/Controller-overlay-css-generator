@@ -155,12 +155,18 @@ function arrowKeyMove(e) {
 		// Not on move tab.
 		return;
 	}
-	function applyMoveButtonValues(btn, amount, moveVertically) {
+	function applyMoveButtonValues(btn, amount, moveVertically, overrideStartingLocation) {
 		const computedStyle = getComputedStyle(btn);
+		var startingTop = parseInt(computedStyle.top);
+		var startingLeft = parseInt(computedStyle.left);
+		if (overrideStartingLocation) {
+			startingTop = overrideStartingLocation;
+			startingTop = overrideStartingLocation;
+		}
 		if (moveVertically) {
-			btn.style.top = (parseInt(computedStyle.top) - amount) + "px";
+			btn.style.top = (startingTop - amount) + "px";
 		} else {
-			btn.style.left = (parseInt(computedStyle.left) - amount) + "px";
+			btn.style.left = (startingLeft - amount) + "px";
 		}
 	}
 	function moveButton(e, button, moveAmount) {
@@ -168,18 +174,30 @@ function arrowKeyMove(e) {
 			case "ArrowLeft":
 				e.preventDefault();
 				applyMoveButtonValues(button, moveAmount, false);
+				if (!button.id.endsWith(".pressed") && button.id !== (".fight-stick .fstick")) {
+					applyMoveButtonValues(document.getElementById(button.id + ".pressed"), moveAmount, false);
+				}
 				break;
 			case "ArrowDown":
 				e.preventDefault();
 				applyMoveButtonValues(button, -moveAmount, true);
+				if (!button.id.endsWith(".pressed") && button.id !== (".fight-stick .fstick")) {
+					applyMoveButtonValues(document.getElementById(button.id + ".pressed"), -moveAmount, true);
+				}
 				break;
 			case "ArrowRight":
 				e.preventDefault();
 				applyMoveButtonValues(button, -moveAmount, false);
+				if (!button.id.endsWith(".pressed") && button.id !== (".fight-stick .fstick")) {
+					applyMoveButtonValues(document.getElementById(button.id + ".pressed"), -moveAmount, false);
+				}
 				break;
 			case "ArrowUp":
 				e.preventDefault();
 				applyMoveButtonValues(button, moveAmount, true);
+				if (!button.id.endsWith(".pressed") && button.id !== (".fight-stick .fstick")) {
+					applyMoveButtonValues(document.getElementById(button.id + ".pressed"), moveAmount, true);
+				}
 				break;
 			default:
 				return;
@@ -671,6 +689,7 @@ function undo() {
 	currentState = pastStates.pop();
 	undoneStates.push(currentState);
 	document.getElementById('redoButton').style.color = "#fff";
+	baseLayoutUrl = id2state.get(stateMapUrlKey, baseLayoutUrl);
 	stateToReturnTo = pastStates[pastStates.length - 1];
 	for (const [id, locationToReturnTo] of stateToReturnTo.entries()) {
 		if (id === stateMapUrlKey) {
@@ -732,6 +751,7 @@ function redo() {
 	lastKeyPressMove = null;
 	currentState = pastStates[pastStates.length - 1];
 	stateToReturnTo = undoneStates.pop();
+	baseLayoutUrl = id2state.get(stateMapUrlKey, baseLayoutUrl);
 	document.getElementById('undoButton').style.color = "#fff";
 	pastStates.push(stateToReturnTo);
 	for (const [id, locationToReturnTo] of stateToReturnTo.entries()) {
@@ -839,8 +859,8 @@ function getChangedVariables(img) {
 	changedVariables +=
 	`
 	<br>${img.id} {<br>
-		${style.top !== originalStateOfImg.top ? `top: ${img.offsetTop}px;<br>` : ''}
-		${style.left !== originalStateOfImg.left ? `left: ${img.offsetLeft}px;<br>` : ''}
+		${style.top !== originalStateOfImg.top ? `top: ${style.top}px;<br>` : ''}
+		${style.left !== originalStateOfImg.left ? `left: ${style.left}px;<br>` : ''}
 		${style.visibility !== 'hidden' && backgroundChanged ? `background: ${style.background};<br>` : ''}
 		${style.visibility !== originalStateOfImg.visibility ? `visibility: ${style.visibility};<br>` : ''}
 		${style.width !== originalStateOfImg.size ? `width: ${style.width};<br>` : ''}
