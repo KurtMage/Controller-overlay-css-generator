@@ -41,19 +41,23 @@ function init() {
 					document.getElementById('pressedButtonMakerCloseErrorButton'));
 	};
 
-	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
-		const state = getStateOfImg(img);
-		originalState.set(img.id, state);
-	}
-	pastStates.push(originalState);
+
+	switchBaseLayout(baseLayoutUrl, false, false, false);
+	originalState = pastStates[0];
+	// for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
+	// 	const state = getStateOfImg(img);
+	// 	originalState.set(img.id, state);
+	// }
+	// pastStates.push(originalState);
 	
-	importButtonInterval = setInterval(alternatePreviewPicture, 1000);
-	importButtonInterval = setInterval(rotateStickPreviewPicture, 300);
 }
 
-function switchBaseLayout(linkToGamepadviewerBaseLayout) {
+function switchBaseLayout(linkToGamepadviewerBaseLayout,
+						noopIfCurrentLayout = true,
+						async = true,
+						writeCss = true) {
 	// No switch.
-	if (baseLayoutUrl === linkToGamepadviewerBaseLayout) {
+	if (noopIfCurrentLayout && baseLayoutUrl === linkToGamepadviewerBaseLayout) {
 		return;
 	}
 
@@ -107,6 +111,9 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout) {
 		document.getElementById(".fight-stick .stick.left").style.backgroundImage = cssRules["--ls-button-source-image"];
 		document.getElementById(".fight-stick .stick.right").style.backgroundImage = cssRules["--rs-button-source-image"];
 
+
+		// This is here as a start, in case I want there to be less Css for people to copy.
+		// I think I prefer that you can just paste the Css from any URL, though.
 		// if (!baseLayoutUrl2OriginalState.has(linkToGamepadviewerBaseLayout)) {
 		// 	originalStateForThisLayout = new Map();
 		// 	for (const button of layoutBox.getElementsByTagName('*')) {
@@ -123,7 +130,7 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout) {
 			if (!img.id.endsWith(".pressed") && img.id !== (".fight-stick .fstick")) {
 				document.getElementById(img.id + ".pressed").style.backgroundImage = img.style.backgroundImage;
 			}
-			if (doesButtonHaveChange(img)) {
+			if (writeCss && doesButtonHaveChange(img)) {
 				changedVariables += getChangedVariables(img);
 			}
 			const state = getStateOfImg(img);
@@ -138,7 +145,7 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout) {
 	baseLayoutUrl = linkToGamepadviewerBaseLayout;
 	const baseLayoutEditCss = linkToGamepadviewerBaseLayout.split("&editcss=")[1];
 
-	request.open('GET', baseLayoutEditCss, true),
+	request.open('GET', baseLayoutEditCss, async),
 	request.send();
 }
 
@@ -194,6 +201,9 @@ function hideStickExample() {
 
 function alternatePreviewPicture() {
 	const img = document.getElementById("urlButtonPreview");
+	// Note: commented code is here in case I want to allow two images
+	// for unpressed and pressed buttons.
+
 	// pressedUrl = document.getElementById("pressedImportedUrlInput").value;
 	pressedUrl = "";
 	if (pressedUrl === "") {
@@ -224,6 +234,7 @@ function updatePreviewPicture(url, previewPicture) {
 	clearInterval(importButtonInterval);
 	const img = previewPicture;
 	img.src = validImageUrlStyle(url) ? url : `${url}.png`;
+	img.style.objectPosition = "0% 0%";
 	if (previewPicture.id === "urlButtonPreview") {
 		importButtonInterval = setInterval(alternatePreviewPicture, 1000);
 	} else if (previewPicture.id === "stickPreview") {
@@ -414,16 +425,25 @@ function resizeButton(e) {
 }
 
 function importButton(e) {
-	const url = document.getElementById("importedUrlInput").value;
+	const urlBox = document.getElementById("importedUrlInput");
+	const url = urlBox.value;
 	targ = e.target ;
 	if (!targ.className?.startsWith("img ")
 		|| targ.tagName?.toUpperCase() != "SPAN"
 		|| targ.id === ".fight-stick .fstick"
-		|| !urlImageIsGood) {
+		|| !urlImageIsGood
+		|| !targ) {
 		return;
 	}
 
-	if (!targ) { return; }
+	if (e.button === 2) {
+		const newUri = targ.style.backgroundImage.slice(4, -1).replace(/"/g, "").replace('"', '');
+		const newEncodedUri = newUri === decodeURI(newUri) ? encodeURI(newUri) : newUri ;
+		urlBox.value = newEncodedUri;
+		updatePreviewPicture(urlBox.value, document.getElementById("urlButtonPreview"));
+		return;
+	}
+
 	const urlCss = validImageUrlStyle(url) ? `url(\"${url}\")` : `url(\"${url}.png\")`;
 	if (targ.style.backgroundImage === urlCss) {
 		return;
@@ -902,10 +922,27 @@ function openCity(evt, cityName) {
     for (i = 0; i < tablinks.length; i++) {
       tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
-    document.getElementById(cityName).style.display = "block";
+	const tab = document.getElementById(cityName);
+    tab.style.display = "block";
     evt.currentTarget.className += " active";
 
-	const cursorType = cityName === 'moveTab' ? "move" : "crosshair";
+	
+	clearInterval(importButtonInterval);
+	if (cityName === "importButtonsTab") {
+		importButtonInterval = setInterval(alternatePreviewPicture, 1000);
+	} else if (cityName === "importStickTab") {
+		importButtonInterval = setInterval(rotateStickPreviewPicture, 300);
+	}
+
+	var cursorType;
+	switch (cityName) {
+		case "moveTab":
+			cursorType = "move";
+		case "tutorialtab":
+			cursorType = "auto";
+		default:
+			"crosshair";
+	}
 	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
 		if (img.className.startsWith("img")) {
 			img.style.cursor = cursorType;
