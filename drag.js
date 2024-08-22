@@ -405,6 +405,20 @@ function importStick(e) {
 }
 
 function applyMadeButton(e) {
+
+	/**
+	 * If I want to add the ability to add text, there's a ways to do it. Something like this
+	 * 
+	 * 
+	 * url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='100%' width='100%'><text text-anchor='middle' dominant-baseline='middle' x='50%' y='50%' paint-order='stroke' fill='red' font-size='500%'>test</text></svg>");
+	 * 
+	 * <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+   	 * 		<circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+   	 * 		<text text-anchor='middle' dominant-baseline='middle' x='50%' y='58%' paint-order='stroke' fill='red' font-size='500%' style='stroke-width:3px; paint-order:stroke; stroke:#000000; font-family:Lucida Console'> H </text>
+   	 * 		Sorry, your browser does not support inline SVG.
+	 * </svg> 
+	 */
+
 	targ = e.target ;
 	// TODO give error if they try to do this on a stick
 	if (!targ.className?.startsWith("img ")
