@@ -653,6 +653,8 @@ function dragDiv(e) {
 	// move div element
 	targ.style.left=coordX+e.clientX-offsetX+'px';
 	targ.style.top=coordY+e.clientY-offsetY+'px';
+	document.getElementById(targ.id + ".pressed").style.left = targ.style.left;
+	document.getElementById(targ.id + ".pressed").style.top = targ.style.top;
 	return false;
 }
 
