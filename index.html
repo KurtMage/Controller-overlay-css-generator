@@ -56,13 +56,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
 </head>
 
 <body>
-
-
-
-
-    
     <div class="tab">
-        <button class="tablinks" onclick="openCity(event, 'moveTab')">Move</button>
+        <button class="tablinks" onclick="openCity(event, 'moveTab')">Move/Swap</button>
         <button class="tablinks" onclick="openCity(event, 'deleteTab')">Delete</button>
         <button class="tablinks" onclick="openCity(event, 'changeSizeTab')">Change size</button>
         <button class="tablinks" onclick="openCity(event, 'makeButtonsTab')">Make buttons</button>
@@ -73,23 +68,15 @@ body {font-family: Arial, Helvetica, sans-serif;}
     </div>
     <div>
         <div id="moveTab" class="tabcontent">
-            <p>Click and drag buttons to move them.<br>
-               You can also click a button and then use arrow keys to move them
+            <p>Click buttons/stick to select.<br>
+               Use arrow keys to move selected buttons/stick
                 <span>
                     <label for="moveAmountBox"></label>
-                        <input class="buttonMakerTextBox" type="number" id="moveAmountBox" value="10">
+                        <input class="buttonMakerTextBox" type="number" id="moveAmountBox" value="5">
                 </span>
                 px at a time.<br>
-               Ctrl+arrow key will move all buttons/stick.
-                <select id="moveSelectType" class="buttonMakerTextBox" style="width:206px" value="allElements">
-                    <option value="allElements">All buttons/stick</option>
-                    <option value="faceButtons">8 face buttons</option>
-                    <option value="directionalButtons">Directional buttons</option>
-                    <option value="startAndBack">Start and back</option>
-                    <option value="lsRs">LS and RS</option>
-                </select>
+                To swap button locations, select two buttons and click <span class="tooltip" style="border-bottom: none;"><span class="tooltiptext" style="background-color: #333;">Select exactly 2 buttons and press this button to swap</span><button class="btn-1" onclick="swapSelectedButtons()" id="swapButton" style="color: #999;">Swap selected Buttons</button></span>
             </p>
-
         </div>
         <div id="deleteTab" class="tabcontent">
             <p>Click buttons to delete them.</p>

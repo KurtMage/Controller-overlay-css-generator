@@ -3,6 +3,7 @@ var baseLayoutUrl2OriginalState = new Map();
 var pastStates = [];
 var undoneStates = [];
 var selectedButton;
+var moveSelectedButtons = new Set();
 var lastMovedButton;
 var drag = false;
 var urlImageIsGood = false;
@@ -17,7 +18,6 @@ const stateMapUrlKey = "baseLayoutUrl";
 
 function init() {
 	document.onmousedown = clickAction;
-	document.onmouseup = stopDrag;
 	document.onkeydown = arrowKeyMove;
 
 	hiddenUnpressedImgUpdater = new Image();
@@ -249,6 +249,18 @@ function cssTokenizer(cssText) {
     return cssMap;
 }
 
+function moveButtonAndPressedToLocation(btn, top, left) {
+	function moveButtonToLocation(btn, top, left) {
+		btn.style.top = parseInt(top) + "px";
+		btn.style.left = parseInt(left) + "px";
+	}
+	moveButtonToLocation(btn, top, left);
+	if (!btn.id.endsWith(".pressed") && btn.id !== ".fight-stick .fstick") {
+		const pressedButton = document.getElementById(btn.id + ".pressed");
+		moveButtonToLocation(pressedButton, top, left);
+	}
+}
+
 function arrowKeyMove(e) {
 	if (document.getElementById("moveTab").style.display !== 'block') {
 		// Not on move tab.
@@ -257,17 +269,9 @@ function arrowKeyMove(e) {
 	function applyMoveButtonValues(btn, amount, moveVertically) {
 		const computedStyle = getComputedStyle(btn);
 		if (moveVertically) {
-			btn.style.top = (parseInt(computedStyle.top) - amount) + "px";
-			if (!btn.id.endsWith(".pressed") && btn.id !== ".fight-stick .fstick") {
-				const pressedButton = document.getElementById(btn.id + ".pressed");
-				pressedButton.style.top = btn.style.top;
-			}
+			moveButtonAndPressedToLocation(btn, parseInt(computedStyle.top) - amount, btn.style.left);
 		} else {
-			btn.style.left = (parseInt(computedStyle.left) - amount) + "px";
-			if (!btn.id.endsWith(".pressed") && btn.id !== ".fight-stick .fstick") {
-				pressedButton = document.getElementById(btn.id + ".pressed");
-				pressedButton.style.left = btn.style.left;
-			}
+			moveButtonAndPressedToLocation(btn, btn.style.top, parseInt(computedStyle.left) - amount);
 		}
 	}
 	function moveButton(e, button, moveAmount) {
@@ -294,56 +298,13 @@ function arrowKeyMove(e) {
 	}
 
 	const moveAmount = parseInt(document.getElementById("moveAmountBox").value);
-	if (e.ctrlKey) {
-		var elementsToMove = [];
-		switch (document.getElementById("moveSelectType").value) {
-			case "allElements":
-				elementsToMove = document.getElementById("layout-box").getElementsByTagName('*');
-				break;
-			case "faceButtons":
-				elementsToMove = [
-					document.getElementById(".fight-stick .x"), 
-					document.getElementById(".fight-stick .y"), 
-					document.getElementById(".fight-stick .a"), 
-					document.getElementById(".fight-stick .b"), 
-					document.getElementById(".fight-stick .bumper.right"), 
-					document.getElementById(".fight-stick .bumper.left"), 
-					document.getElementById(".fight-stick .trigger-button.right"), 
-					document.getElementById(".fight-stick .trigger-button.left"), 
-				];
-				break;
-			case "directionalButtons":
-				elementsToMove = [
-					document.getElementById(".fight-stick .face.left"), 
-					document.getElementById(".fight-stick .face.down"), 
-					document.getElementById(".fight-stick .face.right"), 
-					document.getElementById(".fight-stick .face.up"), 
-				];
-				break;
-			case "startAndBack":
-				elementsToMove = [
-					document.getElementById(".fight-stick .start"), 
-					document.getElementById(".fight-stick .back"), 
-				];
-				break;
-			case "lsRs":
-				elementsToMove = [
-					document.getElementById(".fight-stick .stick.right"), 
-					document.getElementById(".fight-stick .stick.left"), 
-				];
-				break;
-			default:
-				break;
-		}
-		for (const button of elementsToMove) {
-			moveButton(e, button, moveAmount);
-		}
-	} else {
-		if (!lastMovedButton || !["ArrowLeft", "ArrowDown", "ArrowRight", "ArrowUp"].includes(e.key)) {
-			return;
-		}
-		e.preventDefault();
-		moveButton(e, lastMovedButton, moveAmount);
+
+	if (moveSelectedButtons.size === 0 || !["ArrowLeft", "ArrowDown", "ArrowRight", "ArrowUp"].includes(e.key)) {
+		return;
+	}
+	e.preventDefault();
+	for (const button of moveSelectedButtons) {
+		moveButton(e, button, moveAmount);
 	}
 
 	id2state = new Map();
@@ -704,6 +665,14 @@ function deleteButton(e) {
 	document.getElementById("css-text").innerHTML = changedVariables;
 }
 
+function highlightButton(btn) {
+	btn.style.webkitFilter = "drop-shadow(0px 0px 20px yellow)";
+}
+
+function unhighlightButton(btn) {
+	btn.style.webkitFilter = "";
+}
+
 function startDrag(e) {
 
 	lastKeyPressMove = null;
@@ -724,6 +693,24 @@ function startDrag(e) {
 
 	// assign default values for top and left properties
 	selectedButton = targ;
+	if (!moveSelectedButtons.has(selectedButton)) {
+		moveSelectedButtons.add(selectedButton);
+		highlightButton(selectedButton);
+		if (moveSelectedButtons.size === 2) {
+			document.getElementById('swapButton').style.color = "#fff";
+		} else {
+			document.getElementById('swapButton').style.color = "#999";
+		}
+		return;
+	} else {
+		moveSelectedButtons.delete(selectedButton)
+		unhighlightButton(selectedButton);
+	}
+	if (moveSelectedButtons.size === 2) {
+		document.getElementById('swapButton').style.color = "#fff";
+	} else {
+		document.getElementById('swapButton').style.color = "#999";
+	}
 	lastMovedButton = targ;
 	targ.style.zIndex = 1;
 	if (!targ.style.left) { targ.style.left=targ.offsetLeft + 'px'};
@@ -736,62 +723,33 @@ function startDrag(e) {
 	drag = true;
 
 	// move div element
-	document.onmousemove=dragDiv;
-	return false;
-	
-}
-
-function dragDiv(e) {
-	if(e.preventDefault) e.preventDefault();
-	if (!drag) {return};
-	if (!e) { var e= window.event};
-
-	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN") {
-		return;
-	}
-	// move div element
-	targ.style.left=coordX+e.clientX-offsetX+'px';
-	targ.style.top=coordY+e.clientY-offsetY+'px';
-	document.getElementById(targ.id + ".pressed").style.left = targ.style.left;
-	document.getElementById(targ.id + ".pressed").style.top = targ.style.top;
 	return false;
 }
 
-function stopDrag() {
-	if (!drag) {
-		return;
+function swapSelectedButtons() {
+	if (moveSelectedButtons.size !== 2) {
+		return false;
 	}
-	drag = false;
-	if (selectedButton) {
-		selectedButton.style.zIndex = 0;
-	}
-	const isNewState = selectedButton.offsetTop !==
-			pastStates[pastStates.length - 1].get(selectedButton.id).top
-			|| selectedButton.offsetLeft !==
-			pastStates[pastStates.length - 1].get(selectedButton.id).left;
-	if (!isNewState) {
-		return;
-	}
-
-	var hasChanged = false;
+	const iterator = moveSelectedButtons.values();
+	button1 = iterator.next().value;
+	button2 = iterator.next().value;
+	button1Style = getComputedStyle(button1);
+	button2Style = getComputedStyle(button2);
+	button1Top = button1Style.top;
+	button1Left = button1Style.left;
+	moveButtonAndPressedToLocation(button1, button2Style.top, button2Style.left);
+	moveButtonAndPressedToLocation(button2, button1Top, button1Left);
 	id2state = new Map();
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
 		if (doesButtonHaveChange(img)) {
-			hasChanged = true;
 			changedVariables += getChangedVariables(img);
 		}
 		const state = getStateOfImg(img);
 		id2state.set(img.id, state);
 	}
-	if (hasChanged) {
-		addToPastStates(id2state);
-	}
-	
+	addToPastStates(id2state);
 	document.getElementById("css-text").innerHTML = changedVariables;
-	selectedButton = null;
-
-	// document.getElementById("css-text3").value =changedVariables;
 }
 
 function undo() {
@@ -1126,7 +1084,6 @@ function openCity(evt, cityName) {
     tab.style.display = "block";
     evt.currentTarget.className += " active";
 
-	
 	clearInterval(importButtonInterval);
 	if (cityName === "importButtonsTab") {
 		importButtonInterval = setInterval(alternatePreviewPicture, 1000);
@@ -1136,16 +1093,21 @@ function openCity(evt, cityName) {
 
 	var cursorType;
 	switch (cityName) {
-		case "moveTab":
-			cursorType = "move";
-		case "tutorialtab":
+		case "tutorialTab":
+		case "importCSSTab":
 			cursorType = "auto";
+			break;
 		default:
-			"crosshair";
+			cursorType = "crosshair";
 	}
 	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
 		if (img.className.startsWith("img")) {
 			img.style.cursor = cursorType;
+		}
+		if (cityName === "moveTab" && moveSelectedButtons.has(img)) {
+			highlightButton(img);
+		} else {
+			unhighlightButton(img);
 		}
 	}
 }
