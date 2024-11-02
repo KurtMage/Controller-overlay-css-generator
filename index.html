@@ -63,6 +63,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
         <button class="tablinks" onclick="openCity(event, 'makeButtonsTab')">Make buttons</button>
         <button class="tablinks" onclick="openCity(event, 'importButtonsTab')">Import/copy buttons</button>
         <button class="tablinks" onclick="openCity(event, 'importStickTab')">Import stick</button>
+        <!-- <button class="tablinks" onclick="openCity(event, 'importBackgroundTab')">Import background</button> -->
         <button class="tablinks" onclick="openCity(event, 'importCSSTab')">Import CSS</button>
         <button class="tablinks active" onclick="openCity(event, 'tutorialTab')">How to use</button>
     </div>
@@ -171,6 +172,14 @@ body {font-family: Arial, Helvetica, sans-serif;}
                 </div>
             </div>
         </div>
+        <div id="importBackgroundTab" class="tabcontent">
+            <p>Provide an image url in the box below to be the background.</p>
+            <label for="importedUrlInput">URL:</label>
+            <input class="urlTextBox" type="text" id="importedBackgroundUrlInput" onChange="updateBackground(this.value)"><br><br>
+            <!-- <p>Or provide a second image to be used as the "pressed" version of the button.</p>
+            <label for="pressedImportedUrlInput">URL:</label>
+            <input class="urlTextBox" type="text" id="pressedImportedUrlInput" onChange="updatePreviewPicture(this.value)"><br><br> -->
+        </div>
         <div id="importCSSTab" class="tabcontent">
             <p>
                 Put your CSS in the text box below and then press <span><button id="importCSS" class="btn-1" onclick="applyCSS(document.getElementById('importCssText').value)">Import CSS</button></span>.
@@ -202,6 +211,10 @@ body {font-family: Arial, Helvetica, sans-serif;}
                         <div>
                             <h4>Street Fighter</h4>
                             <button id="selectStreetFighter3dLayout" class="btn-1" onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/street%20fighter/3d%20buttons.css')">Arcade Buttons</button>
+                        </div>
+                        <div>
+                            <h4>Rivals of Aether 2</h4>
+                            <button id="selectRivalsOfAether2" class="btn-1" onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&soffset=45&nocurve=1&map=%7B%7D&editcss=https://kurtmage.github.io/Xbox/Rivals%20of%20Aether%202/recreated_from_game_files.css')">Xbox</button>
                         </div>
                         <div>
                             <h4>Misc</h4>
@@ -247,7 +260,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
             <button class="btn-1" onclick="redo()" id="redoButton" style="color: #999;">Redo last undo</button>
         </div>
     </div>
-    <div class="layout-box" id="layout-box">
+    <div class="layout-box" id="layout-box" style="background-size: auto; background-position: left top; background-repeat: no-repeat">
         <span class="img button x" id=".fight-stick .x"></span>
         <span class="img button y" id=".fight-stick .y"></span>
         <span class="img button a" id=".fight-stick .a"></span>

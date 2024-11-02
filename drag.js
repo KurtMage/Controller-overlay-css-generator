@@ -15,6 +15,7 @@ var importButtonInterval;
 var mostRecentlyChangedTextBox;
 
 const stateMapUrlKey = "baseLayoutUrl";
+const stateMapBackgroundUrlKey = "backgroundUrl";
 
 function init() {
 	document.onmousedown = clickAction;
@@ -73,7 +74,12 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout,
 			obj = {},
 			token;
 			while ( (token=tokenizer.exec(cssText)) ) {
-			obj[token[1].toLowerCase()] = token[2];
+				var varValue = token[2];
+				while (varValue?.startsWith("var(--")) {
+					// Expand variable into values.
+					varValue = obj[varValue.substring(4, varValue.length - 1)];
+				}
+				obj[token[1].toLowerCase()] = varValue;
 			}
 		return obj;
 		};
@@ -91,6 +97,7 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout,
 			img.style.backgroundSize = "cover";
 		}
 
+		// Setting background images.
 		document.getElementById(".fight-stick .x").style.backgroundImage = cssRules["--top-row-index-finger-button-source-image"];
 		document.getElementById(".fight-stick .y").style.backgroundImage = cssRules["--top-row-middle-finger-button-source-image"];
 		document.getElementById(".fight-stick .a").style.backgroundImage = cssRules["--bot-row-index-finger-button-source-image"];
@@ -111,6 +118,47 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout,
 		document.getElementById(".fight-stick .stick.left").style.backgroundImage = cssRules["--ls-button-source-image"];
 		document.getElementById(".fight-stick .stick.right").style.backgroundImage = cssRules["--rs-button-source-image"];
 
+		// Setting top value.
+		document.getElementById(".fight-stick .x").style.top = cssRules["--x-top"];
+		document.getElementById(".fight-stick .y").style.top = cssRules["--y-top"];
+		document.getElementById(".fight-stick .a").style.top = cssRules["--a-top"];
+		document.getElementById(".fight-stick .b").style.top = cssRules["--b-top"];
+		document.getElementById(".fight-stick .bumper.right").style.top = cssRules["--rb-top"];
+		document.getElementById(".fight-stick .bumper.left").style.top = cssRules["--lb-top"];
+		document.getElementById(".fight-stick .trigger-button.right").style.top = cssRules["--rt-top"];
+		document.getElementById(".fight-stick .trigger-button.left").style.top = cssRules["--lt-top"];
+
+		document.getElementById(".fight-stick .face.left").style.top = cssRules["--dir-right-top"];
+		document.getElementById(".fight-stick .face.down").style.top = cssRules["--dir-down-top"];
+		document.getElementById(".fight-stick .face.right").style.top = cssRules["--dir-right-top"];
+		document.getElementById(".fight-stick .face.up").style.top = cssRules["--dir-up-top"];
+
+		document.getElementById(".fight-stick .stick.left").style.top = cssRules["--ls-top"];
+		document.getElementById(".fight-stick .stick.right").style.top = cssRules["--rs-top"];
+
+		// Setting left value.
+		document.getElementById(".fight-stick .x").style.left = cssRules["--x-left"];
+		document.getElementById(".fight-stick .y").style.left = cssRules["--y-left"];
+		document.getElementById(".fight-stick .a").style.left = cssRules["--a-left"];
+		document.getElementById(".fight-stick .b").style.left = cssRules["--b-left"];
+		document.getElementById(".fight-stick .bumper.right").style.left = cssRules["--rb-left"];
+		document.getElementById(".fight-stick .bumper.left").style.left = cssRules["--lb-left"];
+		document.getElementById(".fight-stick .trigger-button.right").style.left = cssRules["--rt-left"];
+		document.getElementById(".fight-stick .trigger-button.left").style.left = cssRules["--lt-left"];
+
+		document.getElementById(".fight-stick .face.left").style.left = cssRules["--dir-right-left"];
+		document.getElementById(".fight-stick .face.down").style.left = cssRules["--dir-down-left"];
+		document.getElementById(".fight-stick .face.right").style.left = cssRules["--dir-right-left"];
+		document.getElementById(".fight-stick .face.up").style.left = cssRules["--dir-up-left"];
+
+		document.getElementById(".fight-stick .stick.left").style.left = cssRules["--ls-left"];
+		document.getElementById(".fight-stick .stick.right").style.left = cssRules["--rs-left"];
+
+		// Setting visibility.
+		document.getElementById(".fight-stick .start").style.visibility = cssRules["--visibility-start"];
+		document.getElementById(".fight-stick .back").style.visibility = cssRules["--visibility-back"];
+
+		// TODO: set background for layout-box. Might also need to set disconnected elemnt after.
 
 		// This is here as a start, in case I want there to be less Css for people to copy.
 		// I think I prefer that you can just paste the Css from any URL, though.
@@ -197,16 +245,7 @@ function applyCSS(css) {
 		}
 	}
 	id2state = new Map();
-	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
-	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
-		if (doesButtonHaveChange(img)) {
-			changedVariables += getChangedVariables(img);
-		}
-		const state = getStateOfImg(img);
-		id2state.set(img.id, state);
-	}
-	addToPastStates(id2state);
-	document.getElementById("css-text").innerHTML = changedVariables;
+	updateStatesAndCss(id2state);
 }
 
 // Generated by chatgpt.
@@ -316,12 +355,14 @@ function arrowKeyMove(e) {
 		const state = getStateOfImg(img);
 		id2state.set(img.id, state);
 	}
+	addToPastStates(id2state);
 	document.getElementById("css-text").innerHTML = changedVariables;
+
 	// Removing state from 1-pixel away in order to group arrow-key moves.
 	if (e.key === lastKeyPressMove) {
-		pastStates.pop();
+		pastStates.splice(pastStates.length - 2, 1);
 	}
-	addToPastStates(id2state);
+
 	lastKeyPressMove = e.key;
 }
 
@@ -376,6 +417,45 @@ function updatePreviewPicture(url, previewPicture) {
 	} else if (previewPicture.id === "stickPreview") {
 		importButtonInterval = setInterval(rotateStickPreviewPicture, 300);
 	}
+}
+
+function setLayoutBoxStyleBackground(url) {
+	const layoutBox = document.getElementById("layout-box");
+	const urlCss = validImageUrlStyle(url) ? `url(\"${url}\")` : `url(\"${url}.png\")`;
+	layoutBox.style.backgroundImage = urlCss;
+	layoutBox.style.backgroundSize = "cover";
+	layoutBox.style.backgroundRepeat = "no-repeat";
+	layoutBox.style.backgroundPosition = "left 0px top 0px";
+}
+
+function updateBackground(url) {
+	const layoutBox = document.getElementById("layout-box");
+	const oldBackgroundImg = layoutBox.style.backgroundImage;
+	setLayoutBoxStyleBackground(url);
+	// TODO: update layout-box in every instance of this to make this affects state. Update undo/redo.
+
+	id2state = new Map();
+	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
+	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
+		if (doesButtonHaveChange(img)) {
+			changedVariables += getChangedVariables(img);
+		}
+		const state = getStateOfImg(img);
+		id2state.set(img.id, state);
+	}
+	if (layoutBox.style.backgroundImage !== oldBackgroundImg ) {
+		changedVariables +=
+		`
+		<br>.controller.fight-stick {<br>
+			background-image: ${urlCss};<br>
+			background-size: auto;<br>
+			background-position: left top;<br>
+			background-repeat: no-repeat;<br>
+		}<br>
+		`
+	}
+	addToPastStates(id2state);
+	document.getElementById("css-text").innerHTML = changedVariables;
 }
 
 function checkImage(success, 
@@ -521,6 +601,10 @@ function applyMadeButton(e) {
 
 
 	id2state = new Map();
+	updateStatesAndCss(id2state);
+}
+
+function updateStatesAndCss(id2state) {
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
 		if (doesButtonHaveChange(img)) {
@@ -562,16 +646,7 @@ function resizeButton(e) {
 	}
 
 	id2state = new Map();
-	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
-	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
-		if (doesButtonHaveChange(img)) {
-			changedVariables += getChangedVariables(img);
-		}
-		const state = getStateOfImg(img);
-		id2state.set(img.id, state);
-	}
-	addToPastStates(id2state);
-	document.getElementById("css-text").innerHTML = changedVariables;
+	updateStatesAndCss(id2state);
 }
 
 function importButton(e) {
@@ -620,16 +695,7 @@ function importButton(e) {
 	pressedImg.style.backgroundPositionY = `100%`;
 
 	id2state = new Map();
-	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
-	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
-		if (doesButtonHaveChange(img)) {
-			changedVariables += getChangedVariables(img);
-		}
-		const state = getStateOfImg(img);
-		id2state.set(img.id, state);
-	}
-	addToPastStates(id2state);
-	document.getElementById("css-text").innerHTML = changedVariables;
+	updateStatesAndCss(id2state);
 }
 
 function deleteButton(e) {
@@ -653,16 +719,7 @@ function deleteButton(e) {
 	targ.style.visibility = "hidden";
 
 	id2state = new Map();
-	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
-	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
-		if (doesButtonHaveChange(img)) {
-			changedVariables += getChangedVariables(img);
-		}
-		const state = getStateOfImg(img);
-		id2state.set(img.id, state);
-	}
-	addToPastStates(id2state);
-	document.getElementById("css-text").innerHTML = changedVariables;
+	updateStatesAndCss(id2state);
 }
 
 function highlightButton(btn) {
@@ -740,16 +797,7 @@ function swapSelectedButtons() {
 	moveButtonAndPressedToLocation(button1, button2Style.top, button2Style.left);
 	moveButtonAndPressedToLocation(button2, button1Top, button1Left);
 	id2state = new Map();
-	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
-	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
-		if (doesButtonHaveChange(img)) {
-			changedVariables += getChangedVariables(img);
-		}
-		const state = getStateOfImg(img);
-		id2state.set(img.id, state);
-	}
-	addToPastStates(id2state);
-	document.getElementById("css-text").innerHTML = changedVariables;
+	updateStatesAndCss(id2state);
 }
 
 function undo() {
@@ -761,9 +809,10 @@ function undo() {
 	undoneStates.push(currentState);
 	document.getElementById('redoButton').style.color = "#fff";
 	baseLayoutUrl = id2state.get(stateMapUrlKey, baseLayoutUrl);
+	setLayoutBoxStyleBackground(id2state.get(stateMapBackgroundUrlKey));
 	stateToReturnTo = pastStates[pastStates.length - 1];
 	for (const [id, locationToReturnTo] of stateToReturnTo.entries()) {
-		if (id === stateMapUrlKey) {
+		if (id === stateMapUrlKey || id === stateMapBackgroundUrlKey) {
 			continue;
 		}
 		const currentLocation = currentState.get(id);
@@ -798,6 +847,9 @@ function undo() {
 		if (locationToReturnTo.borderRadius !== currentLocation.borderRadius) {
 			img.style.borderRadius = locationToReturnTo.borderRadius;
 		}
+		if (locationToReturnTo.backgroundSize !== currentLocation.backgroundSize) {
+			img.style.backgroundSize = locationToReturnTo.backgroundSize;
+		}
 	}
 
 	var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
@@ -823,10 +875,11 @@ function redo() {
 	currentState = pastStates[pastStates.length - 1];
 	stateToReturnTo = undoneStates.pop();
 	baseLayoutUrl = id2state.get(stateMapUrlKey, baseLayoutUrl);
+	setLayoutBoxStyleBackground(id2state.get(stateMapBackgroundUrlKey));
 	document.getElementById('undoButton').style.color = "#fff";
 	pastStates.push(stateToReturnTo);
 	for (const [id, locationToReturnTo] of stateToReturnTo.entries()) {
-		if (id === stateMapUrlKey) {
+		if (id === stateMapUrlKey || id === stateMapBackgroundUrlKey) {
 			continue;
 		}
 		const currentLocation = currentState.get(id);
@@ -863,6 +916,9 @@ function redo() {
 		}
 		if (locationToReturnTo.borderRadius !== currentLocation.borderRadius) {
 			img.style.borderRadius = locationToReturnTo.borderRadius;
+		}
+		if (locationToReturnTo.backgroundSize !== currentLocation.backgroundSize) {
+			img.style.backgroundSize = locationToReturnTo.backgroundSize;
 		}
 	}
 
@@ -914,6 +970,8 @@ function doesButtonHaveChange(img) {
 
 function addToPastStates(id2state) {
 	id2state.set(stateMapUrlKey, baseLayoutUrl);
+	const layoutBox = document.getElementById("layout-box");
+	id2state.set(stateMapBackgroundUrlKey, layoutBox.style.backgroundImage);
 	pastStates.push(id2state);
 	document.getElementById('undoButton').style.color = "#fff";
 	undoneStates = [];
