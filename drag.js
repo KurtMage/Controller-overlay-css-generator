@@ -128,7 +128,7 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout,
 		document.getElementById(".fight-stick .trigger-button.right").style.top = cssRules["--rt-top"];
 		document.getElementById(".fight-stick .trigger-button.left").style.top = cssRules["--lt-top"];
 
-		document.getElementById(".fight-stick .face.left").style.top = cssRules["--dir-right-top"];
+		// document.getElementById(".fight-stick .face.left").style.top = cssRules["--dir-right-top"];
 		document.getElementById(".fight-stick .face.down").style.top = cssRules["--dir-down-top"];
 		document.getElementById(".fight-stick .face.right").style.top = cssRules["--dir-right-top"];
 		document.getElementById(".fight-stick .face.up").style.top = cssRules["--dir-up-top"];
@@ -146,7 +146,7 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout,
 		document.getElementById(".fight-stick .trigger-button.right").style.left = cssRules["--rt-left"];
 		document.getElementById(".fight-stick .trigger-button.left").style.left = cssRules["--lt-left"];
 
-		document.getElementById(".fight-stick .face.left").style.left = cssRules["--dir-right-left"];
+		// document.getElementById(".fight-stick .face.left").style.left = cssRules["--dir-right-left"];
 		document.getElementById(".fight-stick .face.down").style.left = cssRules["--dir-down-left"];
 		document.getElementById(".fight-stick .face.right").style.left = cssRules["--dir-right-left"];
 		document.getElementById(".fight-stick .face.up").style.left = cssRules["--dir-up-left"];
