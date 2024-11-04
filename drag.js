@@ -97,74 +97,44 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout,
 			img.style.backgroundSize = "cover";
 		}
 
-		// Setting background images.
-		document.getElementById(".fight-stick .x").style.backgroundImage = cssRules.get("--top-row-index-finger-button-source-image");
-		document.getElementById(".fight-stick .y").style.backgroundImage = cssRules.get("--top-row-middle-finger-button-source-image");
-		document.getElementById(".fight-stick .a").style.backgroundImage = cssRules.get("--bot-row-index-finger-button-source-image");
-		document.getElementById(".fight-stick .b").style.backgroundImage = cssRules.get("--bot-row-middle-finger-button-source-image");
-		document.getElementById(".fight-stick .bumper.right").style.backgroundImage = cssRules.get("--top-row-ring-finger-button-source-image");
-		document.getElementById(".fight-stick .bumper.left").style.backgroundImage = cssRules.get("--top-row-pinky-finger-button-source-image");
-		document.getElementById(".fight-stick .trigger-button.right").style.backgroundImage = cssRules.get("--bot-row-ring-finger-button-source-image");
-		document.getElementById(".fight-stick .trigger-button.left").style.backgroundImage = cssRules.get("--bot-row-pinky-finger-button-source-image");
+		const id2vars = new Map([
+			[".fight-stick .x", ["--top-row-index-finger-button-source-image", "--x-top", '--x-left']],
+			[".fight-stick .y", ["--top-row-middle-finger-button-source-image", "--y-top", '--y-left']],
+			[".fight-stick .a", ["--bot-row-index-finger-button-source-image", "--a-top", '--a-left']],
+			[".fight-stick .b", ["--bot-row-middle-finger-button-source-image", "--b-top", '--b-left']],
+			[".fight-stick .bumper.right", ["--top-row-ring-finger-button-source-image", "--rb-top", '--rb-left']],
+			[".fight-stick .bumper.left", ["--top-row-pinky-finger-button-source-image", "--lb-top", '--lb-left']],
+			[".fight-stick .trigger-button.right", ["--bot-row-ring-finger-button-source-image", "--rt-top", '--rt-left']],
+			[".fight-stick .trigger-button.left", ["--bot-row-pinky-finger-button-source-image", "--lt-top", '--lt-left']],
 
-		document.getElementById(".fight-stick .face.left").style.backgroundImage = cssRules.get("--left-arrow-source-image");
-		document.getElementById(".fight-stick .face.down").style.backgroundImage = cssRules.get("--down-arrow-source-image");
-		document.getElementById(".fight-stick .face.right").style.backgroundImage = cssRules.get("--right-arrow-source-image");
-		document.getElementById(".fight-stick .face.up").style.backgroundImage = cssRules.get("--up-arrow-source-image");
+			[".fight-stick .face.left", ["--left-arrow-source-image", "--dir-left-top", "--dir-left-left"]],
+			[".fight-stick .face.down", ["--down-arrow-source-image", "--dir-down-top", "--dir-down-left"]],
+			[".fight-stick .face.right", ["--right-arrow-source-image", "--dir-right-top", "--dir-right-left"]],
+			[".fight-stick .face.up", ["--up-arrow-source-image", "--dir-up-top", "--dir-up-left"]],
 
-		document.getElementById(".fight-stick .start").style.backgroundImage = cssRules.get("--start-button-source-image");
-		document.getElementById(".fight-stick .back").style.backgroundImage = cssRules.get("--back-button-source-image");
+			[".fight-stick .start", ["--start-button-source-image", "--start-top", "--start-left", "--visibility-start"]],
+			[".fight-stick .back", ["--back-button-source-image", "--back-top", "--back-left", "--visibility-back"]],
 
-		document.getElementById(".fight-stick .stick.left").style.backgroundImage = cssRules.get("--ls-button-source-image");
-		document.getElementById(".fight-stick .stick.right").style.backgroundImage = cssRules.get("--rs-button-source-image");
+			[".fight-stick .stick.left", ["--ls-button-source-image", "--ls-top", "--ls-left"]],
+			[".fight-stick .stick.right", ["--rs-button-source-image", "--rs-top", "--rs-left"]],
+		]);
 
-		// Setting top value.
-		document.getElementById(".fight-stick .x").style.top = cssRules.get("--x-top")?.startsWith("calc(") ? "" : cssRules.get("--x-top");
-		document.getElementById(".fight-stick .y").style.top = cssRules.get("--y-top")?.startsWith("calc(") ? "" : cssRules.get("--y-top");
-		document.getElementById(".fight-stick .a").style.top = cssRules.get("--a-top")?.startsWith("calc(") ? "" : cssRules.get("--a-top");
-		document.getElementById(".fight-stick .b").style.top = cssRules.get("--b-top")?.startsWith("calc(") ? "" : cssRules.get("--b-top");
-		document.getElementById(".fight-stick .bumper.right").style.top = cssRules.get("--rb-top")?.startsWith("calc(") ? "" : cssRules.get("--rb-top");
-		document.getElementById(".fight-stick .bumper.left").style.top = cssRules.get("--lb-top")?.startsWith("calc(") ? "" : cssRules.get("--lb-top");
-		document.getElementById(".fight-stick .trigger-button.right").style.top = cssRules.get("--rt-top")?.startsWith("calc(") ? "" : cssRules.get("--rt-top");
-		document.getElementById(".fight-stick .trigger-button.left").style.top = cssRules.get("--lt-top")?.startsWith("calc(") ? "" : cssRules.get("--lt-top");
-
-		document.getElementById(".fight-stick .face.left").style.top = cssRules.get("--dir-right-top")?.startsWith("calc(") ? "" : cssRules.get("--dir-right-top");
-		document.getElementById(".fight-stick .face.down").style.top = cssRules.get("--dir-down-top")?.startsWith("calc(") ? "" : cssRules.get("--dir-down-top");
-		document.getElementById(".fight-stick .face.right").style.top = cssRules.get("--dir-right-top")?.startsWith("calc(") ? "" : cssRules.get("--dir-right-top");
-		document.getElementById(".fight-stick .face.up").style.top = cssRules.get("--dir-up-top")?.startsWith("calc(") ? "" : cssRules.get("--dir-up-top");
-
-		if (cssRules.has("--ls-top")) {
-			document.getElementById(".fight-stick .stick.left").style.top = cssRules.get("--ls-top")?.startsWith("calc(") ? "" : cssRules.get("--ls-top");
+		for (const [id, vars] of id2vars) {
+			for (const variable of vars) {
+				if (!cssRules.has(variable)) {
+					continue;
+				}
+				if (variable.endsWith("-image")) {
+					document.getElementById(id).style.backgroundImage = cssRules.get(variable)?.startsWith("calc(") ? "" : cssRules.get(variable);
+				} else if (variable.endsWith("-top")) {
+					document.getElementById(id).style.top = cssRules.get(variable)?.startsWith("calc(") ? "" : cssRules.get(variable);
+				} else if (variable.endsWith("-left")) {
+					document.getElementById(id).style.left = cssRules.get(variable)?.startsWith("calc(") ? "" : cssRules.get(variable);
+				} else if (variable.startsWith("--visibility")) {
+					document.getElementById(id).style.visibility = cssRules.get(variable)?.startsWith("calc(") ? "" : cssRules.get(variable);
+				}
+			}
 		}
-		if (cssRules.has("--rs-top")) {
-			document.getElementById(".fight-stick .stick.right").style.top = cssRules.get("--rs-top")?.startsWith("calc(") ? "" : cssRules.get("--rs-top");
-		}
-
-		// Setting left value.
-		document.getElementById(".fight-stick .x").style.left = cssRules.get("--x-left")?.startsWith("calc(") ? "" : cssRules.get("--x-left");
-		document.getElementById(".fight-stick .y").style.left = cssRules.get("--y-left")?.startsWith("calc(") ? "" : cssRules.get("--y-left");
-		document.getElementById(".fight-stick .a").style.left = cssRules.get("--a-left")?.startsWith("calc(") ? "" : cssRules.get("--a-left");
-		document.getElementById(".fight-stick .b").style.left = cssRules.get("--b-left")?.startsWith("calc(") ? "" : cssRules.get("--b-left");
-		document.getElementById(".fight-stick .bumper.right").style.left = cssRules.get("--rb-left")?.startsWith("calc(") ? "" : cssRules.get("--rb-left");
-		document.getElementById(".fight-stick .bumper.left").style.left = cssRules.get("--lb-left")?.startsWith("calc(") ? "" : cssRules.get("--lb-left");
-		document.getElementById(".fight-stick .trigger-button.right").style.left = cssRules.get("--rt-left")?.startsWith("calc(") ? "" : cssRules.get("--rt-left");
-		document.getElementById(".fight-stick .trigger-button.left").style.left = cssRules.get("--lt-left")?.startsWith("calc(") ? "" : cssRules.get("--lt-left");
-
-		document.getElementById(".fight-stick .face.left").style.left = cssRules.get("--dir-right-left")?.startsWith("calc(") ? "" : cssRules.get("--dir-right-left");
-		document.getElementById(".fight-stick .face.down").style.left = cssRules.get("--dir-down-left")?.startsWith("calc(") ? "" : cssRules.get("--dir-down-left");
-		document.getElementById(".fight-stick .face.right").style.left = cssRules.get("--dir-right-left")?.startsWith("calc(") ? "" : cssRules.get("--dir-right-left");
-		document.getElementById(".fight-stick .face.up").style.left = cssRules.get("--dir-up-left")?.startsWith("calc(") ? "" : cssRules.get("--dir-up-left");
-
-		if (cssRules.has("--ls-left")) {
-			document.getElementById(".fight-stick .stick.left").style.left = cssRules.get("--ls-left")?.startsWith("calc(") ? "" : cssRules.get("--ls-left");
-		}
-		if (cssRules.has("--rs-left")) {
-			document.getElementById(".fight-stick .stick.right").style.left = cssRules.get("--rs-left")?.startsWith("calc(") ? "" : cssRules.get("--rs-left");
-		}
-
-		// Setting visibility.
-		document.getElementById(".fight-stick .start").style.visibility = cssRules.get("--visibility-start");
-		document.getElementById(".fight-stick .back").style.visibility = cssRules.get("--visibility-back");
 
 		// TODO: set background for layout-box. Might also need to set disconnected elemnt after.
 
