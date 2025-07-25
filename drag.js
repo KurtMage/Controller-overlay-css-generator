@@ -292,14 +292,20 @@ function cssTokenizer(cssText) {
 }
 
 function moveButtonAndPressedToLocation(btn, top, left) {
+	moveButtonToLocation(btn, top, left, true)
+}
+
+function moveButtonToLocation(btn, top, left, alsoMovePressedOrUnpressedVersion) {
 	function moveButtonToLocation(btn, top, left) {
 		btn.style.top = parseInt(top) + "px";
 		btn.style.left = parseInt(left) + "px";
 	}
 	moveButtonToLocation(btn, top, left);
-	if (!btn.id.endsWith(".pressed") && btn.id !== ".fight-stick .fstick") {
-		const pressedButton = document.getElementById(btn.id + ".pressed");
-		moveButtonToLocation(pressedButton, top, left);
+	// Move pressed/unpressed version.
+	// Unlessed it's stick. There's no pressed version of stick.
+	if (alsoMovePressedOrUnpressedVersion && targ.id !== ".fight-stick .fstick") {
+		var otherVersion = getPressedOrUnpressedVersionOfButton(targ);
+		moveButtonToLocation(otherVersion, top, left, false);
 	}
 }
 
@@ -644,12 +650,7 @@ function resizeButtonTarget(targ, alsoResizePressedOrUnpressedVersion = true) {
 	// Resize pressed/unpressed version.
 	// Unlessed it's stick. There's no pressed version of stick.
 	if (alsoResizePressedOrUnpressedVersion && targ.id !== ".fight-stick .fstick") {
-		var otherVersion = null;
-		if (targ.id.endsWith('.pressed')) {
-			otherVersion = document.getElementById(targ.id.substring(0, targ.id.length - 8));
-		} else {
-			otherVersion = document.getElementById(targ.id + ".pressed");
-		}
+		var otherVersion = getPressedOrUnpressedVersionOfButton(targ);
 		resizeButtonTarget(otherVersion, false);
 	}
 	id2state = new Map();
@@ -733,12 +734,28 @@ function deleteButton(e) {
 	updateStatesAndCss(id2state);
 }
 
-function highlightButton(btn) {
+function highlightButton(btn, alsoHighlightPressedOrUnpressedVersion = true) {
 	btn.style.webkitFilter = "drop-shadow(0px 0px 20px yellow)";
+	// Also highlight the pressed version. Stick doesn't have pressed version.
+	if (alsoHighlightPressedOrUnpressedVersion && btn.id !== ".fight-stick .fstick") {
+		var otherVersion = getPressedOrUnpressedVersionOfButton(btn);
+		highlightButton(otherVersion, false);
+	}
 }
 
-function unhighlightButton(btn) {
+function unhighlightButton(btn, alsoUnhighlightPressedOrUnpressedVersion = true) {
 	btn.style.webkitFilter = "";
+	if (alsoUnhighlightPressedOrUnpressedVersion && btn.id !== ".fight-stick .fstick") {
+		var otherVersion = getPressedOrUnpressedVersionOfButton(btn);
+		unhighlightButton(otherVersion, false);
+	}
+}
+
+function getPressedOrUnpressedVersionOfButton(btn) {
+		if (btn.id.endsWith('.pressed')) {
+			return document.getElementById(btn.id.substring(0, btn.id.length - 8));
+		}
+		otherVersion = document.getElementById(btn.id + ".pressed");
 }
 
 function startDrag(e) {
