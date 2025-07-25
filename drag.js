@@ -18,6 +18,24 @@ const stateMapUrlKey = "baseLayoutUrl";
 const stateMapBackgroundUrlKey = "backgroundUrl";
 
 function init() {
+	for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
+		if (img.id.endsWith(".pressed") || img.id === (".fight-stick .fstick")) {
+			continue;
+		}
+		const btn = img;
+		const btnPressed = document.getElementById(img.id + ".pressed");
+
+		btn.addEventListener('mouseenter', function() {
+			btn.setAttribute('hidden', '');
+			btnPressed.removeAttribute('hidden');
+		});
+
+		btnPressed.addEventListener('mouseleave', function() {
+			btn.removeAttribute('hidden');
+			btnPressed.setAttribute('hidden', '');
+		});
+	}
+
 	document.onmousedown = clickAction;
 	document.onkeydown = arrowKeyMove;
 
@@ -51,6 +69,7 @@ function init() {
 	// }
 	// pastStates.push(originalState);
 	
+
 }
 
 function switchBaseLayout(linkToGamepadviewerBaseLayout,
@@ -97,7 +116,7 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout,
 			img.style.backgroundSize = "cover";
 		}
 
-		const id2vars = new Map([
+		const unpressedId2vars = new Map([
 			[".fight-stick .x", ["--top-row-index-finger-button-source-image", "--x-top", '--x-left']],
 			[".fight-stick .y", ["--top-row-middle-finger-button-source-image", "--y-top", '--y-left']],
 			[".fight-stick .a", ["--bot-row-index-finger-button-source-image", "--a-top", '--a-left']],
@@ -118,6 +137,12 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout,
 			[".fight-stick .stick.left", ["--ls-button-source-image", "--ls-top", "--ls-left"]],
 			[".fight-stick .stick.right", ["--rs-button-source-image", "--rs-top", "--rs-left"]],
 		]);
+		const id2vars = new Map();
+		for (const [key, value] of unpressedId2vars) {
+			id2vars.set(key, value);
+			id2vars.set(key + '.pressed', value);
+		}
+
 
 		for (const [id, vars] of id2vars) {
 			for (const variable of vars) {
@@ -600,7 +625,10 @@ function resizeButton(e) {
 	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN") {
 		return;
 	}
+	resizeButtonTarget(targ);
+}
 
+function resizeButtonTarget(targ, alsoResizePressedOrUnpressedVersion = true) {
 	console.log('resize');
 
 	style = getComputedStyle(targ);
@@ -613,16 +641,17 @@ function resizeButton(e) {
 	targ.style.height = `${size}px`;
 	targ.style.width = `${size}px`;
 
-	// There's no pressed version of stick.
-	if (targ.id !==  ".fight-stick .fstick") {
-		const pressedImg = document.getElementById(targ.id + ".pressed");
-
-		// pressedImg.style.backgroundSize = `${size}px`;
-		pressedImg.style.height = `${size}px`;
-		pressedImg.style.width = `${size}px`;
-		// pressedImg.style.backgroundPositionY = `-${size}px`;
+	// Resize pressed/unpressed version.
+	// Unlessed it's stick. There's no pressed version of stick.
+	if (alsoResizePressedOrUnpressedVersion && targ.id !== ".fight-stick .fstick") {
+		var otherVersion = null;
+		if (targ.id.endsWith('.pressed')) {
+			otherVersion = document.getElementById(targ.id.substring(0, targ.id.length - 8));
+		} else {
+			otherVersion = document.getElementById(targ.id + ".pressed");
+		}
+		resizeButtonTarget(otherVersion, false);
 	}
-
 	id2state = new Map();
 	updateStatesAndCss(id2state);
 }
