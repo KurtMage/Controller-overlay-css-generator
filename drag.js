@@ -693,13 +693,17 @@ function importButton(e) {
 	// targ.style.backgroundSize = `${imgSize}px`;
 	targ.style.width = `${imgSize}px`;
 	targ.style.height = `${imgSize}px`;
+	targ.style.backgroundPositionY = `100%`;
 
-	const pressedImg = document.getElementById(targ.id + ".pressed");
-	pressedImg.style.backgroundImage = validImageUrlStyle(url) ? `url("${url}")` : `url("${url}.png")`;
-	// pressedImg.style.backgroundSize = `${imgSize}px`;
-	pressedImg.style.width = `${imgSize}px`;
-	pressedImg.style.height = `${imgSize}px`;
-	pressedImg.style.backgroundPositionY = `100%`;
+	// Should always be true, but protecting just in case.
+	if (targ.id.endsWith(".pressed")) {
+		const unpressedImg = document.getElementById(targ.id.slice(0, -8));
+		unpressedImg.style.backgroundImage = validImageUrlStyle(url) ? `url("${url}")` : `url("${url}.png")`;
+		// pressedImg.style.backgroundSize = `${imgSize}px`;
+		unpressedImg.style.width = `${imgSize}px`;
+		unpressedImg.style.height = `${imgSize}px`;
+		unpressedImg.style.backgroundPositionY = `0%`;
+	}
 
 	id2state = new Map();
 	updateStatesAndCss(id2state);
