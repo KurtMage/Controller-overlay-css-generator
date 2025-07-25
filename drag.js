@@ -110,7 +110,7 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout,
 			if (img.id === ".fight-stick .fstick") {
 				continue;
 			}
-			resetButtonAndPressedVersion(img);
+			resetButtonAndPressedOrUnpressedVersion(img);
 			// img.style.width = originalState.get(img.id).size;
 			// img.style.height = originalState.get(img.id).size;
 			img.style.backgroundSize = "cover";
@@ -303,8 +303,8 @@ function moveButtonToLocation(btn, top, left, alsoMovePressedOrUnpressedVersion)
 	moveButtonToLocation(btn, top, left);
 	// Move pressed/unpressed version.
 	// Unlessed it's stick. There's no pressed version of stick.
-	if (alsoMovePressedOrUnpressedVersion && targ.id !== ".fight-stick .fstick") {
-		var otherVersion = getPressedOrUnpressedVersionOfButton(targ);
+	if (alsoMovePressedOrUnpressedVersion && btn.id !== ".fight-stick .fstick") {
+		var otherVersion = getPressedOrUnpressedVersionOfButton(btn);
 		moveButtonToLocation(otherVersion, top, left, false);
 	}
 }
@@ -579,34 +579,34 @@ function applyMadeButton(e) {
 	lastKeyPressMove = null;
 
 	// Reset anything that import may have done.
-	resetButtonAndPressedVersion(targ);
+	resetButtonAndPressedOrUnpressedVersion(targ);
 
 	const unpressedStyle = getComputedStyle(document.getElementById("unpressedMadeButton"));
 	const pressedStyle = getComputedStyle(document.getElementById("pressedMadeButton"));
 
 	targ.style.background = "none";
-	targ.style.backgroundColor = unpressedStyle.backgroundColor;
-	targ.style.height = unpressedStyle.height;
-	targ.style.width = unpressedStyle.width;
-	targ.style.borderRadius = unpressedStyle.borderRadius;
-	targ.style.border = unpressedStyle.border;
-	targ.style.backgroundImage = unpressedStyle.backgroundImage;
-	targ.style.backgroundSize = unpressedStyle.backgroundSize;
-	targ.style.backgroundRepeat = unpressedStyle.backgroundRepeat;
-	targ.style.backgroundPosition = unpressedStyle.backgroundPosition;
+	targ.style.backgroundColor = pressedStyle.backgroundColor;
+	targ.style.height = pressedStyle.height;
+	targ.style.width = pressedStyle.width;
+	targ.style.borderRadius = pressedStyle.borderRadius;
+	targ.style.border = pressedStyle.border;
+	targ.style.backgroundImage = pressedStyle.backgroundImage;
+	targ.style.backgroundSize = pressedStyle.backgroundSize;
+	targ.style.backgroundRepeat = pressedStyle.backgroundRepeat;
+	targ.style.backgroundPosition = pressedStyle.backgroundPosition;
 
-	const pressedImg = document.getElementById(targ.id + ".pressed");
+	const pressedImg = document.getElementById(targ.id.slice(0, -8));
 
 	pressedImg.style.background = "none";
-	pressedImg.style.backgroundColor = pressedStyle.backgroundColor;
-	pressedImg.style.height = pressedStyle.height;
-	pressedImg.style.width = pressedStyle.width;
-	pressedImg.style.borderRadius = pressedStyle.borderRadius;
-	pressedImg.style.border = pressedStyle.border;
-	pressedImg.style.backgroundImage = pressedStyle.backgroundImage;
-	pressedImg.style.backgroundSize = pressedStyle.backgroundSize;
-	pressedImg.style.backgroundRepeat = pressedStyle.backgroundRepeat;
-	pressedImg.style.backgroundPosition = pressedStyle.backgroundPosition;
+	pressedImg.style.backgroundColor = unpressedStyle.backgroundColor;
+	pressedImg.style.height = unpressedStyle.height;
+	pressedImg.style.width = unpressedStyle.width;
+	pressedImg.style.borderRadius = unpressedStyle.borderRadius;
+	pressedImg.style.border = unpressedStyle.border;
+	pressedImg.style.backgroundImage = unpressedStyle.backgroundImage;
+	pressedImg.style.backgroundSize = unpressedStyle.backgroundSize;
+	pressedImg.style.backgroundRepeat = unpressedStyle.backgroundRepeat;
+	pressedImg.style.backgroundPosition = unpressedStyle.backgroundPosition;
 
 
 	id2state = new Map();
@@ -686,7 +686,7 @@ function importButton(e) {
 	lastKeyPressMove = null;
 
 	// Reset anything that make button may have done.
-	resetButtonAndPressedVersion(targ);
+	resetButtonAndPressedOrUnpressedVersion(targ);
 
 	// targ.style.backgroundImage = `url(https://imgur.com/hNxfRJI.png)`;
 	targ.style.backgroundImage = validImageUrlStyle(url) ? `url("${url}")` : `url("${url}.png")`;
@@ -755,7 +755,7 @@ function getPressedOrUnpressedVersionOfButton(btn) {
 		if (btn.id.endsWith('.pressed')) {
 			return document.getElementById(btn.id.substring(0, btn.id.length - 8));
 		}
-		otherVersion = document.getElementById(btn.id + ".pressed");
+		return document.getElementById(btn.id + ".pressed");
 }
 
 function startDrag(e) {
@@ -780,6 +780,8 @@ function startDrag(e) {
 	selectedButton = targ;
 	if (!moveSelectedButtons.has(selectedButton)) {
 		moveSelectedButtons.add(selectedButton);
+		// // We want to make sure we move both versions of the button;
+		// moveSelectedButtons.add(getPressedOrUnpressedVersionOfButton(selectedButton));
 		highlightButton(selectedButton);
 		if (moveSelectedButtons.size === 2) {
 			document.getElementById('swapButton').style.color = "#fff";
@@ -791,6 +793,7 @@ function startDrag(e) {
 		moveSelectedButtons.delete(selectedButton)
 		unhighlightButton(selectedButton);
 	}
+	// 2 buttons, with a pressed and unpressed version. So 4.
 	if (moveSelectedButtons.size === 2) {
 		document.getElementById('swapButton').style.color = "#fff";
 	} else {
@@ -1130,7 +1133,7 @@ function validImageUrlStyle(url) {
 	return /.*(png|jpg|svg|gif|webp|jpeg)$/.test(url);
 }
 
-function resetButtonAndPressedVersion(button) {
+function resetButtonAndPressedOrUnpressedVersion(button) {
 	button.style.background = "";
 	button.style.backgroundColor = "";
 	button.style.borderRadius = "";
@@ -1142,17 +1145,17 @@ function resetButtonAndPressedVersion(button) {
 	button.style.borderColor = "";
 
 	// Probably a redundant check, because Make/Import already can't be applies to pressed.
-	if (!button.id.endsWith(".pressed") && button.id !== ".fight-stick .fstick") {
-		pressedButton = document.getElementById(button.id + ".pressed");
-		pressedButton.style.background = "";
-		pressedButton.style.backgroundColor = "";
-		pressedButton.style.borderRadius = "";
-		pressedButton.style.border = "";
-		pressedButton.style.backgroundImage = "";
-		pressedButton.style.backgroundSize = "";
-		pressedButton.style.backgroundRepeat = "";
-		pressedButton.style.backgroundPosition = "";
-		pressedButton.style.borderColor = "";
+	if (button.id !== ".fight-stick .fstick") {
+		const otherVersion = getPressedOrUnpressedVersionOfButton(button);
+		otherVersion.style.background = "";
+		otherVersion.style.backgroundColor = "";
+		otherVersion.style.borderRadius = "";
+		otherVersion.style.border = "";
+		otherVersion.style.backgroundImage = "";
+		otherVersion.style.backgroundSize = "";
+		otherVersion.style.backgroundRepeat = "";
+		otherVersion.style.backgroundPosition = "";
+		otherVersion.style.borderColor = "";
 	}
 }
 
