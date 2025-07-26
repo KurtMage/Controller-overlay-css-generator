@@ -729,6 +729,8 @@ function deleteButton(e) {
 	img.style.zIndex = -1;
 
 	targ.style.visibility = "hidden";
+	var otherVersion = getPressedOrUnpressedVersionOfButton(targ);
+	otherVersion.style.visibility = "hidden";
 
 	id2state = new Map();
 	updateStatesAndCss(id2state);
