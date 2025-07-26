@@ -836,7 +836,7 @@ function undo() {
 		return;
 	}
 	lastKeyPressMove = null;
-	currentState = pastStates.pop();
+	const currentState = pastStates.pop();
 	undoneStates.push(currentState);
 	document.getElementById('redoButton').style.color = "#fff";
 	baseLayoutUrl = id2state.get(stateMapUrlKey, baseLayoutUrl);
@@ -903,7 +903,7 @@ function redo() {
 		return;
 	}
 	lastKeyPressMove = null;
-	currentState = pastStates[pastStates.length - 1];
+	const currentState = pastStates[pastStates.length - 1];
 	stateToReturnTo = undoneStates.pop();
 	baseLayoutUrl = id2state.get(stateMapUrlKey, baseLayoutUrl);
 	setLayoutBoxStyleBackground(id2state.get(stateMapBackgroundUrlKey));
