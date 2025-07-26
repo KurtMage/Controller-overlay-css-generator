@@ -218,6 +218,9 @@ function applyCSS(css) {
 		}
 		if ('visibility' in properties) {
 			style.visibility = properties['visibility'];
+			if (key === '.fight-stick .fstick' && style.visibility === 'visible') {
+				document.getElementById(key).removeAttribute("hidden");
+			}
 		}
 		if ('width' in properties) {
 			style.width = properties['width'];
