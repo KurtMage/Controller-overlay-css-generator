@@ -13,6 +13,7 @@ var hiddenPressedImgUpdater;
 var hiddenUnpressedImgUpdater;
 var importButtonInterval;
 var mostRecentlyChangedTextBox;
+var id2state = new Map();
 
 const stateMapUrlKey = "baseLayoutUrl";
 const stateMapBackgroundUrlKey = "backgroundUrl";
@@ -25,12 +26,12 @@ function init() {
 		const btn = img;
 		const btnPressed = document.getElementById(img.id + ".pressed");
 
-		btn.addEventListener('mouseenter', function() {
+		btn.addEventListener('mouseenter', function () {
 			btn.setAttribute('hidden', '');
 			btnPressed.removeAttribute('hidden');
 		});
 
-		btnPressed.addEventListener('mouseleave', function() {
+		btnPressed.addEventListener('mouseleave', function () {
 			btn.removeAttribute('hidden');
 			btnPressed.setAttribute('hidden', '');
 		});
@@ -40,24 +41,24 @@ function init() {
 	document.onkeydown = arrowKeyMove;
 
 	hiddenUnpressedImgUpdater = new Image();
-	hiddenUnpressedImgUpdater.onload = function() {
+	hiddenUnpressedImgUpdater.onload = function () {
 		checkImage(true, this, document.getElementById("unpressedButtonUrlInput"),
-					document.getElementById("unpressedButtonMakerCloseErrorButton"));
+			document.getElementById("unpressedButtonMakerCloseErrorButton"));
 
 	};
-	hiddenUnpressedImgUpdater.onerror = function() {
+	hiddenUnpressedImgUpdater.onerror = function () {
 		checkImage(false, this, document.getElementById('unpressedButtonUrlInput'),
-					document.getElementById('unpressedButtonMakerCloseErrorButton'));
+			document.getElementById('unpressedButtonMakerCloseErrorButton'));
 	};
 	hiddenPressedImgUpdater = new Image();
-	hiddenPressedImgUpdater.onload = function() {
+	hiddenPressedImgUpdater.onload = function () {
 		checkImage(true, this, document.getElementById("pressedButtonUrlInput"),
-					document.getElementById("pressedButtonMakerCloseErrorButton"));
+			document.getElementById("pressedButtonMakerCloseErrorButton"));
 
 	};
-	hiddenPressedImgUpdater.onerror = function() {
+	hiddenPressedImgUpdater.onerror = function () {
 		checkImage(false, this, document.getElementById('pressedButtonUrlInput'),
-					document.getElementById('pressedButtonMakerCloseErrorButton'));
+			document.getElementById('pressedButtonMakerCloseErrorButton'));
 	};
 
 
@@ -73,9 +74,9 @@ function init() {
 }
 
 function switchBaseLayout(linkToGamepadviewerBaseLayout,
-						noopIfCurrentLayout = true,
-						async = true,
-						writeCss = true) {
+	noopIfCurrentLayout = true,
+	async = true,
+	writeCss = true) {
 	// No switch.
 	if (noopIfCurrentLayout && baseLayoutUrl === linkToGamepadviewerBaseLayout) {
 		return;
@@ -83,83 +84,132 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout,
 
 	var request = new XMLHttpRequest();
 
-	request.addEventListener("load", function(evt){
+	request.addEventListener("load", function (evt) {
 		const parser = new DOMParser();
 		const doc = parser.parseFromString(this.responseText, "text/html");
 		doc.getElementById("body");
 
-		var parseCssRules = function (cssText) {
-			var tokenizer = /\s*([a-z\-]+)\s*:\s*((?:[^;]*url\(.*?\)[^;]*|[^;]*)*)\s*(?:;|$)/gi,
-			obj = new Map(),
-			token;
-			while ( (token=tokenizer.exec(cssText)) ) {
-				var varValue = token[2];
-				while (varValue?.startsWith("var(--")) {
-					// Expand variable into values.
-					varValue = obj.get(varValue.substring(4, varValue.length - 1));
-				}
-				obj.set(token[1].toLowerCase(), varValue)
-			}
-		return obj;
-		};
-		const cssRules = parseCssRules(doc.body.textContent)
-		console.log(cssRules);
+		function createStyleEl(cssText) {
+			// 1. Create a <style> element and add it to the DOM
+			const styleEl = document.createElement('style');
+			document.head.appendChild(styleEl);
+			styleEl.textContent = cssText;
 
-		const layoutBox = document.getElementById("layout-box");
-		for (const img of layoutBox.getElementsByTagName('*')) {
-			if (img.id === ".fight-stick .fstick") {
-				continue;
-			}
-			resetButtonAndPressedOrUnpressedVersion(img);
-			// img.style.width = originalState.get(img.id).size;
-			// img.style.height = originalState.get(img.id).size;
-			img.style.backgroundSize = "cover";
+			return styleEl;
 		}
 
-		const unpressedId2vars = new Map([
-			[".fight-stick .x", ["--top-row-index-finger-button-source-image", "--x-top", '--x-left']],
-			[".fight-stick .y", ["--top-row-middle-finger-button-source-image", "--y-top", '--y-left']],
-			[".fight-stick .a", ["--bot-row-index-finger-button-source-image", "--a-top", '--a-left']],
-			[".fight-stick .b", ["--bot-row-middle-finger-button-source-image", "--b-top", '--b-left']],
-			[".fight-stick .bumper.right", ["--top-row-ring-finger-button-source-image", "--rb-top", '--rb-left']],
-			[".fight-stick .bumper.left", ["--top-row-pinky-finger-button-source-image", "--lb-top", '--lb-left']],
-			[".fight-stick .trigger-button.right", ["--bot-row-ring-finger-button-source-image", "--rt-top", '--rt-left']],
-			[".fight-stick .trigger-button.left", ["--bot-row-pinky-finger-button-source-image", "--lt-top", '--lt-left']],
+		/**
+		 * A robust function to find ALL rules that match a given selector.
+		 * @param {CSSStyleSheet} sheet - The CSSStyleSheet object to search.
+		 * @param {string} selectorToFind - The specific selector to look for (e.g., '.fight-stick .back.pressed').
+		 * @returns {Array<CSSStyleRule>} An array of all matching CSSStyleRule objects.
+		 */
+		function findAllRulesBySelector(sheet, selectorToFind) {
+			const matchingRules = [];
 
-			[".fight-stick .face.left", ["--left-arrow-source-image", "--dir-left-top", "--dir-left-left"]],
-			[".fight-stick .face.down", ["--down-arrow-source-image", "--dir-down-top", "--dir-down-left"]],
-			[".fight-stick .face.right", ["--right-arrow-source-image", "--dir-right-top", "--dir-right-left"]],
-			[".fight-stick .face.up", ["--up-arrow-source-image", "--dir-up-top", "--dir-up-left"]],
-
-			[".fight-stick .start", ["--start-button-source-image", "--start-top", "--start-left", "--visibility-start"]],
-			[".fight-stick .back", ["--back-button-source-image", "--back-top", "--back-left", "--visibility-back"]],
-
-			[".fight-stick .stick.left", ["--ls-button-source-image", "--ls-top", "--ls-left"]],
-			[".fight-stick .stick.right", ["--rs-button-source-image", "--rs-top", "--rs-left"]],
-		]);
-		const id2vars = new Map();
-		for (const [key, value] of unpressedId2vars) {
-			id2vars.set(key, value);
-			id2vars.set(key + '.pressed', value);
-		}
-
-
-		for (const [id, vars] of id2vars) {
-			for (const variable of vars) {
-				if (!cssRules.has(variable)) {
-					continue;
+			// Loop through all the rules in the stylesheet
+			for (let i = 0; i < sheet.cssRules.length; i++) {
+				const rule = sheet.cssRules[i];
+				
+				// We only care about standard style rules
+				if (rule.type === CSSRule.STYLE_RULE) {
+				// Split the selectorText by the comma to get individual selectors
+				const selectors = rule.selectorText.split(',');
+				
+				// Check each individual selector for a match
+				for (const selector of selectors) {
+					// We trim whitespace and do a direct comparison
+					if (selector.trim() === selectorToFind) {
+					// Add the full rule object to our list of matches
+					matchingRules.push(rule);
+					// Break from the inner loop to avoid adding the same rule twice
+					// if the selector string was malformed (e.g., a,,b)
+					break;
+					}
 				}
-				if (variable.endsWith("-image")) {
-					document.getElementById(id).style.backgroundImage = cssRules.get(variable)?.startsWith("calc(") ? "" : cssRules.get(variable);
-				} else if (variable.endsWith("-top")) {
-					document.getElementById(id).style.top = cssRules.get(variable)?.startsWith("calc(") ? "" : cssRules.get(variable);
-				} else if (variable.endsWith("-left")) {
-					document.getElementById(id).style.left = cssRules.get(variable)?.startsWith("calc(") ? "" : cssRules.get(variable);
-				} else if (variable.startsWith("--visibility")) {
-					document.getElementById(id).style.visibility = cssRules.get(variable)?.startsWith("calc(") ? "" : cssRules.get(variable);
+				}
+			}
+			return matchingRules;
+		}
+		/**
+		 * Applies all styles from a CSSRule to an HTML element as inline styles.
+		 * @param {CSSStyleRule} rules - The CSSRule object to copy styles from.
+		 * @param {HTMLElement} element - The HTML element to apply the styles to.
+		 */
+		function applyAllRulesToElement(rules, element) {
+			if (!rules || !element) {
+				console.error("Invalid rule or element provided.");
+				return;
+			}
+
+			for (const rule of rules) {
+				// Iterate through all the styles in the rule's style declaration.
+				for (let i = 0; i < rule.style.length; i++) {
+					const propName = rule.style[i];
+					const propValue = rule.style.getPropertyValue(propName);
+
+					// Set the property on the element's style object.
+					element.style.setProperty(propName, propValue);
 				}
 			}
 		}
+		const styleEl = createStyleEl(doc.body.textContent);
+
+		const buttons = [
+			".fight-stick .x",
+			".fight-stick .y",
+			".fight-stick .a",
+			".fight-stick .b",
+			".fight-stick .bumper.right",
+			".fight-stick .bumper.left",
+			".fight-stick .trigger-button.right",
+			".fight-stick .trigger-button.left",
+			".fight-stick .face.left",
+			".fight-stick .face.down",
+			".fight-stick .face.right",
+			".fight-stick .face.up",
+			".fight-stick .start",
+			".fight-stick .back",
+			".fight-stick .stick.left",
+			".fight-stick .stick.right",
+
+			".fight-stick .x.pressed",
+			".fight-stick .y.pressed",
+			".fight-stick .a.pressed",
+			".fight-stick .b.pressed",
+			".fight-stick .bumper.right.pressed",
+			".fight-stick .bumper.left.pressed",
+			".fight-stick .trigger-button.right.pressed",
+			".fight-stick .trigger-button.left.pressed",
+			".fight-stick .face.left.pressed",
+			".fight-stick .face.down.pressed",
+			".fight-stick .face.right.pressed",
+			".fight-stick .face.up.pressed",
+			".fight-stick .start.pressed",
+			".fight-stick .back.pressed",
+			".fight-stick .stick.left.pressed",
+			".fight-stick .stick.right.pressed",
+		];
+		for (const selector of buttons) {
+			const buttonEl = document.getElementById(selector);
+			// Reset the button so that changes don't persist.
+			buttonEl.removeAttribute("style");
+			const rules = findAllRulesBySelector(styleEl.sheet, selector);
+			if (buttonEl && rules) {
+				applyAllRulesToElement(rules, buttonEl);
+				console.log(`Applied styles to ${selector}:`, buttonEl.style.cssText);
+			} else if (!rules) {
+				console.log(`Could not find the CSS rule for ${selector}.`);
+			}
+			buttonEl.style.position = "absolute";
+			if (buttonEl.id.endsWith(".pressed")) {
+				const unpressedButton = getPressedOrUnpressedVersionOfButton(buttonEl);
+				buttonEl.style.setProperty("background-image", getComputedStyle(unpressedButton).backgroundImage);
+				buttonEl.style.setProperty("left", getComputedStyle(unpressedButton).left);
+				buttonEl.style.setProperty("top", getComputedStyle(unpressedButton).top);
+			}
+		}
+
 
 		// TODO: set background for layout-box. Might also need to set disconnected elemnt after.
 
@@ -173,14 +223,15 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout,
 		// 		id2state.set(button.id, state);
 		// 	}
 		// }
-	
 
+
+		const layoutBox = document.getElementById("layout-box");
 		id2state = new Map();
 		var changedVariables = "body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }<br>";
 		for (const img of layoutBox.getElementsByTagName('*')) {
-			if (!img.id.endsWith(".pressed") && img.id !== (".fight-stick .fstick")) {
-				document.getElementById(img.id + ".pressed").style.backgroundImage = img.style.backgroundImage;
-			}
+			// if (!img.id.endsWith(".pressed") && img.id !== (".fight-stick .fstick")) {
+			// 	document.getElementById(img.id + ".pressed").style.backgroundImage = img.style.backgroundImage;
+			// }
 			if (writeCss && doesButtonHaveChange(img)) {
 				changedVariables += getChangedVariables(img);
 			}
@@ -197,7 +248,7 @@ function switchBaseLayout(linkToGamepadviewerBaseLayout,
 	const baseLayoutEditCss = linkToGamepadviewerBaseLayout.split("&editcss=")[1];
 
 	request.open('GET', baseLayoutEditCss, async),
-	request.send();
+		request.send();
 }
 
 function applyCSS(css) {
@@ -256,42 +307,42 @@ function applyCSS(css) {
 
 // Generated by chatgpt.
 function cssTokenizer(cssText) {
-    let cssMap = {};
-    
-    // Remove any comments from the CSS text
-    cssText = cssText.replace(/\/\*[\s\S]*?\*\//g, '');
+	let cssMap = {};
 
-    // Split the CSS text by '}' to separate each rule
-    const rules = cssText.split('}');
+	// Remove any comments from the CSS text
+	cssText = cssText.replace(/\/\*[\s\S]*?\*\//g, '');
 
-    rules.forEach(rule => {
-        // Split each rule into selector and declarations
-        const [selector, declarationText] = rule.split('{');
+	// Split the CSS text by '}' to separate each rule
+	const rules = cssText.split('}');
 
-        if (!selector || !declarationText) return; // Skip if there's no valid rule
-        
-        const trimmedSelector = selector.trim();
-        const declarations = declarationText.trim();
+	rules.forEach(rule => {
+		// Split each rule into selector and declarations
+		const [selector, declarationText] = rule.split('{');
 
-        // Parse declarations into key-value pairs
-        const declarationMap = {};
-        declarations.split(';').forEach(declaration => {
-            // Split only at the first colon to preserve colons in values
-            const colonIndex = declaration.indexOf(':');
-            if (colonIndex > -1) {
-                const property = declaration.slice(0, colonIndex).trim();
-                const value = declaration.slice(colonIndex + 1).trim();
-                declarationMap[property] = value;
-            }
-        });
+		if (!selector || !declarationText) return; // Skip if there's no valid rule
 
-        // Store the parsed declarations for the selector
-        if (Object.keys(declarationMap).length > 0) {
-            cssMap[trimmedSelector] = declarationMap;
-        }
-    });
+		const trimmedSelector = selector.trim();
+		const declarations = declarationText.trim();
 
-    return cssMap;
+		// Parse declarations into key-value pairs
+		const declarationMap = {};
+		declarations.split(';').forEach(declaration => {
+			// Split only at the first colon to preserve colons in values
+			const colonIndex = declaration.indexOf(':');
+			if (colonIndex > -1) {
+				const property = declaration.slice(0, colonIndex).trim();
+				const value = declaration.slice(colonIndex + 1).trim();
+				declarationMap[property] = value;
+			}
+		});
+
+		// Store the parsed declarations for the selector
+		if (Object.keys(declarationMap).length > 0) {
+			cssMap[trimmedSelector] = declarationMap;
+		}
+	});
+
+	return cssMap;
 }
 
 function moveButtonAndPressedToLocation(btn, top, left) {
@@ -415,7 +466,7 @@ function rotateStickPreviewPicture() {
 	const img = document.getElementById("stickPreview");
 
 	const curPosition = parseFloat(img.style.objectPosition);
-	const newPos = (curPosition + 12.5 > 100)  ? 0 : curPosition + 12.5;
+	const newPos = (curPosition + 12.5 > 100) ? 0 : curPosition + 12.5;
 	img.style.objectPosition = newPos + "% 0%";
 }
 
@@ -455,9 +506,9 @@ function updateBackground(url) {
 		const state = getStateOfImg(img);
 		id2state.set(img.id, state);
 	}
-	if (layoutBox.style.backgroundImage !== oldBackgroundImg ) {
+	if (layoutBox.style.backgroundImage !== oldBackgroundImg) {
 		changedVariables +=
-		`
+			`
 		<br>.controller.fight-stick {<br>
 			background-image: ${urlCss};<br>
 			background-size: auto;<br>
@@ -470,14 +521,14 @@ function updateBackground(url) {
 	document.getElementById("css-text").innerHTML = changedVariables;
 }
 
-function checkImage(success, 
-					img = document.getElementById("urlButtonPreview"),
-					urlInputBox = document.getElementById("importedUrlInput"),
-					closeErrorButton = document.getElementById("closeErrorButton"),
-					previewText = document.getElementById("previewText")) {
+function checkImage(success,
+	img = document.getElementById("urlButtonPreview"),
+	urlInputBox = document.getElementById("importedUrlInput"),
+	closeErrorButton = document.getElementById("closeErrorButton"),
+	previewText = document.getElementById("previewText")) {
 	if (success || urlInputBox.value === '') {
 		img.visibility = urlInputBox.value === '' ? "hidden" : "visible";
-		const imgSize =  img.id === "stickPreview" ? "250px" : "150px"
+		const imgSize = img.id === "stickPreview" ? "250px" : "150px"
 		img.style.width = urlInputBox.value === '' ? "0px" : imgSize;
 		img.style.height = urlInputBox.value === '' ? "0px" : imgSize;
 		urlInputBox.style.background = "#ffffff";
@@ -517,7 +568,7 @@ function clickAction(e) {
 
 function importStick(e) {
 	const url = document.getElementById("stickImportedUrlInput").value;
-	targ = e.target ;
+	targ = e.target;
 	if (!targ.className?.startsWith("img ")
 		|| targ.tagName?.toUpperCase() != "SPAN"
 		|| !urlImageIsGood) {
@@ -565,13 +616,13 @@ function applyMadeButton(e) {
 	 * url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='100%' width='100%'><text text-anchor='middle' dominant-baseline='middle' x='50%' y='50%' paint-order='stroke' fill='red' font-size='500%'>test</text></svg>");
 	 * 
 	 * <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-   	 * 		<circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
-   	 * 		<text text-anchor='middle' dominant-baseline='middle' x='50%' y='58%' paint-order='stroke' fill='red' font-size='500%' style='stroke-width:3px; paint-order:stroke; stroke:#000000; font-family:Lucida Console'> H </text>
-   	 * 		Sorry, your browser does not support inline SVG.
+		   * 		<circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+		   * 		<text text-anchor='middle' dominant-baseline='middle' x='50%' y='58%' paint-order='stroke' fill='red' font-size='500%' style='stroke-width:3px; paint-order:stroke; stroke:#000000; font-family:Lucida Console'> H </text>
+		   * 		Sorry, your browser does not support inline SVG.
 	 * </svg> 
 	 */
 
-	targ = e.target ;
+	targ = e.target;
 	// TODO give error if they try to do this on a stick
 	if (!targ.className?.startsWith("img ")
 		|| targ.tagName?.toUpperCase() != "SPAN"
@@ -630,7 +681,7 @@ function updateStatesAndCss(id2state) {
 }
 
 function resizeButton(e) {
-	targ = e.target ;
+	targ = e.target;
 	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN") {
 		return;
 	}
@@ -663,7 +714,7 @@ function resizeButtonTarget(targ, alsoResizePressedOrUnpressedVersion = true) {
 function importButton(e) {
 	const urlBox = document.getElementById("importedUrlInput");
 	const url = urlBox.value;
-	targ = e.target ;
+	targ = e.target;
 	if (!targ.className?.startsWith("img ")
 		|| targ.tagName?.toUpperCase() != "SPAN"
 		|| targ.id === ".fight-stick .fstick"
@@ -675,7 +726,7 @@ function importButton(e) {
 	if (e.button === 2) {
 		// e.preventDefault();
 		const newUri = targ.style.backgroundImage.slice(4, -1).replace(/"/g, "").replace('"', '');
-		const newEncodedUri = newUri === decodeURI(newUri) ? encodeURI(newUri) : newUri ;
+		const newEncodedUri = newUri === decodeURI(newUri) ? encodeURI(newUri) : newUri;
 		urlBox.value = newEncodedUri;
 		updatePreviewPicture(urlBox.value, document.getElementById("urlButtonPreview"));
 		return;
@@ -719,7 +770,7 @@ function deleteButton(e) {
 		var e = window.event;
 	}
 
-	targ = e.target ;
+	targ = e.target;
 	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN") {
 		return;
 	}
@@ -757,10 +808,10 @@ function unhighlightButton(btn, alsoUnhighlightPressedOrUnpressedVersion = true)
 }
 
 function getPressedOrUnpressedVersionOfButton(btn) {
-		if (btn.id.endsWith('.pressed')) {
-			return document.getElementById(btn.id.substring(0, btn.id.length - 8));
-		}
-		return document.getElementById(btn.id + ".pressed");
+	if (btn.id.endsWith('.pressed')) {
+		return document.getElementById(btn.id.substring(0, btn.id.length - 8));
+	}
+	return document.getElementById(btn.id + ".pressed");
 }
 
 function startDrag(e) {
@@ -771,15 +822,15 @@ function startDrag(e) {
 		var e = window.event;
 	}
 
-	targ = e.target ;
+	const targ = e.target;
 	if (!targ.className?.startsWith("img ") || targ.tagName?.toUpperCase() != "SPAN") {
 		return;
 	}
-	if(e.preventDefault) e.preventDefault();
+	if (e.preventDefault) e.preventDefault();
 
 	// calculate event X, Y coordinates
-	offsetX = e.clientX;
-	offsetY = e.clientY;
+	const offsetX = e.clientX;
+	const offsetY = e.clientY;
 
 	// assign default values for top and left properties
 	selectedButton = targ;
@@ -806,8 +857,8 @@ function startDrag(e) {
 	}
 	lastMovedButton = targ;
 	targ.style.zIndex = 1;
-	if (!targ.style.left) { targ.style.left=targ.offsetLeft + 'px'};
-	if (!targ.style.top) { targ.style.top=targ.offsetTop + 'px'};
+	if (!targ.style.left) { targ.style.left = targ.offsetLeft + 'px' };
+	if (!targ.style.top) { targ.style.top = targ.offsetTop + 'px' };
 
 	// calculate integer values for top and left 
 	// properties
@@ -1045,49 +1096,49 @@ function getChangedVariables(img) {
 }
 
 function getStateOfImgWithSpecifiedBackgroundImg(img, backgroundImage) {
-		const originalBackgroundImage = img.backgroundImage;
-		img.backgroundImage = backgroundImage;
-		const style = getComputedStyle(img);
-		// TODO call getstateofimg and change background
-		return {
-			top: style.top,
-			left: style.left,
-			visibility: style.visibility,
-			background: style.background,
-			size: style.width,
-			borderRadius: style.borderRadius,
-			border: style.border,
-			backgroundPositionY: style.backgroundPositionY,
-			backgroundImage: style.backgroundImage,
-			// backgroundColor: style.backgroundColor,
-			backgroundSize: style.backgroundSize,
-			backgroundRepeat: style.backgroundRepeat,
-			backgroundPosition: style.backgroundPosition,
-			borderRadius: style.borderRadius,
-			background: style.borderColor,
-		};
-		img.backgroundImage = originalBackgroundImage;
+	const originalBackgroundImage = img.backgroundImage;
+	img.backgroundImage = backgroundImage;
+	const style = getComputedStyle(img);
+	// TODO call getstateofimg and change background
+	return {
+		top: style.top,
+		left: style.left,
+		visibility: style.visibility,
+		background: style.background,
+		size: style.width,
+		borderRadius: style.borderRadius,
+		border: style.border,
+		backgroundPositionY: style.backgroundPositionY,
+		backgroundImage: style.backgroundImage,
+		// backgroundColor: style.backgroundColor,
+		backgroundSize: style.backgroundSize,
+		backgroundRepeat: style.backgroundRepeat,
+		backgroundPosition: style.backgroundPosition,
+		borderRadius: style.borderRadius,
+		background: style.borderColor,
+	};
+	img.backgroundImage = originalBackgroundImage;
 }
 
 function getStateOfImg(img) {
-		const style = getComputedStyle(img);
-		return {
-			top: style.top,
-			left: style.left,
-			visibility: style.visibility,
-			background: style.background,
-			size: style.width,
-			borderRadius: style.borderRadius,
-			border: style.border,
-			backgroundPositionY: style.backgroundPositionY,
-			backgroundImage: style.backgroundImage,
-			// backgroundColor: style.backgroundColor,
-			backgroundSize: style.backgroundSize,
-			backgroundRepeat: style.backgroundRepeat,
-			backgroundPosition: style.backgroundPosition,
-			borderRadius: style.borderRadius,
-			borderColor: style.borderColor,
-		};
+	const style = getComputedStyle(img);
+	return {
+		top: style.top,
+		left: style.left,
+		visibility: style.visibility,
+		background: style.background,
+		size: style.width,
+		borderRadius: style.borderRadius,
+		border: style.border,
+		backgroundPositionY: style.backgroundPositionY,
+		backgroundImage: style.backgroundImage,
+		// backgroundColor: style.backgroundColor,
+		backgroundSize: style.backgroundSize,
+		backgroundRepeat: style.backgroundRepeat,
+		backgroundPosition: style.backgroundPosition,
+		borderRadius: style.borderRadius,
+		borderColor: style.borderColor,
+	};
 }
 
 function updateMadeButtonColor(colorValue, button) {
@@ -1165,18 +1216,18 @@ function resetButtonAndPressedOrUnpressedVersion(button) {
 }
 
 function openCity(evt, cityName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
+	var i, tabcontent, tablinks;
+	tabcontent = document.getElementsByClassName("tabcontent");
+	for (i = 0; i < tabcontent.length; i++) {
+		tabcontent[i].style.display = "none";
+	}
+	tablinks = document.getElementsByClassName("tablinks");
+	for (i = 0; i < tablinks.length; i++) {
+		tablinks[i].className = tablinks[i].className.replace(" active", "");
+	}
 	const tab = document.getElementById(cityName);
-    tab.style.display = "block";
-    evt.currentTarget.className += " active";
+	tab.style.display = "block";
+	evt.currentTarget.className += " active";
 
 	clearInterval(importButtonInterval);
 	if (cityName === "importButtonsTab") {
@@ -1206,6 +1257,6 @@ function openCity(evt, cityName) {
 	}
 }
 
-window.onload = function() {
+window.onload = function () {
 	init();
 }
