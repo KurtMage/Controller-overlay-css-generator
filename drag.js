@@ -19,7 +19,12 @@ var id2state = new Map();
 const stateMapUrlKey = "baseLayoutUrl";
 const stateMapBackgroundUrlKey = "backgroundUrl";
 
+document.addEventListener("DOMContentLoaded", function () {
+  init();
+});
+
 function init() {
+  setupFonts();
   for (const img of document
     .getElementById("layout-box")
     .getElementsByTagName("*")) {
@@ -1344,6 +1349,36 @@ function updateMadeButtonBorderSize(value, button) {
   button.style.borderWidth = value + "px";
 }
 
+function updateMadeButtonTextContent(textContentValue, button) {
+  button.style.setProperty("--text-content", '"' + textContentValue + '"');
+}
+
+function updateMadeButtonTextFont(textFontFamilyValue, button) {
+  button.style.setProperty(
+    "--text-font-family",
+    '"' + textFontFamilyValue + '"'
+  );
+}
+
+function updateMadeButtonTextSize(textSizeValue, button) {
+  button.style.setProperty("--text-font-size", "" + textSizeValue + "px");
+}
+
+function updateMadeButtonTextContent(textContentValue, button) {
+  button.style.setProperty("--text-content", '"' + textContentValue + '"');
+}
+
+function updateMadeButtonTextFont(textFontFamilyValue, button) {
+  button.style.setProperty(
+    "--text-font-family",
+    '"' + textFontFamilyValue + '"'
+  );
+}
+
+function updateMadeButtonTextSize(textSizeValue, button) {
+  button.style.setProperty("--text-font-size", "" + textSizeValue + "px");
+}
+
 function updateMadeButtonImg(url, button) {
   mostRecentlyChangedTextBox = button;
   button.style.backgroundImage = validImageUrlStyle(url)
@@ -1411,6 +1446,182 @@ function resetButtonAndPressedOrUnpressedVersion(button) {
   }
 }
 
+// function setupFonts() {
+//   const fontList = [
+//     "Helvetica Neue LT Pro",
+//     "Arial",
+//     "Verdana",
+//     "Tahoma",
+//     "Trebuchet MS",
+//     "Georgia",
+//     "Times New Roman",
+//     "Courier New",
+//     "Brush Script MT",
+//     "Comic Sans MS",
+//     "Impact",
+//     "Lucida Console",
+//     "Palatino Linotype",
+//     "Garamond",
+//     "Helvetica",
+//     "sans-serif",
+//     "serif",
+//     "monospace",
+//     // Add more fonts here as needed
+//   ];
+
+//   const searchInput = document.getElementById("font-search-input");
+//   const fontListElement = document.getElementById("font-list");
+
+//   // Populate the dropdown list
+//   function createFontList(fonts) {
+//     fontListElement.innerHTML = "";
+//     fonts.forEach((font) => {
+//       const li = document.createElement("li");
+//       li.textContent = font;
+//       li.style.fontFamily = font;
+//       fontListElement.appendChild(li);
+//     });
+//   }
+
+//   // Initial population of the list
+//   createFontList(fontList);
+
+//   // Filter the list based on user input
+//   searchInput.addEventListener("input", () => {
+//     const searchTerm = searchInput.value.toLowerCase();
+//     const filteredFonts = fontList.filter((font) =>
+//       font.toLowerCase().includes(searchTerm)
+//     );
+//     createFontList(filteredFonts);
+//     fontListElement.style.display = "block";
+//   });
+
+//   // Show the dropdown when the input is focused
+//   searchInput.addEventListener("focus", () => {
+//     fontListElement.style.display = "block";
+//   });
+
+//   // Hide the dropdown when the user clicks outside
+//   document.addEventListener("click", (event) => {
+//     if (!event.target.closest(".font-dropdown-container")) {
+//       fontListElement.style.display = "none";
+//     }
+//   });
+
+//   // Select a font from the list
+//   fontListElement.addEventListener("click", (event) => {
+//     if (event.target.tagName === "LI") {
+//       const selectedFont = event.target.textContent;
+//       searchInput.value = selectedFont;
+//       fontListElement.style.display = "none";
+
+//       const dropdownContainer = event.target.closest(
+//         ".font-dropdown-container"
+//       );
+//       var button;
+//       if (dropdownContainer.id.startsWith("unpressed")) {
+//         button = document.getElementById("unpressedMadeButton");
+//       }
+//       if (dropdownContainer.id.startsWith("pressed")) {
+//         button = document.getElementById("pressedMadeButton");
+//       }
+//       updateMadeButtonTextFont(selectedFont, button);
+//     }
+//   });
+// }
+
+function setupFonts() {
+  const fontInput = document.getElementById("font-search-input");
+  const fontList = document.getElementById("font-list");
+  const fontContainer = document.getElementById(
+    "unpressedFontDropdownContainer"
+  );
+  const fonts = [
+    "Helvetica Neue LT Pro",
+    "Arial",
+    "Verdana",
+    "Helvetica",
+    "Tahoma",
+    "Trebuchet MS",
+    "Times New Roman",
+    "Georgia",
+    "Garamond",
+    "Courier New",
+    "Brush Script MT",
+    "Palatino",
+    "Lucida Sans",
+    "Copperplate",
+    "Futura",
+    "Avenir",
+    "Franklin Gothic",
+    "Gill Sans",
+    "Impact",
+    "Lato",
+    "Montserrat",
+    "Open Sans",
+    "Oswald",
+    "Poppins",
+    "Raleway",
+    "Roboto",
+    "Source Sans Pro",
+    "Merriweather",
+    "Playfair Display",
+    "Noto Serif",
+    "Cormorant Garamond",
+    "EB Garamond",
+  ];
+
+  fontList.innerHTML = fonts
+    .map((font) => `<li style="font-family: '${font}'">${font}</li>`)
+    .join("");
+
+  // Toggle the dropdown on clicking the input field
+  fontInput.addEventListener("click", (event) => {
+    event.stopPropagation();
+    fontContainer.classList.toggle("open");
+  });
+
+  // Event listener to hide the dropdown when clicking outside
+  document.addEventListener("click", (event) => {
+    if (!fontContainer.contains(event.target)) {
+      fontContainer.classList.remove("open");
+    }
+  });
+
+  // Event listener for font selection from the list
+  fontList.addEventListener("click", (event) => {
+    if (event.target.tagName === "LI") {
+      const selectedFont = event.target.textContent;
+      fontInput.value = selectedFont;
+
+      // New logic to find the correct button based on the dropdown container's ID
+      var button;
+      if (fontContainer.id.startsWith("unpressed")) {
+        button = document.getElementById("unpressedMadeButton");
+      }
+      if (fontContainer.id.startsWith("pressed")) {
+        button = document.getElementById("pressedMadeButton");
+      }
+      updateMadeButtonTextFont(selectedFont, button);
+
+      setTimeout(() => {
+        fontContainer.classList.remove("open");
+      }, 0);
+    }
+  });
+
+  // Event listener for filtering the list as the user types
+  fontInput.addEventListener("input", () => {
+    const filter = fontInput.value.toLowerCase();
+    const items = fontList.querySelectorAll("li");
+    items.forEach((item) => {
+      const text = item.textContent.toLowerCase();
+      item.style.display = text.includes(filter) ? "block" : "none";
+    });
+    fontContainer.classList.add("open");
+  });
+}
+
 function openCity(evt, cityName) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
@@ -1454,7 +1665,3 @@ function openCity(evt, cityName) {
     }
   }
 }
-
-window.onload = function () {
-  init();
-};

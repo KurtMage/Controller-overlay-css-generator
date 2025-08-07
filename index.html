@@ -120,123 +120,170 @@
       <div id="makeButtonsTab" class="tabcontent">
         <div>
           <h4>Unpressed button</h4>
-          <label for="unpressedButtonUrlInput">Image URL:</label>
-          <input
-            class="urlTextBox"
-            type="text"
-            id="unpressedButtonUrlInput"
-            onChange="updateMadeButtonImg(this.value, document.getElementById('unpressedMadeButton'))"
-            value="https://imgur.com/cUxiqd5.png"
-            style="padding: 2px 11px"
-          /><br />
-          <div class="alert" style="display: none">
-            <span
-              id="unpressedButtonMakerCloseErrorButton"
-              class="closebtn"
-              onclick="this.parentElement.style.display='none';"
-              >&times;</span
+          <details>
+            <summary>Button Colors and Size</summary>
+            <label for="unpressedButtonColorPicker">Color:</label>
+            <input
+              type="color"
+              id="colorpicker"
+              value="#00BDBA"
+              onInput="updateMadeButtonColor(this.value, document.getElementById('unpressedMadeButton'))"
+            />
+            <label for="unpressedSize">Size:</label>
+            <input
+              class="buttonMakerTextBox"
+              type="number"
+              id="unpressedSize"
+              value="140"
+              onInput="updateMadeButtonSize(this.value, document.getElementById('unpressedMadeButton'))"
+            />px<br />
+            <label for="unpressedBorderColorPicker">Border color:</label>
+            <input
+              type="color"
+              id="colorpicker"
+              value="#000000"
+              onInput="updateMadeButtonBorderColor(this.value, document.getElementById('unpressedMadeButton'))"
+            />
+            <label for="unpressedBorderThickness">Border thickness:</label>
+            <input
+              class="buttonMakerTextBox"
+              type="number"
+              id="unpressedBorderThickness"
+              value="5"
+              onInput="updateMadeButtonBorderSize(this.value, document.getElementById('unpressedMadeButton'))"
+            />px<br />
+          </details>
+          <details>
+            <summary>Text</summary>
+            <label for="unpressedTextSize">Font size:</label>
+            <input
+              class="buttonMakerTextBox"
+              type="number"
+              id="unpressedTextSize"
+              value="62"
+              onInput="updateMadeButtonTextSize(this.value, document.getElementById('unpressedMadeButton'))"
+            />px<br />
+            <label for="unpressedTextContent"></label>
+            <input
+              class="urlTextBox"
+              type="text"
+              id="unpressedTextContent"
+              placeholder="Your text"
+              value=""
+              onInput="updateMadeButtonTextContent(this.value, document.getElementById('unpressedMadeButton'))"
+              style="padding: 2px 11px"
+            /><br />
+            <label
+              class="font-dropdown-container"
+              id="unpressedFontDropdownContainer"
             >
-            <strong>Error:</strong> No image found at the provided URL.
-          </div>
-          <label for="unpressedImgSize">Image size:</label>
-          <input
-            class="buttonMakerTextBox"
-            type="number"
-            id="unpressedImgSize"
-            value="117"
-            onInput="updateMadeButtonImgSize(this.value, document.getElementById('unpressedMadeButton'))"
-          />px<br />
+              <input
+                type="text"
+                id="font-search-input"
+                placeholder="Search for a font..."
+                autocomplete="off"
+                value="Helvetica Neue LT Pro"
+              />
+              <ul id="font-list" class="font-dropdown-list"></ul>
+            </label>
+          </details>
 
-          <label for="unpressedButtonColorPicker">Color:</label>
-          <input
-            type="color"
-            id="colorpicker"
-            value="#00BDBA"
-            onInput="updateMadeButtonColor(this.value, document.getElementById('unpressedMadeButton'))"
-          />
-          <label for="unpressedSize">Size:</label>
-          <input
-            class="buttonMakerTextBox"
-            type="number"
-            id="unpressedSize"
-            value="140"
-            onInput="updateMadeButtonSize(this.value, document.getElementById('unpressedMadeButton'))"
-          />px<br />
-          <label for="unpressedBorderColorPicker">Border color:</label>
-          <input
-            type="color"
-            id="colorpicker"
-            value="#000000"
-            onInput="updateMadeButtonBorderColor(this.value, document.getElementById('unpressedMadeButton'))"
-          />
-          <label for="unpressedBorderThickness">Border thickness:</label>
-          <input
-            class="buttonMakerTextBox"
-            type="number"
-            id="unpressedBorderThickness"
-            value="5"
-            onInput="updateMadeButtonBorderSize(this.value, document.getElementById('unpressedMadeButton'))"
-          />px<br />
+          <details>
+            <summary>Add an image on top</summary>
+            <label for="unpressedButtonUrlInput">Image URL:</label>
+            <input
+              class="urlTextBox"
+              type="text"
+              id="unpressedButtonUrlInput"
+              onChange="updateMadeButtonImg(this.value, document.getElementById('unpressedMadeButton'))"
+              value="https://imgur.com/cUxiqd5.png"
+              style="padding: 2px 11px"
+            /><br />
+            <div class="alert" style="display: none">
+              <span
+                id="unpressedButtonMakerCloseErrorButton"
+                class="closebtn"
+                onclick="this.parentElement.style.display='none';"
+                >&times;</span
+              >
+              <strong>Error:</strong> No image found at the provided URL.
+            </div>
+            <label for="unpressedImgSize">Image size:</label>
+            <input
+              class="buttonMakerTextBox"
+              type="number"
+              id="unpressedImgSize"
+              value="117"
+              onInput="updateMadeButtonImgSize(this.value, document.getElementById('unpressedMadeButton'))"
+            />px<br />
+          </details>
+
           <span class="made-button" id="unpressedMadeButton"></span>
         </div>
         <div>
           <h4>Pressed button</h4>
-          <label for="pressedButtonUrlInput">Image URL:</label>
-          <input
-            class="urlTextBox"
-            type="text"
-            id="pressedButtonUrlInput"
-            onChange="updateMadeButtonImg(this.value, document.getElementById('pressedMadeButton'))"
-            value="https://imgur.com/S8qj5Rt.png"
-            style="padding: 2px 11px"
-          /><br />
-          <label for="pressedImgSize">Image size:</label>
-          <input
-            class="buttonMakerTextBox"
-            type="number"
-            id="pressedImgSize"
-            value="117"
-            onInput="updateMadeButtonImgSize(this.value, document.getElementById('pressedMadeButton'))"
-          />px<br />
-          <label for="colorpicker">Color:</label>
-          <input
-            type="color"
-            id="colorpicker"
-            value="#ffffff"
-            onInput="updateMadeButtonColor(this.value, document.getElementById('pressedMadeButton'))"
-          />
-          <label for="pressedSize">Size:</label>
-          <input
-            class="buttonMakerTextBox"
-            type="number"
-            id="pressedSize"
-            value="140"
-            onInput="updateMadeButtonSize(this.value, document.getElementById('pressedMadeButton'))"
-          />px<br />
-          <label for="colorpicker">Border color:</label>
-          <input
-            type="color"
-            id="colorpicker"
-            value="#000000"
-            onInput="updateMadeButtonBorderColor(this.value, document.getElementById('pressedMadeButton'))"
-          />
-          <label for="pressedBorderThickness">Border thickness:</label>
-          <input
-            class="buttonMakerTextBox"
-            type="number"
-            id="pressedBorderThickness"
-            value="5"
-            onInput="updateMadeButtonBorderSize(this.value, document.getElementById('pressedMadeButton'))"
-          />px<br />
-          <div class="alert" style="display: none">
-            <span
-              id="pressedButtonMakerCloseErrorButton"
-              class="closebtn"
-              onclick="this.parentElement.style.display='none';"
-              >&times;</span
-            >
-            <strong>Error:</strong> No image found at the provided URL.
-          </div>
+          <details>
+            <summary>Customize colors</summary>
+            <label for="colorpicker">Color:</label>
+            <input
+              type="color"
+              id="colorpicker"
+              value="#ffffff"
+              onInput="updateMadeButtonColor(this.value, document.getElementById('pressedMadeButton'))"
+            />
+            <label for="pressedSize">Size:</label>
+            <input
+              class="buttonMakerTextBox"
+              type="number"
+              id="pressedSize"
+              value="140"
+              onInput="updateMadeButtonSize(this.value, document.getElementById('pressedMadeButton'))"
+            />px<br />
+            <label for="colorpicker">Border color:</label>
+            <input
+              type="color"
+              id="colorpicker"
+              value="#000000"
+              onInput="updateMadeButtonBorderColor(this.value, document.getElementById('pressedMadeButton'))"
+            />
+            <label for="pressedBorderThickness">Border thickness:</label>
+            <input
+              class="buttonMakerTextBox"
+              type="number"
+              id="pressedBorderThickness"
+              value="5"
+              onInput="updateMadeButtonBorderSize(this.value, document.getElementById('pressedMadeButton'))"
+            />px<br />
+          </details>
+          <details>
+            <summary>Add an image on top</summary>
+            <label for="pressedButtonUrlInput">Image URL:</label>
+            <input
+              class="urlTextBox"
+              type="text"
+              id="pressedButtonUrlInput"
+              onChange="updateMadeButtonImg(this.value, document.getElementById('pressedMadeButton'))"
+              value="https://imgur.com/S8qj5Rt.png"
+              style="padding: 2px 11px"
+            /><br />
+            <label for="pressedImgSize">Image size:</label>
+            <input
+              class="buttonMakerTextBox"
+              type="number"
+              id="pressedImgSize"
+              value="117"
+              onInput="updateMadeButtonImgSize(this.value, document.getElementById('pressedMadeButton'))"
+            />px<br />
+            <div class="alert" style="display: none">
+              <span
+                id="pressedButtonMakerCloseErrorButton"
+                class="closebtn"
+                onclick="this.parentElement.style.display='none';"
+                >&times;</span
+              >
+              <strong>Error:</strong> No image found at the provided URL.
+            </div>
+          </details>
           <span class="made-button pressed" id="pressedMadeButton"></span>
         </div>
       </div>
@@ -416,7 +463,7 @@
           <!-- Modal content -->
           <div class="modal-content">
             <span class="close">&times;</span>
-            <p style="padding: 0px 40px">Select a base layout</p>
+            <p>Select a base layout</p>
             <!-- <div id="baseLayoutPreview" style="float: right; width:50%">
                     </div> -->
             <div>
@@ -435,7 +482,7 @@
                 <button
                   id="select2XKOLightLayout"
                   class="btn-1"
-                  onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/2XKO/2025/all-buttons-in-game.css')"
+                  onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/2XKO/2025/all-buttons-in-game10.css')"
                 >
                   Basic
                 </button>
@@ -454,15 +501,25 @@
           </div>
         </div>
         <script>
+          // Get the modal
           var modal = document.getElementById("myModal");
+
+          // Get the button that opens the modal
           var btn = document.getElementById("openLayoutsBrowserButton");
+
+          // Get the <span> element that closes the modal
           var span = document.getElementsByClassName("close")[0];
+
+          // When the user clicks the button, open the modal
           btn.onclick = function () {
             modal.style.display = "block";
           };
+
+          // When the user clicks on <span> (x), close the modal
           span.onclick = function () {
             modal.style.display = "none";
           };
+
           // When the user clicks anywhere outside of the modal, close it
           window.onclick = function (event) {
             if (event.target == modal) {

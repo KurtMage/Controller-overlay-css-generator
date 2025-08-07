@@ -259,7 +259,7 @@
 .made-button {
   height: 140px;
   width: 140px;
-  background: #00bdba; /* Reverted to a different color to fit a new scheme. */
+  background: #00bdba;
   border-radius: 100%;
   border: 5px solid #000000;
   display: block;
@@ -267,8 +267,19 @@
   background-position: center;
   background-image: url(https://imgur.com/cUxiqd5.png);
   background-size: 117px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
+  position: relative;
+  --text-font-family: "Helvetica Neue LT Pro";
+  --text-font-size: 62px;
+}
+
+.made-button::before {
+  content: var(--text-content);
+  font-family: var(--text-font-family);
+  font-size: var(--text-font-size);
+  translate: -50% -50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 
 .made-button.pressed {

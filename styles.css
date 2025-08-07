@@ -221,3 +221,112 @@ body {
   bottom: auto;
   border-color: #343a40 transparent transparent transparent;
 }
+
+/* Styling for the details and summary tags */
+details {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  margin: 10px 0;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+summary {
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px;
+  list-style: none; /* Hides the default arrow */
+  position: relative;
+  transition: all 0.2s ease;
+  color: #495057;
+}
+
+summary:hover {
+  color: #007bff;
+}
+
+/* Adds a custom arrow indicator */
+summary::before {
+  content: "▶";
+  display: inline-block;
+  margin-right: 10px;
+  transform: rotate(0deg);
+  transition: transform 0.2s ease;
+}
+
+details[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+details[open] > summary {
+  background-color: #e9ecef;
+  border-radius: 6px 6px 0 0;
+  margin-bottom: 0;
+}
+
+/* Container for the font search and dropdown list */
+.font-dropdown-container {
+  position: relative;
+  display: block; /* Ensures it takes up its own space */
+}
+
+/* Style for the font search input box */
+#font-search-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-size: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 0;
+}
+
+#font-search-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+/* Styles for the dropdown list of fonts */
+#font-list {
+  display: none; /* Initially hides the list */
+  list-style-type: none; /* Removes the bullet points */
+  padding: 0;
+  margin: 0;
+  position: absolute; /* Positions the list right below the input */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  max-height: 200px; /* Limits the height for long lists */
+  overflow-y: auto; /* Adds a scrollbar if needed */
+  width: 100%;
+  z-index: 100; /* Ensures the dropdown is on top of other content */
+}
+
+/* Style for each item in the list */
+#font-list li {
+  padding: 10px;
+  cursor: pointer;
+  border-top: 1px solid #eee; /* Adds a divider between items */
+}
+
+#font-list li:hover {
+  background-color: #e9ecef;
+}
+
+/* When the container has the "open" class, show the list */
+.font-dropdown-container.open #font-list {
+  display: block;
+}
+
+/* Ensure the modal displays on top of everything else when active */
+.modal {
+  display: none;
+}
+
+.modal.show {
+  display: block;
+}
