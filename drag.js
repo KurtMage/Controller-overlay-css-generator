@@ -1072,24 +1072,25 @@ function getChangedVariables(img) {
 	const originalStateOfImg = originalState.get(img.id);
 	var changedVariables = '';
 	const backgroundChanged = style.background !== originalStateOfImg.background;
+	const indentation = '&nbsp;&nbsp;';
 	changedVariables +=
 	`
 	<br>${img.id} {<br>
-		${style.top !== originalStateOfImg.top ? `top: ${style.top};<br>` : ''}
-		${style.left !== originalStateOfImg.left ? `left: ${style.left};<br>` : ''}
-		${style.visibility !== 'hidden' && backgroundChanged ? `background: ${style.background};<br>` : ''}
-		${style.visibility !== originalStateOfImg.visibility ? `visibility: ${style.visibility};<br>` : ''}
-		${style.width !== originalStateOfImg.size ? `width: ${style.width};<br>` : ''}
-		${style.width !== originalStateOfImg.size ? `height: ${style.width};<br>` : ''}
-		${style.border !== originalStateOfImg.border ? `border: ${style.border};<br>` : ''}
-		${style.borderRadius !== originalStateOfImg.borderRadius ? `border-radius: ${style.borderRadius};<br>` : ''}
-		${style.backgroundPositionY !== originalStateOfImg.backgroundPositionY ? `background-position-y: ${style.backgroundPositionY};<br>` : ''}
-		${style.backgroundImage !== originalStateOfImg.backgroundImage ? `background-image: ${style.backgroundImage};<br>` : ''}
-		${style.backgroundSize !== originalStateOfImg.backgroundSize ? `background-size: ${style.backgroundSize};<br>` : ''}
-		${style.backgroundRepeat !== originalStateOfImg.backgroundRepeate ? `background-repeat: ${style.backgroundRepeat};<br>` : ''}
-		${style.backgroundPosition !== originalStateOfImg.backgroundPosition ? `background-image: ${style.backgroundPosition};<br>` : ''}
-		${style.borderRadius !== originalStateOfImg.borderRadius ? `border-radius: ${style.borderRadius};<br>` : ''}
-		${style.borderColor !== originalStateOfImg.borderColor ? `border-color: ${style.borderColor};<br>` : ''}
+		${style.top !== originalStateOfImg.top ? `${indentation}top: ${style.top};<br>` : ''}
+		${style.left !== originalStateOfImg.left ? `${indentation}left: ${style.left};<br>` : ''}
+		${style.visibility !== 'hidden' && backgroundChanged ? `${indentation}background: ${style.background};<br>` : ''}
+		${style.visibility !== originalStateOfImg.visibility ? `${indentation}visibility: ${style.visibility};<br>` : ''}
+		${style.width !== originalStateOfImg.size ? `${indentation}width: ${style.width};<br>` : ''}
+		${style.width !== originalStateOfImg.size ? `${indentation}height: ${style.width};<br>` : ''}
+		${style.border !== originalStateOfImg.border ? `${indentation}border: ${style.border};<br>` : ''}
+		${style.borderRadius !== originalStateOfImg.borderRadius ? `${indentation}border-radius: ${style.borderRadius};<br>` : ''}
+		${style.backgroundPositionY !== originalStateOfImg.backgroundPositionY ? `${indentation}background-position-y: ${style.backgroundPositionY};<br>` : ''}
+		${style.backgroundImage !== originalStateOfImg.backgroundImage ? `${indentation}background-image: ${style.backgroundImage};<br>` : ''}
+		${style.backgroundSize !== originalStateOfImg.backgroundSize ? `${indentation}background-size: ${style.backgroundSize};<br>` : ''}
+		${style.backgroundRepeat !== originalStateOfImg.backgroundRepeate ? `${indentation}background-repeat: ${style.backgroundRepeat};<br>` : ''}
+		${style.backgroundPosition !== originalStateOfImg.backgroundPosition ? `${indentation}background-image: ${style.backgroundPosition};<br>` : ''}
+		${style.borderRadius !== originalStateOfImg.borderRadius ? `${indentation}border-radius: ${style.borderRadius};<br>` : ''}
+		${style.borderColor !== originalStateOfImg.borderColor ? `${indentation}border-color: ${style.borderColor};<br>` : ''}
 	}<br>
 	`
 	return changedVariables;
