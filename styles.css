@@ -1,4 +1,3 @@
-
 .copybutton {
   padding: 15px 25px;
 }
@@ -57,18 +56,18 @@
   transform: translateY(4px);
 }
 
-
 body {
-    zoom: 80%;
-    display: grid;
-    font-size: 22px;
-    resize:both;
+  zoom: 80%;
+  display: grid;
+  font-size: 22px;
+  resize: both;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
-}  
+}
 
 /* Error message for bad URL */
 
@@ -121,24 +120,25 @@ html, body {
 }
 
 .urlTextBox {
-    width: 80%;
-    padding: 12px 20px;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 16pt;
+  width: 80%;
+  padding: 12px 20px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16pt;
 }
 
 .buttonMakerTextBox {
-    width: 65px;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 16pt;
+  width: 65px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16pt;
 }
 
-/* Tabs */ 
+/* Tabs */
 
-
-body {font-family: Arial;}
+body {
+  font-family: Arial;
+}
 
 /* Style the tab */
 .tab {

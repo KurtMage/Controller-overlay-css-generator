@@ -1,276 +1,275 @@
 .layout-box {
-    position: relative;
-	background-color: #ffffff;
-	height: 620px;
-    overflow: auto;
-    resize: vertical;
-    border-top: solid rgb(0, 0, 0);
-    border-bottom: solid rgb(0, 0, 0);
-    /* border-radius: 12px; */
-    width: 100%;
+  position: relative;
+  background-color: #ffffff;
+  height: 620px;
+  overflow: auto;
+  resize: vertical;
+  border-top: solid rgb(0, 0, 0);
+  border-bottom: solid rgb(0, 0, 0);
+  /* border-radius: 12px; */
+  width: 100%;
 }
 
 .img {
-	position: absolute;
-	width: 150px;
-	height: 150px;
-	background-size: cover;
-	background-repeat: repeat;
-	translate: -50% -50%;
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background-size: cover;
+  background-repeat: repeat;
+  translate: -50% -50%;
 }
 
 :root {
-    /* Arrow button image links */
-    --left-arrow-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Arrow Left.png");
-    --down-arrow-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Arrow Down.png");
-    --right-arrow-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Arrow Right.png");
-    --up-arrow-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Arrow Up.png");
+  /* Arrow button image links */
+  --left-arrow-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Arrow Left.png");
+  --down-arrow-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Arrow Down.png");
+  --right-arrow-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Arrow Right.png");
+  --up-arrow-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Arrow Up.png");
 
-     /* Right side button image links */
-    --top-row-index-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/L.png");
-    --top-row-middle-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/M.png");
-    --top-row-ring-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/H.png");
-    --top-row-pinky-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/D.png");
-    --bot-row-index-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/S1.png");
-    --bot-row-middle-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/S2.png");
-    --bot-row-ring-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/T.png");
-    --bot-row-pinky-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/P white borderd.png");
+  /* Right side button image links */
+  --top-row-index-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/L.png");
+  --top-row-middle-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/M.png");
+  --top-row-ring-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/H.png");
+  --top-row-pinky-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/D.png");
+  --bot-row-index-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/S1.png");
+  --bot-row-middle-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/S2.png");
+  --bot-row-ring-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/T.png");
+  --bot-row-pinky-finger-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/P white borderd.png");
 
-    /* Start/back vars */
-    --start-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Blank.png");
-    --back-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Blank.png");
+  /* Start/back vars */
+  --start-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Blank.png");
+  --back-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Blank.png");
 
-    /* L3/R3 button vars */
-    --ls-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Blank.png");
-    --rs-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Blank.png");
+  /* L3/R3 button vars */
+  --ls-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Blank.png");
+  --rs-button-source-image: url("https://raw.githubusercontent.com/KurtMage/KurtMage.github.io/main/images/2XKO/2025/Blank.png");
 
-    --a-top: 300px;
-    --b-top: calc(var(--a-top) - var(--diag-vert-clearance));
-    --x-top: calc(var(--a-top) - var(--vert-clearance));
-    --y-top: calc(var(--x-top) - var(--diag-vert-clearance));
-    --rb-top: calc(var(--y-top));
-    --lb-top: calc(var(--rb-top));
-    --rt-top: calc(var(--rb-top) + var(--vert-clearance));
-    --lt-top: var(--rt-top);
+  --a-top: 300px;
+  --b-top: calc(var(--a-top) - var(--diag-vert-clearance));
+  --x-top: calc(var(--a-top) - var(--vert-clearance));
+  --y-top: calc(var(--x-top) - var(--diag-vert-clearance));
+  --rb-top: calc(var(--y-top));
+  --lb-top: calc(var(--rb-top));
+  --rt-top: calc(var(--rb-top) + var(--vert-clearance));
+  --lt-top: var(--rt-top);
 
-    --a-left: 500px;
-    --b-left: calc(var(--a-left) + var(--diag-horz-clearance));
-    --x-left: var(--a-left);
-    --y-left: calc(var(--a-left) + var(--diag-horz-clearance));
-    --rb-left: calc(var(--y-left) + var(--horz-clearance));
-    --lb-left: calc(var(--rb-left) + var(--horz-clearance));
-    --rt-left: calc(var(--rb-left));
-    --lt-left: calc(var(--rt-left) + var(--horz-clearance));
+  --a-left: 500px;
+  --b-left: calc(var(--a-left) + var(--diag-horz-clearance));
+  --x-left: var(--a-left);
+  --y-left: calc(var(--a-left) + var(--diag-horz-clearance));
+  --rb-left: calc(var(--y-left) + var(--horz-clearance));
+  --lb-left: calc(var(--rb-left) + var(--horz-clearance));
+  --rt-left: calc(var(--rb-left));
+  --lt-left: calc(var(--rt-left) + var(--horz-clearance));
 
-    --dir-right-top: calc(var(--x-top) + 75px);
-    --dir-right-left: calc(var(--x-left) - 150px);
-    --dir-down-top: calc(var(--dir-right-top) - var(--diag-vert-clearance));
-    --dir-down-left: calc(var(--dir-right-left) - var(--diag-horz-clearance));
-    --dir-left-top: var(--dir-down-top);
-    --dir-left-left: calc(var(--dir-down-left) - var(--horz-clearance));
-    --dir-up-top: calc(var(--dir-right-top) + 230px);
-    --dir-up-left: calc(var(--dir-right-left) + 75px);
+  --dir-right-top: calc(var(--x-top) + 75px);
+  --dir-right-left: calc(var(--x-left) - 150px);
+  --dir-down-top: calc(var(--dir-right-top) - var(--diag-vert-clearance));
+  --dir-down-left: calc(var(--dir-right-left) - var(--diag-horz-clearance));
+  --dir-left-top: var(--dir-down-top);
+  --dir-left-left: calc(var(--dir-down-left) - var(--horz-clearance));
+  --dir-up-top: calc(var(--dir-right-top) + 230px);
+  --dir-up-left: calc(var(--dir-right-left) + 75px);
 
-	--vert-clearance: 160px;
-    --diag-vert-clearance: 80px;
-    --diag-horz-clearance: 140px;
-    --horz-clearance: var(--vert-clearance);
+  --vert-clearance: 160px;
+  --diag-vert-clearance: 80px;
+  --diag-horz-clearance: 140px;
+  --horz-clearance: var(--vert-clearance);
 }
 
-
 .img.startback {
-	width: 100px;
-	height: 100px;
-	translate: -50% -50%;
+  width: 100px;
+  height: 100px;
+  translate: -50% -50%;
 }
 
 .img.startback.start {
-	background-image: url(https://imgur.com/U5AkLfW.png);
-	top: 70px;
-	left: 439px;
+  background-image: url(https://imgur.com/U5AkLfW.png);
+  top: 70px;
+  left: 439px;
 }
 
 .img.startback.start.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.startback.back {
-	background-image: url(https://imgur.com/h4FYoR5.png);
-	top: 70px;
-	left: 335px;
+  background-image: url(https://imgur.com/h4FYoR5.png);
+  top: 70px;
+  left: 335px;
 }
 
 .img.startback.back.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.ls {
-	background-image: url("https://imgur.com/DBqy9sX.png");
-	top: 400px;
-	left: 220px;
+  background-image: url("https://imgur.com/DBqy9sX.png");
+  top: 400px;
+  left: 220px;
 }
 
 .img.ls.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.rs {
-	background-image: url("https://imgur.com/9vShnHT.png");
-	top: 400px;
-	left: 630px;
+  background-image: url("https://imgur.com/9vShnHT.png");
+  top: 400px;
+  left: 630px;
 }
 
 .img.rs.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.button.x {
-	background-image: url("https://imgur.com/rnS7cgc.png");
-	top:var(--x-top);
-	left:var(--x-left);
+  background-image: url("https://imgur.com/rnS7cgc.png");
+  top: var(--x-top);
+  left: var(--x-left);
 }
 
 .img.button.x.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.button.y {
-	background-image: url("https://imgur.com/KX5MAP0.png");
-	top:var(--y-top);
-	left:var(--y-left);
+  background-image: url("https://imgur.com/KX5MAP0.png");
+  top: var(--y-top);
+  left: var(--y-left);
 }
 
 .img.button.y.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.button.a {
-	background-image: url("https://imgur.com/hdeC2vb.png");
-	top:var(--a-top);
-	left:var(--a-left);
+  background-image: url("https://imgur.com/hdeC2vb.png");
+  top: var(--a-top);
+  left: var(--a-left);
 }
 
 .img.button.a.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.button.b {
-	background-image: url("https://imgur.com/YcM0VWU.png");
-	top:var(--b-top);
-	left:var(--b-left);
+  background-image: url("https://imgur.com/YcM0VWU.png");
+  top: var(--b-top);
+  left: var(--b-left);
 }
 
 .img.button.b.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.button.rb {
-	background-image: url("https://imgur.com/KPUJ4bG.png");
-	top:var(--rb-top);
-	left:var(--rb-left);
+  background-image: url("https://imgur.com/KPUJ4bG.png");
+  top: var(--rb-top);
+  left: var(--rb-left);
 }
 
 .img.button.rb.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.button.lb {
-	background-image: url("https://imgur.com/OCUcLGj.png");
-	top:var(--lb-top);
-	left:var(--lb-left);
+  background-image: url("https://imgur.com/OCUcLGj.png");
+  top: var(--lb-top);
+  left: var(--lb-left);
 }
 
 .img.button.lb.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.button.rt {
-	background-image: url("https://imgur.com/ZtgNfxW.png");
-	top:var(--rt-top);
-	left:var(--rt-left);
+  background-image: url("https://imgur.com/ZtgNfxW.png");
+  top: var(--rt-top);
+  left: var(--rt-left);
 }
 
 .img.button.rt.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.button.lt {
-	background-image: url("https://imgur.com/bAr122G.png");
-	top:var(--lt-top);
-	left:var(--lt-left);
+  background-image: url("https://imgur.com/bAr122G.png");
+  top: var(--lt-top);
+  left: var(--lt-left);
 }
 
 .img.button.lt.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.arrow.left {
-	background-image: url("https://imgur.com/krEVQ0L.png");
-	top:var(--dir-left-top);
-	left:var(--dir-left-left);
+  background-image: url("https://imgur.com/krEVQ0L.png");
+  top: var(--dir-left-top);
+  left: var(--dir-left-left);
 }
 
 .img.arrow.left.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.arrow.down {
-	background-image: url("https://imgur.com/v1zCdFS.png");
-	top:var(--dir-down-top);
-	left:var(--dir-down-left);
+  background-image: url("https://imgur.com/v1zCdFS.png");
+  top: var(--dir-down-top);
+  left: var(--dir-down-left);
 }
 
 .img.arrow.down.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.arrow.right {
-	background-image: url("https://imgur.com/fqY6vke.png");
-	top:var(--dir-right-top);
-	left:var(--dir-right-left);
+  background-image: url("https://imgur.com/fqY6vke.png");
+  top: var(--dir-right-top);
+  left: var(--dir-right-left);
 }
 
 .img.arrow.right.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .img.arrow.up {
-	background-image: url("https://imgur.com/bSo4Fso.png");
-	top:var(--dir-up-top);
-	left:var(--dir-up-left);
+  background-image: url("https://imgur.com/bSo4Fso.png");
+  top: var(--dir-up-top);
+  left: var(--dir-up-left);
 }
 
 .img.fstick {
-	visibility: hidden;
+  visibility: hidden;
 }
 
 .img.arrow.up.pressed {
-	background-position-y: 100%;
+  background-position-y: 100%;
 }
 
 .code-box {
-  position:relative;
-  width:100%;
-  height:100%;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .made-button {
-	height: 140px;
-	width: 140px;
-	background: #00BDBA;
-	border-radius: 100%;
-	border: 5px solid #000000;
-	display: block;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-image: url(https://imgur.com/cUxiqd5.png);
-	background-size: 117px;
+  height: 140px;
+  width: 140px;
+  background: #00bdba;
+  border-radius: 100%;
+  border: 5px solid #000000;
+  display: block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(https://imgur.com/cUxiqd5.png);
+  background-size: 117px;
 }
 
 .made-button.pressed {
-	background: #ffffff;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-image: url(https://imgur.com/S8qj5Rt.png);
-	background-size: 117px;
+  background: #ffffff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(https://imgur.com/S8qj5Rt.png);
+  background-size: 117px;
 }
