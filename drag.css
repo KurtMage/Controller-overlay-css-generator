@@ -89,8 +89,8 @@
 
 .img.startback.start {
   background-image: url(https://imgur.com/U5AkLfW.png);
-  top: 70px;
-  left: 439px;
+  top: 120px;
+  left: 484px;
 }
 
 .img.startback.start.pressed {
@@ -99,8 +99,8 @@
 
 .img.startback.back {
   background-image: url(https://imgur.com/h4FYoR5.png);
-  top: 70px;
-  left: 335px;
+  top: 120px;
+  left: 380px;
 }
 
 .img.startback.back.pressed {
@@ -109,8 +109,8 @@
 
 .img.ls {
   background-image: url("https://imgur.com/DBqy9sX.png");
-  top: 400px;
-  left: 220px;
+  top: 475px;
+  left: 295px;
 }
 
 .img.ls.pressed {
@@ -119,8 +119,8 @@
 
 .img.rs {
   background-image: url("https://imgur.com/9vShnHT.png");
-  top: 400px;
-  left: 630px;
+  top: 475px;
+  left: 705px;
 }
 
 .img.rs.pressed {

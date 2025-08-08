@@ -1103,6 +1103,21 @@ function undo() {
     if (locationToReturnTo.backgroundSize !== currentLocation.backgroundSize) {
       img.style.backgroundSize = locationToReturnTo.backgroundSize;
     }
+    img.style.setProperty("--text-color", locationToReturnTo.textColor);
+    img.style.setProperty("--text-font-size", locationToReturnTo.textFontSize);
+    img.style.setProperty(
+      "--text-stroke-color",
+      locationToReturnTo.textStrokeColor
+    );
+    img.style.setProperty(
+      "--text-stroke-width",
+      locationToReturnTo.textStrokeWidth
+    );
+    img.style.setProperty("--text-content", locationToReturnTo.textContent);
+    img.style.setProperty(
+      "--text-font-family",
+      locationToReturnTo.textFontFamily
+    );
   }
 
   var changedVariables =
@@ -1176,6 +1191,21 @@ function redo() {
     if (locationToReturnTo.backgroundSize !== currentLocation.backgroundSize) {
       img.style.backgroundSize = locationToReturnTo.backgroundSize;
     }
+    img.style.setProperty("--text-color", locationToReturnTo.textColor);
+    img.style.setProperty("--text-font-size", locationToReturnTo.textFontSize);
+    img.style.setProperty(
+      "--text-stroke-color",
+      locationToReturnTo.textStrokeColor
+    );
+    img.style.setProperty(
+      "--text-stroke-width",
+      locationToReturnTo.textStrokeWidth
+    );
+    img.style.setProperty("--text-content", locationToReturnTo.textContent);
+    img.style.setProperty(
+      "--text-font-family",
+      locationToReturnTo.textFontFamily
+    );
   }
 
   var changedVariables =
