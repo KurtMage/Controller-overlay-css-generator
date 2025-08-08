@@ -845,6 +845,12 @@ function copyButtonFrom(copyFromButtonEl, copyToButtonEl) {
       copyFromButtonStyle.getPropertyValue(property)
     );
   }
+  if (!copyFromButtonStyle.getPropertyValue("--text-content")) {
+    copyToButtonEl.style.setProperty("--text-content", '""');
+  }
+  if (!copyFromButtonStyle.getPropertyValue("--text-font-family")) {
+    copyToButtonEl.style.setProperty("--text-content", "Helvetica Neue LT Pro");
+  }
 }
 
 function updateStatesAndCss(id2state) {
@@ -1560,6 +1566,9 @@ function hexRgbToRgba(hexcolor, alphaPercent) {
  * @returns
  */
 function cssStyleColorToColorHex(colorString) {
+  if (colorString === "" || colorString === "transparent") {
+    return "#000000"; // Default to black if no color is specified
+  }
   const sixDigitMatch = colorString.match(/^#([0-9a-fA-F]{6})$/);
   if (sixDigitMatch) {
     // If it's a 6-digit hex, return it directly.
@@ -1590,6 +1599,9 @@ function cssStyleColorToColorHex(colorString) {
 }
 
 function cssStyleColorToAlphaPercent(colorString) {
+  if (colorString === "" || colorString === "transparent") {
+    return 0; // Default to 0 if no color is specified.
+  }
   const sixDigitMatch = colorString.match(/^#([0-9a-fA-F]{6})$/);
   if (sixDigitMatch) {
     // If it's a 6-digit hex, return it directly.
