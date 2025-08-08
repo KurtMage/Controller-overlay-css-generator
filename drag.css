@@ -23,6 +23,7 @@
   background-size: cover;
   background-repeat: repeat;
   translate: -50% -50%;
+  box-sizing: border-box;
 }
 
 :root {
@@ -257,8 +258,9 @@
 }
 
 .made-button {
-  height: 140px;
-  width: 140px;
+  box-sizing: border-box;
+  height: 150px;
+  width: 150px;
   background: #00bdba;
   border-radius: 100%;
   border: 5px solid #000000;
@@ -268,18 +270,29 @@
   background-image: url(https://imgur.com/cUxiqd5.png);
   background-size: 117px;
   position: relative;
-  --text-font-family: "Helvetica Neue LT Pro";
+  --text-color: #ffffff;
   --text-font-size: 62px;
+  --text-stroke-color: #000000;
+  --text-stroke-width: 4px; /* Actual border thickness is half of the stroke width, because half of it gets hidden behind the ::after */
+  --text-content: "M";
+  --text-font-family: "Helvetica Neue LT Pro";
 }
 
-.made-button::before {
+.made-button::before,
+.made-button::after {
+  color: var(--text-color);
+  font-size: var(--text-font-size);
   content: var(--text-content);
   font-family: var(--text-font-family);
-  font-size: var(--text-font-size);
   translate: -50% -50%;
   position: absolute;
   top: 50%;
   left: 50%;
+}
+
+.made-button::before {
+  -webkit-text-stroke-color: var(--text-stroke-color);
+  -webkit-text-stroke-width: var(--text-stroke-width);
 }
 
 .made-button.pressed {
@@ -290,4 +303,114 @@
   background-size: 117px;
   transform: scale(0.95);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.img.startback.back::before,
+.img.startback.start::before,
+.img.button.a::before,
+.img.button.b::before,
+.img.button.x::before,
+.img.button.y::before,
+.img.button.rb::before,
+.img.button.lb::before,
+.img.button.rt::before,
+.img.button.lt::before,
+.img.rs::before,
+.img.ls::before,
+.img.arrow.up::before,
+.img.arrow.right::before,
+.img.arrow.down::before,
+.img.arrow.left::before,
+.img.startback.back::before,
+.img.startback.start::before,
+.img.button.a::before,
+.img.button.b::before,
+.img.button.x::before,
+.img.button.y::before,
+.img.button.rb::before,
+.img.button.lb::before,
+.img.button.rt::before,
+.img.button.lt::before,
+.img.rs::before,
+.img.ls::before,
+.img.arrow.up::before,
+.img.arrow.right::before,
+.img.arrow.down::before,
+.img.arrow.left::before,
+.img.startback.back::after,
+.img.startback.start::after,
+.img.button.a::after,
+.img.button.b::after,
+.img.button.x::after,
+.img.button.y::after,
+.img.button.rb::after,
+.img.button.lb::after,
+.img.button.rt::after,
+.img.button.lt::after,
+.img.rs::after,
+.img.ls::after,
+.img.arrow.up::after,
+.img.arrow.right::after,
+.img.arrow.down::after,
+.img.arrow.left::after,
+.img.startback.back::after,
+.img.startback.start::after,
+.img.button.a::after,
+.img.button.b::after,
+.img.button.x::after,
+.img.button.y::after,
+.img.button.rb::after,
+.img.button.lb::after,
+.img.button.rt::after,
+.img.button.lt::after,
+.img.rs::after,
+.img.ls::after,
+.img.arrow.up::after,
+.img.arrow.right::after,
+.img.arrow.down::after,
+.img.arrow.left::after {
+  color: var(--text-color);
+  font-size: var(--text-font-size);
+  content: var(--text-content);
+  font-family: var(--text-font-family);
+  translate: -50% -50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.img.startback.back::before,
+.img.startback.start::before,
+.img.button.a::before,
+.img.button.b::before,
+.img.button.x::before,
+.img.button.y::before,
+.img.button.rb::before,
+.img.button.lb::before,
+.img.button.rt::before,
+.img.button.lt::before,
+.img.rs::before,
+.img.ls::before,
+.img.arrow.up::before,
+.img.arrow.right::before,
+.img.arrow.down::before,
+.img.arrow.left::before,
+.img.startback.back::before,
+.img.startback.start::before,
+.img.button.a::before,
+.img.button.b::before,
+.img.button.x::before,
+.img.button.y::before,
+.img.button.rb::before,
+.img.button.lb::before,
+.img.button.rt::before,
+.img.button.lt::before,
+.img.rs::before,
+.img.ls::before,
+.img.arrow.up::before,
+.img.arrow.right::before,
+.img.arrow.down::before,
+.img.arrow.left::before {
+  -webkit-text-stroke-color: var(--text-stroke-color);
+  -webkit-text-stroke-width: var(--text-stroke-width);
 }

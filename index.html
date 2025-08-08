@@ -7,53 +7,6 @@
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="drag.css" />
     <script src="drag.js"></script>
-
-    <style>
-      body {
-        font-family: Arial, Helvetica, sans-serif;
-      }
-
-      /* The Modal (background) */
-      .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        padding-top: 100px; /* Location of the box */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0, 0, 0); /* Fallback color */
-        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-      }
-
-      /* Modal Content */
-      .modal-content {
-        background-color: #fefefe;
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        border-radius: 12pt;
-        border: 4pt solid;
-      }
-
-      /* The Close Button */
-      .close {
-        color: #aaaaaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-      }
-
-      .close:hover,
-      .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-      }
-    </style>
   </head>
 
   <body>
@@ -76,7 +29,6 @@
       <button class="tablinks" onclick="openCity(event, 'importStickTab')">
         Import stick
       </button>
-      <!-- <button class="tablinks" onclick="openCity(event, 'importBackgroundTab')">Import background</button> -->
       <button class="tablinks" onclick="openCity(event, 'importCSSTab')">
         Import CSS
       </button>
@@ -89,16 +41,17 @@
         <p>
           Click buttons/stick to select.<br />
           Use arrow keys to move selected buttons/stick
-          <span>
+          <span class="input-with-unit">
             <label for="moveAmountBox"></label>
             <input
               class="buttonMakerTextBox"
               type="number"
               id="moveAmountBox"
               value="5"
-            />
+            /><span>px at a time.</span>
           </span>
-          px at a time.<br />
+        </p>
+        <p>
           To swap button locations, select two buttons and click
           <span class="tooltip" style="border-bottom: none"
             ><span class="tooltiptext" style="background-color: #333"
@@ -122,21 +75,25 @@
           <h4>Unpressed button</h4>
           <details>
             <summary>Button Colors and Size</summary>
-            <label for="unpressedButtonColorPicker">Color:</label>
-            <input
-              type="color"
-              id="colorpicker"
-              value="#00BDBA"
-              onInput="updateMadeButtonColor(this.value, document.getElementById('unpressedMadeButton'))"
-            />
-            <label for="unpressedSize">Size:</label>
-            <input
-              class="buttonMakerTextBox"
-              type="number"
-              id="unpressedSize"
-              value="140"
-              onInput="updateMadeButtonSize(this.value, document.getElementById('unpressedMadeButton'))"
-            />px<br />
+            <div>
+                <label for="unpressedButtonColorPicker">Color:</label>
+                <input
+                type="color"
+                id="colorpicker"
+                value="#00BDBA"
+                onInput="updateMadeButtonColor(this.value, document.getElementById('unpressedMadeButton'))"
+                />
+                <div class="input-with-unit">
+                <label for="unpressedSize">Size:</label>
+                <input
+                    class="buttonMakerTextBox"
+                    type="number"
+                    id="unpressedSize"
+                    value="150"
+                    onInput="updateMadeButtonSize(this.value, document.getElementById('unpressedMadeButton'))"
+                /><span>px</span>
+                </div>
+            </div>
             <label for="unpressedBorderColorPicker">Border color:</label>
             <input
               type="color"
@@ -144,48 +101,110 @@
               value="#000000"
               onInput="updateMadeButtonBorderColor(this.value, document.getElementById('unpressedMadeButton'))"
             />
-            <label for="unpressedBorderThickness">Border thickness:</label>
-            <input
-              class="buttonMakerTextBox"
-              type="number"
-              id="unpressedBorderThickness"
-              value="5"
-              onInput="updateMadeButtonBorderSize(this.value, document.getElementById('unpressedMadeButton'))"
-            />px<br />
+            <div class="input-with-unit">
+              <label for="unpressedBorderThickness">Border thickness:</label>
+              <input
+                class="buttonMakerTextBox"
+                type="number"
+                id="unpressedBorderThickness"
+                value="5"
+                onInput="updateMadeButtonBorderSize(this.value, document.getElementById('unpressedMadeButton'))"
+              /><span>px</span>
+            </div>
           </details>
           <details>
             <summary>Text</summary>
-            <label for="unpressedTextSize">Font size:</label>
-            <input
-              class="buttonMakerTextBox"
-              type="number"
-              id="unpressedTextSize"
-              value="62"
-              onInput="updateMadeButtonTextSize(this.value, document.getElementById('unpressedMadeButton'))"
-            />px<br />
-            <label for="unpressedTextContent"></label>
-            <input
-              class="urlTextBox"
-              type="text"
-              id="unpressedTextContent"
-              placeholder="Your text"
-              value=""
-              onInput="updateMadeButtonTextContent(this.value, document.getElementById('unpressedMadeButton'))"
-              style="padding: 2px 11px"
-            /><br />
-            <label
-              class="font-dropdown-container"
-              id="unpressedFontDropdownContainer"
-            >
+            <div>
+              <label for="unpressedTextColorPicker">Color:</label>
               <input
-                type="text"
-                id="font-search-input"
-                placeholder="Search for a font..."
-                autocomplete="off"
-                value="Helvetica Neue LT Pro"
+                type="color"
+                id="unpressed-colorpicker"
+                value="#ffffff"
+                onInput="updateMadeButtonTextColorAndSyncOpacity('unpressed', document.getElementById('unpressedMadeButton'))"
               />
-              <ul id="font-list" class="font-dropdown-list"></ul>
-            </label>
+              <label>Opacity:</label>
+                <input
+                type="range"
+                id="unpressed-opacity-range"
+                min="0"
+                max="100"
+                step="1"
+                value="100"
+                oninput="updateMadeButtonTextColorAndSyncOpacity('unpressed', document.getElementById('unpressedMadeButton'))"
+              />
+              <div class="input-with-unit">
+                <input
+                    type="number"
+                    id="unpressed-opacity-number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value="100"
+                    oninput="updateMadeButtonTextColorAndSyncOpacity('unpressed', document.getElementById('unpressedMadeButton'))"
+                />
+              </div>
+              <div class="input-with-unit">
+                <label for="unpressedTextSize">Font size:</label>
+                <input
+                  class="buttonMakerTextBox"
+                  type="number"
+                  id="unpressedTextSize"
+                  value="62"
+                  onInput="updateMadeButtonTextSize(this.value, document.getElementById('unpressedMadeButton'))"
+                /><span>px</span>
+              </div>
+            </div>
+            <div>
+              <label for="unpressedTextColorPicker">Text border color:</label>
+              <input
+                type="color"
+                id="colorpicker"
+                value="#000000"
+                onInput="updateMadeButtonTextBorderColor(this.value, document.getElementById('unpressedMadeButton'))"
+              />
+              <div class="input-with-unit">
+                <label for="unpressedTextSize">Text border thickness:</label>
+                <input
+                  class="buttonMakerTextBox"
+                  type="number"
+                  id="unpressedTextSize"
+                  value="4"
+                  onInput="updateMadeButtonTextBorderThickness(this.value, document.getElementById('unpressedMadeButton'))"
+                /><span>px</span>
+              </div>
+            </div>
+            <div>
+            <div>
+              <div class="input-with-unit">
+                <label for="unpressedTextContent">Your text:</label>
+                <input
+                  class="urlTextBox"
+                  type="text"
+                  id="unpressedTextContent"
+                  placeholder="Your text"
+                  value="M"
+                  onInput="updateMadeButtonTextContent(this.value, document.getElementById('unpressedMadeButton'))"
+                />
+              </div>
+            </div>
+            <div>
+              <div class="input-with-unit">
+                <label for="unpressed-font-search-input">Font:</label>
+                <label
+                  class="font-dropdown-container"
+                  id="unpressedFontDropdownContainer"
+                >
+                  <input
+                    type="text"
+                    id="unpressed-font-search-input"
+                    placeholder="Search for a font..."
+                    autocomplete="off"
+                    value="Helvetica Neue LT Pro"
+                  />
+                  <ul id="unpressed-font-list" class="font-dropdown-list"></ul>
+                </label>
+              </div>
+            </div>
           </details>
 
           <details>
@@ -197,7 +216,6 @@
               id="unpressedButtonUrlInput"
               onChange="updateMadeButtonImg(this.value, document.getElementById('unpressedMadeButton'))"
               value="https://imgur.com/cUxiqd5.png"
-              style="padding: 2px 11px"
             /><br />
             <div class="alert" style="display: none">
               <span
@@ -208,14 +226,16 @@
               >
               <strong>Error:</strong> No image found at the provided URL.
             </div>
-            <label for="unpressedImgSize">Image size:</label>
-            <input
-              class="buttonMakerTextBox"
-              type="number"
-              id="unpressedImgSize"
-              value="117"
-              onInput="updateMadeButtonImgSize(this.value, document.getElementById('unpressedMadeButton'))"
-            />px<br />
+            <div class="input-with-unit">
+              <label for="unpressedImgSize">Image size:</label>
+              <input
+                class="buttonMakerTextBox"
+                type="number"
+                id="unpressedImgSize"
+                value="117"
+                onInput="updateMadeButtonImgSize(this.value, document.getElementById('unpressedMadeButton'))"
+              /><span>px</span>
+            </div>
           </details>
 
           <span class="made-button" id="unpressedMadeButton"></span>
@@ -231,14 +251,16 @@
               value="#ffffff"
               onInput="updateMadeButtonColor(this.value, document.getElementById('pressedMadeButton'))"
             />
-            <label for="pressedSize">Size:</label>
-            <input
-              class="buttonMakerTextBox"
-              type="number"
-              id="pressedSize"
-              value="140"
-              onInput="updateMadeButtonSize(this.value, document.getElementById('pressedMadeButton'))"
-            />px<br />
+            <div class="input-with-unit">
+              <label for="pressedSize">Size:</label>
+              <input
+                class="buttonMakerTextBox"
+                type="number"
+                id="pressedSize"
+                value="140"
+                onInput="updateMadeButtonSize(this.value, document.getElementById('pressedMadeButton'))"
+              /><span>px</span>
+            </div>
             <label for="colorpicker">Border color:</label>
             <input
               type="color"
@@ -246,15 +268,113 @@
               value="#000000"
               onInput="updateMadeButtonBorderColor(this.value, document.getElementById('pressedMadeButton'))"
             />
-            <label for="pressedBorderThickness">Border thickness:</label>
-            <input
-              class="buttonMakerTextBox"
-              type="number"
-              id="pressedBorderThickness"
-              value="5"
-              onInput="updateMadeButtonBorderSize(this.value, document.getElementById('pressedMadeButton'))"
-            />px<br />
+            <div class="input-with-unit">
+              <label for="pressedBorderThickness">Border thickness:</label>
+              <input
+                class="buttonMakerTextBox"
+                type="number"
+                id="pressedBorderThickness"
+                value="5"
+                onInput="updateMadeButtonBorderSize(this.value, document.getElementById('pressedMadeButton'))"
+              /><span>px</span>
+            </div>
           </details>
+
+          <details>
+            <summary>Text</summary>
+            <div>
+              <label for="pressedTextColorPicker">Color:</label>
+              <input
+                type="color"
+                id="pressed-colorpicker"
+                value="#ffffff"
+                onInput="updateMadeButtonTextColorAndSyncOpacity('pressed', document.getElementById('unpressedMadeButton'))"
+              />
+              <label>Opacity:</label>
+                <input
+                type="range"
+                id="pressed-opacity-range"
+                min="0"
+                max="100"
+                step="1"
+                value="100"
+                oninput="updateMadeButtonTextColorAndSyncOpacity('pressed', document.getElementById('pressedMadeButton'))"
+              />
+              <div class="input-with-unit">
+                <input
+                    type="number"
+                    id="pressed-opacity-number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value="100"
+                    oninput="updateMadeButtonTextColorAndSyncOpacity('pressed', document.getElementById('pressedMadeButton'))"
+                />
+              </div>
+              <div class="input-with-unit">
+                <label for="pressedTextSize">Font size:</label>
+                <input
+                  class="buttonMakerTextBox"
+                  type="number"
+                  id="pressedTextSize"
+                  value="62"
+                  onInput="updateMadeButtonTextSize(this.value, document.getElementById('pressedMadeButton'))"
+                /><span>px</span>
+              </div>
+            </div>
+            <div>
+              <label for="pressedTextColorPicker">Text border color:</label>
+              <input
+                type="color"
+                id="colorpicker"
+                value="#000000"
+                onInput="updateMadeButtonTextBorderColor(this.value, document.getElementById('pressedMadeButton'))"
+              />
+              <div class="input-with-unit">
+                <label for="pressedTextSize">Text border thickness:</label>
+                <input
+                  class="buttonMakerTextBox"
+                  type="number"
+                  id="pressedTextSize"
+                  value="4"
+                  onInput="updateMadeButtonTextBorderThickness(this.value, document.getElementById('pressedMadeButton'))"
+                /><span>px</span>
+              </div>
+            </div>
+            <div>
+            <div>
+              <div class="input-with-unit">
+                <label for="pressedTextContent">Your text:</label>
+                <input
+                  class="urlTextBox"
+                  type="text"
+                  id="pressedTextContent"
+                  placeholder="Your text"
+                  value="M"
+                  onInput="updateMadeButtonTextContent(this.value, document.getElementById('pressedMadeButton'))"
+                />
+              </div>
+            </div>
+            <div>
+              <div class="input-with-unit">
+                <label for="pressed-font-search-input">Font:</label>
+                <label
+                  class="font-dropdown-container"
+                  id="pressedFontDropdownContainer"
+                >
+                  <input
+                    type="text"
+                    id="pressed-font-search-input"
+                    placeholder="Search for a font..."
+                    autocomplete="off"
+                    value="Helvetica Neue LT Pro"
+                  />
+                  <ul id="pressed-font-list" class="font-dropdown-list"></ul>
+                </label>
+              </div>
+            </div>
+          </details>
+
           <details>
             <summary>Add an image on top</summary>
             <label for="pressedButtonUrlInput">Image URL:</label>
@@ -264,16 +384,17 @@
               id="pressedButtonUrlInput"
               onChange="updateMadeButtonImg(this.value, document.getElementById('pressedMadeButton'))"
               value="https://imgur.com/S8qj5Rt.png"
-              style="padding: 2px 11px"
             /><br />
-            <label for="pressedImgSize">Image size:</label>
-            <input
-              class="buttonMakerTextBox"
-              type="number"
-              id="pressedImgSize"
-              value="117"
-              onInput="updateMadeButtonImgSize(this.value, document.getElementById('pressedMadeButton'))"
-            />px<br />
+            <div class="input-with-unit">
+              <label for="pressedImgSize">Image size:</label>
+              <input
+                class="buttonMakerTextBox"
+                type="number"
+                id="pressedImgSize"
+                value="117"
+                onInput="updateMadeButtonImgSize(this.value, document.getElementById('pressedMadeButton'))"
+              /><span>px</span>
+            </div>
             <div class="alert" style="display: none">
               <span
                 id="pressedButtonMakerCloseErrorButton"
@@ -313,9 +434,6 @@
           onChange="updatePreviewPicture(this.value, document.getElementById('urlButtonPreview'))"
           value="https://imgur.com/xwCaQWn.png"
         /><br /><br />
-        <!-- <p>Or provide a second image to be used as the "pressed" version of the button.</p>
-            <label for="pressedImportedUrlInput">URL:</label>
-            <input class="urlTextBox" type="text" id="pressedImportedUrlInput" onChange="updatePreviewPicture(this.value)"><br><br> -->
         <div>
           <div id="previewText">
             Preview (alternates between unpressed and pressed if set up
@@ -352,13 +470,15 @@
           buttons" tab, this size does not take your border thickness into
           account.
         </p>
-        <label for="sizeInput">Size:</label>
-        <input
-          class="urlTextBox"
-          type="number"
-          id="sizeInput"
-          value="150"
-        /><br /><br />
+        <div class="input-with-unit">
+          <label for="sizeInput">Size:</label>
+          <input
+            class="urlTextBox"
+            type="number"
+            id="sizeInput"
+            value="150"
+          /><span>px</span>
+        </div>
       </div>
       <div id="importStickTab" class="tabcontent">
         <p>
@@ -429,9 +549,6 @@
           id="importedBackgroundUrlInput"
           onChange="updateBackground(this.value)"
         /><br /><br />
-        <!-- <p>Or provide a second image to be used as the "pressed" version of the button.</p>
-            <label for="pressedImportedUrlInput">URL:</label>
-            <input class="urlTextBox" type="text" id="pressedImportedUrlInput" onChange="updatePreviewPicture(this.value)"><br><br> -->
       </div>
       <div id="importCSSTab" class="tabcontent">
         <p>
@@ -458,14 +575,10 @@
         <button id="openLayoutsBrowserButton" class="btn-1">
           Open base layouts browser
         </button>
-        <!-- The Modal -->
         <div id="myModal" class="modal">
-          <!-- Modal content -->
           <div class="modal-content">
             <span class="close">&times;</span>
             <p>Select a base layout</p>
-            <!-- <div id="baseLayoutPreview" style="float: right; width:50%">
-                    </div> -->
             <div>
               <div>
                 <h4>Xbox</h4>
@@ -500,34 +613,6 @@
             </div>
           </div>
         </div>
-        <script>
-          // Get the modal
-          var modal = document.getElementById("myModal");
-
-          // Get the button that opens the modal
-          var btn = document.getElementById("openLayoutsBrowserButton");
-
-          // Get the <span> element that closes the modal
-          var span = document.getElementsByClassName("close")[0];
-
-          // When the user clicks the button, open the modal
-          btn.onclick = function () {
-            modal.style.display = "block";
-          };
-
-          // When the user clicks on <span> (x), close the modal
-          span.onclick = function () {
-            modal.style.display = "none";
-          };
-
-          // When the user clicks anywhere outside of the modal, close it
-          window.onclick = function (event) {
-            if (event.target == modal) {
-              modal.style.display = "none";
-            }
-          };
-        </script>
-
         <p id="kurttmtest">
           <a
             target="_blank"
@@ -704,5 +789,32 @@
         </code>
       </div>
     </div>
+    <script>
+      // Get the modal
+      var modal = document.getElementById("myModal");
+
+      // Get the button that opens the modal
+      var btn = document.getElementById("openLayoutsBrowserButton");
+
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+
+      // When the user clicks the button, open the modal
+      btn.onclick = function () {
+        modal.style.display = "block";
+      };
+
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    </script>
   </body>
 </html>

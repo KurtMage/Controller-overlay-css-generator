@@ -24,7 +24,18 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function init() {
-  setupFonts();
+  setupFonts(
+    "unpressedFontDropdownContainer",
+    "unpressed-font-search-input",
+    "unpressed-font-list",
+    "unpressedMadeButton"
+  );
+  setupFonts(
+    "pressedFontDropdownContainer",
+    "pressed-font-search-input",
+    "pressed-font-list",
+    "pressedMadeButton"
+  );
   for (const img of document
     .getElementById("layout-box")
     .getElementsByTagName("*")) {
@@ -286,6 +297,14 @@ function switchBaseLayout(
 
 function applyCSS(css) {
   var cssObj = cssTokenizer(css);
+  const varProperties = [
+    "--text-color",
+    "--text-font-size",
+    "--text-stroke-color",
+    "--text-stroke-width",
+    "--text-content",
+    "--text-font-family",
+  ];
   for (let [key, properties] of Object.entries(cssObj)) {
     if (key === "body") {
       continue;
@@ -332,6 +351,11 @@ function applyCSS(css) {
     }
     if ("border-radius" in properties) {
       style.borderRadius = properties["border-radius"];
+    }
+    for (const property of varProperties) {
+      if (property in properties) {
+        style.setProperty(property, properties[property]);
+      }
     }
   }
   id2state = new Map();
@@ -717,6 +741,15 @@ function applyMadeButton(e) {
     document.getElementById("pressedMadeButton")
   );
 
+  const properties = [
+    "--text-color",
+    "--text-font-size",
+    "--text-stroke-color",
+    "--text-stroke-width",
+    "--text-content",
+    "--text-font-family",
+  ];
+
   targ.style.background = "none";
   targ.style.backgroundColor = pressedStyle.backgroundColor;
   targ.style.height = pressedStyle.height;
@@ -727,19 +760,28 @@ function applyMadeButton(e) {
   targ.style.backgroundSize = pressedStyle.backgroundSize;
   targ.style.backgroundRepeat = pressedStyle.backgroundRepeat;
   targ.style.backgroundPosition = pressedStyle.backgroundPosition;
+  for (const property of properties) {
+    targ.style.setProperty(property, pressedStyle.getPropertyValue(property));
+  }
 
-  const pressedImg = document.getElementById(targ.id.slice(0, -8));
+  const unpressedImg = document.getElementById(targ.id.slice(0, -8));
 
-  pressedImg.style.background = "none";
-  pressedImg.style.backgroundColor = unpressedStyle.backgroundColor;
-  pressedImg.style.height = unpressedStyle.height;
-  pressedImg.style.width = unpressedStyle.width;
-  pressedImg.style.borderRadius = unpressedStyle.borderRadius;
-  pressedImg.style.border = unpressedStyle.border;
-  pressedImg.style.backgroundImage = unpressedStyle.backgroundImage;
-  pressedImg.style.backgroundSize = unpressedStyle.backgroundSize;
-  pressedImg.style.backgroundRepeat = unpressedStyle.backgroundRepeat;
-  pressedImg.style.backgroundPosition = unpressedStyle.backgroundPosition;
+  unpressedImg.style.background = "none";
+  unpressedImg.style.backgroundColor = unpressedStyle.backgroundColor;
+  unpressedImg.style.height = unpressedStyle.height;
+  unpressedImg.style.width = unpressedStyle.width;
+  unpressedImg.style.borderRadius = unpressedStyle.borderRadius;
+  unpressedImg.style.border = unpressedStyle.border;
+  unpressedImg.style.backgroundImage = unpressedStyle.backgroundImage;
+  unpressedImg.style.backgroundSize = unpressedStyle.backgroundSize;
+  unpressedImg.style.backgroundRepeat = unpressedStyle.backgroundRepeat;
+  unpressedImg.style.backgroundPosition = unpressedStyle.backgroundPosition;
+  for (const property of properties) {
+    unpressedImg.style.setProperty(
+      property,
+      unpressedStyle.getPropertyValue(property)
+    );
+  }
 
   id2state = new Map();
   updateStatesAndCss(id2state);
@@ -1182,7 +1224,18 @@ function doesButtonHaveChange(img) {
     style.backgroundImage !== originalStateOfImg.backgroundImage ||
     style.backgroundSize !== originalStateOfImg.backgroundSize ||
     style.backgroundRepeat !== originalStateOfImg.backgroundRepeat ||
-    style.backgroundPosition !== originalStateOfImg.backgroundPosition
+    style.backgroundPosition !== originalStateOfImg.backgroundPosition ||
+    style.getPropertyValue("--text-color") !== originalStateOfImg.textColor ||
+    style.getPropertyValue("--text-font-size") !==
+      originalStateOfImg.textFontSize ||
+    style.getPropertyValue("--text-stroke-color") !==
+      originalStateOfImg.textStrokeColor ||
+    style.getPropertyValue("--text-stroke-width") !==
+      originalStateOfImg.textStrokeWidth ||
+    style.getPropertyValue("--text-content") !==
+      originalStateOfImg.textContent ||
+    style.getPropertyValue("--text-font-family") !==
+      originalStateOfImg.textFontFamily
   );
 }
 
@@ -1204,6 +1257,28 @@ function getChangedVariables(img) {
   var changedVariables = "";
   const backgroundChanged = style.background !== originalStateOfImg.background;
   const indentation = "&nbsp;&nbsp;";
+
+  const properties = [
+    "--text-color",
+    "--text-font-size",
+    "--text-stroke-color",
+    "--text-stroke-width",
+    "--text-content",
+    "--text-font-family",
+  ];
+
+  function kebabToCamelCase(str) {
+    return str.replace(/-./g, (match) => match[1].toUpperCase());
+  }
+  const propertyStyles = properties
+    .map((property) => {
+      // Use a conditional (ternary) operator to decide which string to return
+      return style.getPropertyValue(property) !==
+        originalStateOfImg[kebabToCamelCase(property.slice(2))] // Remove the "--" prefix.
+        ? `${property}: ${style.getPropertyValue(property)};<br>`
+        : "";
+    })
+    .join("");
   changedVariables += `
 	<br>${img.id} {<br>
 		${
@@ -1281,6 +1356,7 @@ function getChangedVariables(img) {
         ? `${indentation}border-color: ${style.borderColor};<br>`
         : ""
     }
+		${propertyStyles}
 	}<br>
 	`;
   return changedVariables;
@@ -1329,6 +1405,12 @@ function getStateOfImg(img) {
     backgroundPosition: style.backgroundPosition,
     borderRadius: style.borderRadius,
     borderColor: style.borderColor,
+    textColor: style.getPropertyValue("--text-color"),
+    textFontSize: style.getPropertyValue("--text-font-size"),
+    textStrokeColor: style.getPropertyValue("--text-stroke-color"),
+    textStrokeWidth: style.getPropertyValue("--text-stroke-width"),
+    textContent: style.getPropertyValue("--text-content"),
+    textFontFamily: style.getPropertyValue("--text-font-family"),
   };
 }
 
@@ -1353,6 +1435,53 @@ function updateMadeButtonTextContent(textContentValue, button) {
   button.style.setProperty("--text-content", '"' + textContentValue + '"');
 }
 
+function syncOpacityInputs(opacityRangeEl, opacityNumberEl) {
+  if (document.activeElement === opacityRangeEl) {
+    opacityNumberEl.value = opacityRangeEl.value;
+  } else {
+    // Ensure the number is within the valid range (0-100)
+    const clampedValue = Math.min(
+      Math.max(opacityNumberEl.value, opacityRangeEl.min),
+      opacityRangeEl.max
+    );
+    opacityRangeEl.value = clampedValue;
+    opacityNumberEl.value = clampedValue;
+  }
+}
+
+function hexRgbToRgba(hexcolor, alphaPercent) {
+  // Convert alpha from 0-100 range to 0-255 range
+  const alphaValue = Math.round((alphaPercent * 255) / 100);
+  let hexAlpha = alphaValue.toString(16).toUpperCase();
+
+  if (hexAlpha.length === 1) {
+    hexAlpha = "0" + hexAlpha;
+  }
+
+  // Combine the original hex color with the new alpha hex value
+  return `${hexcolor}${hexAlpha}`;
+}
+
+function updateMadeButtonTextColorAndSyncOpacity(
+  pressedOrUnpressedStr,
+  button
+) {
+  colorpickerEl = document.getElementById(
+    `${pressedOrUnpressedStr}-colorpicker`
+  );
+  opacityRangeEl = document.getElementById(
+    `${pressedOrUnpressedStr}-opacity-range`
+  );
+  opacityNumberEl = document.getElementById(
+    `${pressedOrUnpressedStr}-opacity-number`
+  );
+  syncOpacityInputs(opacityRangeEl, opacityNumberEl);
+  button.style.setProperty(
+    "--text-color",
+    hexRgbToRgba(colorpickerEl.value, opacityRangeEl.value)
+  );
+}
+
 function updateMadeButtonTextFont(textFontFamilyValue, button) {
   button.style.setProperty(
     "--text-font-family",
@@ -1361,7 +1490,15 @@ function updateMadeButtonTextFont(textFontFamilyValue, button) {
 }
 
 function updateMadeButtonTextSize(textSizeValue, button) {
-  button.style.setProperty("--text-font-size", "" + textSizeValue + "px");
+  button.style.setProperty("--text-font-size", textSizeValue + "px");
+}
+
+function updateMadeButtonTextBorderColor(textStrokeColorValue, button) {
+  button.style.setProperty("--text-stroke-color", textStrokeColorValue);
+}
+
+function updateMadeButtonTextBorderThickness(textStrokeThickness, button) {
+  button.style.setProperty("--text-stroke-width", textStrokeThickness + "px");
 }
 
 function updateMadeButtonTextContent(textContentValue, button) {
@@ -1430,6 +1567,17 @@ function resetButtonAndPressedOrUnpressedVersion(button) {
   button.style.backgroundRepeat = "";
   button.style.backgroundPosition = "";
   button.style.borderColor = "";
+  const properties = [
+    "--text-color",
+    "--text-font-size",
+    "--text-stroke-color",
+    "--text-stroke-width",
+    "--text-content",
+    "--text-font-family",
+  ];
+  for (const property of properties) {
+    button.style.removeProperty(property);
+  }
 
   // Probably a redundant check, because Make/Import already can't be applies to pressed.
   if (button.id !== ".fight-stick .fstick") {
@@ -1443,99 +1591,17 @@ function resetButtonAndPressedOrUnpressedVersion(button) {
     otherVersion.style.backgroundRepeat = "";
     otherVersion.style.backgroundPosition = "";
     otherVersion.style.borderColor = "";
+    for (const property of properties) {
+      otherVersion.style.removeProperty(property);
+    }
   }
 }
 
-// function setupFonts() {
-//   const fontList = [
-//     "Helvetica Neue LT Pro",
-//     "Arial",
-//     "Verdana",
-//     "Tahoma",
-//     "Trebuchet MS",
-//     "Georgia",
-//     "Times New Roman",
-//     "Courier New",
-//     "Brush Script MT",
-//     "Comic Sans MS",
-//     "Impact",
-//     "Lucida Console",
-//     "Palatino Linotype",
-//     "Garamond",
-//     "Helvetica",
-//     "sans-serif",
-//     "serif",
-//     "monospace",
-//     // Add more fonts here as needed
-//   ];
+function setupFonts(fontContainerId, fontInputId, fontListId, buttonId) {
+  const fontContainer = document.getElementById(fontContainerId);
+  const fontInput = document.getElementById(fontInputId);
+  const fontList = document.getElementById(fontListId);
 
-//   const searchInput = document.getElementById("font-search-input");
-//   const fontListElement = document.getElementById("font-list");
-
-//   // Populate the dropdown list
-//   function createFontList(fonts) {
-//     fontListElement.innerHTML = "";
-//     fonts.forEach((font) => {
-//       const li = document.createElement("li");
-//       li.textContent = font;
-//       li.style.fontFamily = font;
-//       fontListElement.appendChild(li);
-//     });
-//   }
-
-//   // Initial population of the list
-//   createFontList(fontList);
-
-//   // Filter the list based on user input
-//   searchInput.addEventListener("input", () => {
-//     const searchTerm = searchInput.value.toLowerCase();
-//     const filteredFonts = fontList.filter((font) =>
-//       font.toLowerCase().includes(searchTerm)
-//     );
-//     createFontList(filteredFonts);
-//     fontListElement.style.display = "block";
-//   });
-
-//   // Show the dropdown when the input is focused
-//   searchInput.addEventListener("focus", () => {
-//     fontListElement.style.display = "block";
-//   });
-
-//   // Hide the dropdown when the user clicks outside
-//   document.addEventListener("click", (event) => {
-//     if (!event.target.closest(".font-dropdown-container")) {
-//       fontListElement.style.display = "none";
-//     }
-//   });
-
-//   // Select a font from the list
-//   fontListElement.addEventListener("click", (event) => {
-//     if (event.target.tagName === "LI") {
-//       const selectedFont = event.target.textContent;
-//       searchInput.value = selectedFont;
-//       fontListElement.style.display = "none";
-
-//       const dropdownContainer = event.target.closest(
-//         ".font-dropdown-container"
-//       );
-//       var button;
-//       if (dropdownContainer.id.startsWith("unpressed")) {
-//         button = document.getElementById("unpressedMadeButton");
-//       }
-//       if (dropdownContainer.id.startsWith("pressed")) {
-//         button = document.getElementById("pressedMadeButton");
-//       }
-//       updateMadeButtonTextFont(selectedFont, button);
-//     }
-//   });
-// }
-
-function setupFonts() {
-  const fontInput = document.getElementById("font-search-input");
-  const fontList = document.getElementById("font-list");
-  const fontContainer = document.getElementById(
-    "unpressedFontDropdownContainer"
-  );
   const fonts = [
     "Helvetica Neue LT Pro",
     "Arial",
@@ -1594,14 +1660,7 @@ function setupFonts() {
       const selectedFont = event.target.textContent;
       fontInput.value = selectedFont;
 
-      // New logic to find the correct button based on the dropdown container's ID
-      var button;
-      if (fontContainer.id.startsWith("unpressed")) {
-        button = document.getElementById("unpressedMadeButton");
-      }
-      if (fontContainer.id.startsWith("pressed")) {
-        button = document.getElementById("pressedMadeButton");
-      }
+      const button = document.getElementById(buttonId);
       updateMadeButtonTextFont(selectedFont, button);
 
       setTimeout(() => {

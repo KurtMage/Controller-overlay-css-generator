@@ -272,7 +272,8 @@ details[open] > summary {
 }
 
 /* Style for the font search input box */
-#font-search-input {
+#unpressed-font-search-input,
+#pressed-font-search-input {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
@@ -283,14 +284,16 @@ details[open] > summary {
   margin-bottom: 0;
 }
 
-#font-search-input:focus {
+#unpressed-font-search-input:focus,
+#pressed-font-search-input:focus {
   border-color: #007bff;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
   outline: none;
 }
 
 /* Styles for the dropdown list of fonts */
-#font-list {
+#unpressed-font-list,
+#pressed-font-list {
   display: none; /* Initially hides the list */
   list-style-type: none; /* Removes the bullet points */
   padding: 0;
@@ -307,18 +310,21 @@ details[open] > summary {
 }
 
 /* Style for each item in the list */
-#font-list li {
+#unpressed-font-list li,
+#pressed-font-list li {
   padding: 10px;
   cursor: pointer;
   border-top: 1px solid #eee; /* Adds a divider between items */
 }
 
-#font-list li:hover {
+#unpressed-font-list li:hover,
+#pressed-font-list li:hover {
   background-color: #e9ecef;
 }
 
 /* When the container has the "open" class, show the list */
-.font-dropdown-container.open #font-list {
+.font-dropdown-container.open #unpressed-font-list,
+.font-dropdown-container.open #pressed-font-list {
   display: block;
 }
 
@@ -329,4 +335,74 @@ details[open] > summary {
 
 .modal.show {
   display: block;
+}
+/* Modal (background) */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  border-radius: 12pt;
+  border: 4pt solid;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* A general-purpose container for inputs followed by a unit */
+.input-with-unit {
+  display: inline-flex;
+  align-items: center; /* Vertically aligns the input and the "px" text */
+  gap: 10px; /* Provides consistent spacing between the input and the unit */
+}
+
+/* Base style for inputs inside the container */
+.input-with-unit input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-size: 16px;
+  width: 80px; /* You might need to adjust this depending on the specific input */
+}
+
+/* New CSS for text styling */
+.text-bold {
+  font-weight: bold;
+}
+
+.text-italic {
+  font-style: italic;
+}
+
+.text-underline {
+  text-decoration: underline;
 }
