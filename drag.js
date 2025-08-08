@@ -825,7 +825,7 @@ function resizeButtonTarget(targ, alsoResizePressedOrUnpressedVersion = true) {
 
   lastKeyPressMove = null;
 
-  // targ.style.backgroundSize = `${size}px`;
+  targ.style.backgroundSize = `${size}px`;
   targ.style.height = `${size}px`;
   targ.style.width = `${size}px`;
 
@@ -836,7 +836,9 @@ function resizeButtonTarget(targ, alsoResizePressedOrUnpressedVersion = true) {
     targ.id !== ".fight-stick .fstick"
   ) {
     var otherVersion = getPressedOrUnpressedVersionOfButton(targ);
-    resizeButtonTarget(otherVersion, false);
+    otherVersion.style.backgroundSize = `${size}px`;
+    otherVersion.style.height = `${size}px`;
+    otherVersion.style.width = `${size}px`;
   }
   id2state = new Map();
   updateStatesAndCss(id2state);
