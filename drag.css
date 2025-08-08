@@ -263,11 +263,10 @@
   width: 150px;
   background: #00bdba;
   border-radius: 100%;
-  border: 5px solid #000000;
+  border: 10px solid #000000;
   display: block;
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url(https://imgur.com/cUxiqd5.png);
   background-size: 117px;
   position: relative;
   --text-color: #ffffff;
@@ -299,7 +298,6 @@
   background: #ffffff;
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url(https://imgur.com/S8qj5Rt.png);
   background-size: 117px;
   transform: scale(0.95);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);

@@ -76,10 +76,10 @@
           <details>
             <summary>Button colors and size</summary>
             <div>
-                <label for="unpressedButtonColorPicker">Color:</label>
+                <label for="unpressed-button-colorpicker">Color:</label>
                 <input
                 type="color"
-                id="colorpicker"
+                id="unpressed-button-colorpicker"
                 value="#00BDBA"
                 onInput="updateMadeButtonColor(this.value, document.getElementById('unpressedMadeButton'))"
                 />
@@ -94,10 +94,10 @@
                 /><span>px</span>
                 </div>
             </div>
-            <label for="unpressedBorderColorPicker">Border color:</label>
+            <label for="unpressed-border-colorpicker">Border color:</label>
             <input
               type="color"
-              id="colorpicker"
+              id="unpressed-border-colorpicker"
               value="#000000"
               onInput="updateMadeButtonBorderColor(this.value, document.getElementById('unpressedMadeButton'))"
             />
@@ -107,7 +107,7 @@
                 class="buttonMakerTextBox"
                 type="number"
                 id="unpressedBorderThickness"
-                value="5"
+                value="10"
                 onInput="updateMadeButtonBorderSize(this.value, document.getElementById('unpressedMadeButton'))"
               /><span>px</span>
             </div>
@@ -115,17 +115,17 @@
           <details>
             <summary>Text</summary>
             <div>
-              <label for="unpressedTextColorPicker">Color:</label>
+              <label for="unpressed-text-colorpicker">Color:</label>
               <input
                 type="color"
-                id="unpressed-colorpicker"
+                id="unpressed-text-colorpicker"
                 value="#ffffff"
                 onInput="updateMadeButtonTextColorAndSyncOpacity('unpressed', document.getElementById('unpressedMadeButton'))"
               />
               <label>Opacity:</label>
                 <input
                 type="range"
-                id="unpressed-opacity-range"
+                id="unpressed-text-opacity-range"
                 min="0"
                 max="100"
                 step="1"
@@ -135,7 +135,7 @@
               <div class="input-with-unit">
                 <input
                     type="number"
-                    id="unpressed-opacity-number"
+                    id="unpressed-text-opacity-number"
                     min="0"
                     max="100"
                     step="1"
@@ -155,10 +155,10 @@
               </div>
             </div>
             <div>
-              <label for="unpressedTextColorPicker">Text border color:</label>
+              <label for="unpressed-text-border-colorpicker">Text border color:</label>
               <input
                 type="color"
-                id="colorpicker"
+                id="unpressed-text-border-colorpicker"
                 value="#000000"
                 onInput="updateMadeButtonTextBorderColor(this.value, document.getElementById('unpressedMadeButton'))"
               />
@@ -167,7 +167,7 @@
                 <input
                   class="buttonMakerTextBox"
                   type="number"
-                  id="unpressedTextSize"
+                  id="unpressed-text-border-thickness"
                   value="4"
                   onInput="updateMadeButtonTextBorderThickness(this.value, document.getElementById('unpressedMadeButton'))"
                 /><span>px</span>
@@ -215,7 +215,7 @@
               type="text"
               id="unpressedButtonUrlInput"
               onChange="updateMadeButtonImg(this.value, document.getElementById('unpressedMadeButton'))"
-              value="https://imgur.com/cUxiqd5.png"
+              value=""
             /><br />
             <div class="alert" style="display: none">
               <span
@@ -244,10 +244,10 @@
           <h4>Pressed button</h4>
           <details>
             <summary>Button colors and size</summary>
-            <label for="colorpicker">Color:</label>
+            <label for="pressed-button-colorpicker">Color:</label>
             <input
               type="color"
-              id="colorpicker"
+              id="pressed-button-colorpicker"
               value="#ffffff"
               onInput="updateMadeButtonColor(this.value, document.getElementById('pressedMadeButton'))"
             />
@@ -257,14 +257,14 @@
                 class="buttonMakerTextBox"
                 type="number"
                 id="pressedSize"
-                value="140"
+                value="150"
                 onInput="updateMadeButtonSize(this.value, document.getElementById('pressedMadeButton'))"
               /><span>px</span>
             </div>
-            <label for="colorpicker">Border color:</label>
+            <label for="pressed-border-colorpicker">Border color:</label>
             <input
               type="color"
-              id="colorpicker"
+              id="pressed-border-colorpicker"
               value="#000000"
               onInput="updateMadeButtonBorderColor(this.value, document.getElementById('pressedMadeButton'))"
             />
@@ -274,7 +274,7 @@
                 class="buttonMakerTextBox"
                 type="number"
                 id="pressedBorderThickness"
-                value="5"
+                value="10"
                 onInput="updateMadeButtonBorderSize(this.value, document.getElementById('pressedMadeButton'))"
               /><span>px</span>
             </div>
@@ -283,17 +283,17 @@
           <details>
             <summary>Text</summary>
             <div>
-              <label for="pressedTextColorPicker">Color:</label>
+              <label for="pressed-text-colorpicker">Color:</label>
               <input
                 type="color"
-                id="pressed-colorpicker"
+                id="pressed-text-colorpicker"
                 value="#ffffff"
                 onInput="updateMadeButtonTextColorAndSyncOpacity('pressed', document.getElementById('pressedMadeButton'))"
               />
               <label>Opacity:</label>
                 <input
                 type="range"
-                id="pressed-opacity-range"
+                id="pressed-text-opacity-range"
                 min="0"
                 max="100"
                 step="1"
@@ -303,7 +303,7 @@
               <div class="input-with-unit">
                 <input
                     type="number"
-                    id="pressed-opacity-number"
+                    id="pressed-text-opacity-number"
                     min="0"
                     max="100"
                     step="1"
@@ -316,17 +316,17 @@
                 <input
                   class="buttonMakerTextBox"
                   type="number"
-                  id="pressedTextSize"
+                  id="pressed-text-border-thickness"
                   value="62"
                   onInput="updateMadeButtonTextSize(this.value, document.getElementById('pressedMadeButton'))"
                 /><span>px</span>
               </div>
             </div>
             <div>
-              <label for="pressedTextColorPicker">Text border color:</label>
+              <label for="pressed-text-border-colorpicker">Text border color:</label>
               <input
                 type="color"
-                id="colorpicker"
+                id="pressed-text-border-colorpicker"
                 value="#000000"
                 onInput="updateMadeButtonTextBorderColor(this.value, document.getElementById('pressedMadeButton'))"
               />
@@ -383,7 +383,7 @@
               type="text"
               id="pressedButtonUrlInput"
               onChange="updateMadeButtonImg(this.value, document.getElementById('pressedMadeButton'))"
-              value="https://imgur.com/S8qj5Rt.png"
+              value=""
             /><br />
             <div class="input-with-unit">
               <label for="pressedImgSize">Image size:</label>

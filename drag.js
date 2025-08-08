@@ -724,8 +724,83 @@ function applyMadeButton(e) {
   if (
     !targ.className?.startsWith("img ") ||
     targ.tagName?.toUpperCase() != "SPAN" ||
-    targ.id === ".fight-stick .fstick"
+    targ.id === ".fight-stick .fstick" ||
+    !targ
   ) {
+    return;
+  }
+
+  // If right click, copy the style.
+  if (e.button === 2) {
+    // e.preventDefault();
+    var unpressedMadeButtonEl = document.getElementById("unpressedMadeButton");
+    var pressedMadeButtonEl = document.getElementById("pressedMadeButton");
+    resetButton(unpressedMadeButtonEl);
+    resetButton(pressedMadeButtonEl);
+
+    copyButtonFrom(targ, pressedMadeButtonEl);
+    copyButtonFrom(
+      getPressedOrUnpressedVersionOfButton(targ),
+      unpressedMadeButtonEl
+    );
+
+    function putPropertiesIntoInputFields(
+      pressedOrUnpressedString,
+      madeButtonEl
+    ) {
+      const madeButtonStyle = getComputedStyle(madeButtonEl);
+      document.getElementById(
+        `${pressedOrUnpressedString}-button-colorpicker`
+      ).value = cssStyleColorToColorHex(madeButtonStyle.backgroundColor);
+      document.getElementById(`${pressedOrUnpressedString}Size`).value =
+        parseInt(madeButtonStyle.width);
+      document.getElementById(
+        `${pressedOrUnpressedString}-border-colorpicker`
+      ).value = cssStyleColorToColorHex(madeButtonStyle.borderColor);
+      document.getElementById(
+        `${pressedOrUnpressedString}BorderThickness`
+      ).value = parseInt(madeButtonStyle.borderWidth);
+
+      const unpressedTextColor =
+        unpressedMadeButtonEl.style.getPropertyValue("--text-color");
+      document.getElementById(
+        `${pressedOrUnpressedString}-text-colorpicker`
+      ).value = cssStyleColorToColorHex(unpressedTextColor);
+      document.getElementById(
+        `${pressedOrUnpressedString}-text-opacity-range`
+      ).value = cssStyleColorToAlphaPercent(unpressedTextColor);
+      document.getElementById(
+        `${pressedOrUnpressedString}-text-opacity-number`
+      ).value = cssStyleColorToAlphaPercent(unpressedTextColor);
+
+      document.getElementById(`${pressedOrUnpressedString}TextSize`).value =
+        madeButtonStyle.getPropertyValue("--text-font-size").replace("px", "");
+      document.getElementById(
+        `${pressedOrUnpressedString}-text-border-colorpicker`
+      ).value = cssStyleColorToColorHex(
+        madeButtonStyle.getPropertyValue("--text-stroke-color")
+      );
+      document.getElementById(
+        `${pressedOrUnpressedString}-text-border-thickness`
+      ).value = madeButtonStyle
+        .getPropertyValue("--text-stroke-width")
+        .replace("px", "");
+      document.getElementById(`${pressedOrUnpressedString}TextContent`).value =
+        madeButtonStyle.getPropertyValue("--text-content").replace(/"/g, "");
+      document.getElementById(
+        `${pressedOrUnpressedString}-font-search-input`
+      ).value = madeButtonStyle
+        .getPropertyValue("--text-font-family")
+        .replace(/"/g, "");
+
+      document.getElementById(
+        `${pressedOrUnpressedString}ButtonUrlInput`
+      ).value = madeButtonStyle.backgroundImage;
+      document.getElementById(`${pressedOrUnpressedString}ImgSize`).value =
+        parseInt(madeButtonStyle.backgroundSize);
+    }
+    putPropertiesIntoInputFields("pressed", pressedMadeButtonEl);
+    putPropertiesIntoInputFields("unpressed", unpressedMadeButtonEl);
     return;
   }
 
@@ -734,13 +809,17 @@ function applyMadeButton(e) {
   // Reset anything that import may have done.
   resetButtonAndPressedOrUnpressedVersion(targ);
 
-  const unpressedStyle = getComputedStyle(
-    document.getElementById("unpressedMadeButton")
-  );
-  const pressedStyle = getComputedStyle(
-    document.getElementById("pressedMadeButton")
-  );
+  copyButtonFrom(document.getElementById("pressedMadeButton"), targ);
 
+  const unpressedImg = document.getElementById(targ.id.slice(0, -8));
+  copyButtonFrom(document.getElementById("unpressedMadeButton"), unpressedImg);
+
+  id2state = new Map();
+  updateStatesAndCss(id2state);
+}
+
+function copyButtonFrom(copyFromButtonEl, copyToButtonEl) {
+  const copyFromButtonStyle = getComputedStyle(copyFromButtonEl);
   const properties = [
     "--text-color",
     "--text-font-size",
@@ -749,42 +828,23 @@ function applyMadeButton(e) {
     "--text-content",
     "--text-font-family",
   ];
-
-  targ.style.background = "none";
-  targ.style.backgroundColor = pressedStyle.backgroundColor;
-  targ.style.height = pressedStyle.height;
-  targ.style.width = pressedStyle.width;
-  targ.style.borderRadius = pressedStyle.borderRadius;
-  targ.style.border = pressedStyle.border;
-  targ.style.backgroundImage = pressedStyle.backgroundImage;
-  targ.style.backgroundSize = pressedStyle.backgroundSize;
-  targ.style.backgroundRepeat = pressedStyle.backgroundRepeat;
-  targ.style.backgroundPosition = pressedStyle.backgroundPosition;
+  copyToButtonEl.style.background = "none";
+  copyToButtonEl.style.backgroundColor = copyFromButtonStyle.backgroundColor;
+  copyToButtonEl.style.height = copyFromButtonStyle.height;
+  copyToButtonEl.style.width = copyFromButtonStyle.width;
+  copyToButtonEl.style.borderRadius = copyFromButtonStyle.borderRadius;
+  copyToButtonEl.style.border = copyFromButtonStyle.border;
+  copyToButtonEl.style.backgroundImage = copyFromButtonStyle.backgroundImage;
+  copyToButtonEl.style.backgroundSize = copyFromButtonStyle.backgroundSize;
+  copyToButtonEl.style.backgroundRepeat = copyFromButtonStyle.backgroundRepeat;
+  copyToButtonEl.style.backgroundPosition =
+    copyFromButtonStyle.backgroundPosition;
   for (const property of properties) {
-    targ.style.setProperty(property, pressedStyle.getPropertyValue(property));
-  }
-
-  const unpressedImg = document.getElementById(targ.id.slice(0, -8));
-
-  unpressedImg.style.background = "none";
-  unpressedImg.style.backgroundColor = unpressedStyle.backgroundColor;
-  unpressedImg.style.height = unpressedStyle.height;
-  unpressedImg.style.width = unpressedStyle.width;
-  unpressedImg.style.borderRadius = unpressedStyle.borderRadius;
-  unpressedImg.style.border = unpressedStyle.border;
-  unpressedImg.style.backgroundImage = unpressedStyle.backgroundImage;
-  unpressedImg.style.backgroundSize = unpressedStyle.backgroundSize;
-  unpressedImg.style.backgroundRepeat = unpressedStyle.backgroundRepeat;
-  unpressedImg.style.backgroundPosition = unpressedStyle.backgroundPosition;
-  for (const property of properties) {
-    unpressedImg.style.setProperty(
+    copyToButtonEl.style.setProperty(
       property,
-      unpressedStyle.getPropertyValue(property)
+      copyFromButtonStyle.getPropertyValue(property)
     );
   }
-
-  id2state = new Map();
-  updateStatesAndCss(id2state);
 }
 
 function updateStatesAndCss(id2state) {
@@ -1494,18 +1554,79 @@ function hexRgbToRgba(hexcolor, alphaPercent) {
   return `${hexcolor}${hexAlpha}`;
 }
 
+/**
+ *
+ * @param {} colorString in rgb() or rgba() format.
+ * @returns
+ */
+function cssStyleColorToColorHex(colorString) {
+  const sixDigitMatch = colorString.match(/^#([0-9a-fA-F]{6})$/);
+  if (sixDigitMatch) {
+    // If it's a 6-digit hex, return it directly.
+    return `#${sixDigitMatch[1]}`;
+  }
+
+  const hexaMatch = colorString.match(/^#([0-9a-fA-F]{6})([0-9a-fA-F]{2})$/);
+  if (hexaMatch) {
+    // If it's an 8-digit hex, extract color and alpha.
+    hexColor = `#${hexaMatch[1]}`;
+    return hexColor;
+  }
+
+  const match = colorString.match(
+    /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/
+  );
+  if (!match) {
+    console.error("Could not parse background color string:", colorString);
+    return;
+  }
+  const r = parseInt(match[1], 10);
+  const g = parseInt(match[2], 10);
+  const b = parseInt(match[3], 10);
+  const hexR = r.toString(16).padStart(2, "0");
+  const hexG = g.toString(16).padStart(2, "0");
+  const hexB = b.toString(16).padStart(2, "0");
+  return `#${hexR}${hexG}${hexB}`;
+}
+
+function cssStyleColorToAlphaPercent(colorString) {
+  const sixDigitMatch = colorString.match(/^#([0-9a-fA-F]{6})$/);
+  if (sixDigitMatch) {
+    // If it's a 6-digit hex, return it directly.
+    return 100; // 100% opacity
+  }
+  const hexaMatch = colorString.match(/^#([0-9a-fA-F]{6})([0-9a-fA-F]{2})$/);
+  if (hexaMatch) {
+    // If it's an 8-digit hex, extract color and alpha.
+    const hexAlpha = hexaMatch[2];
+    const decimalAlpha = parseInt(hexAlpha, 16);
+    alphaPercentage = Math.round((decimalAlpha / 255) * 100);
+    return alphaPercentage;
+  }
+  const match = colorString.match(
+    /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/
+  );
+  if (!match) {
+    console.error("Could not parse background color string:", colorString);
+    return;
+  }
+  const alpha = match[4] !== undefined ? parseFloat(match[4]) : 1; // Default to 1 if no alpha is present
+
+  return Math.round(alpha * 100);
+}
+
 function updateMadeButtonTextColorAndSyncOpacity(
   pressedOrUnpressedStr,
   button
 ) {
   colorpickerEl = document.getElementById(
-    `${pressedOrUnpressedStr}-colorpicker`
+    `${pressedOrUnpressedStr}-text-colorpicker`
   );
   opacityRangeEl = document.getElementById(
-    `${pressedOrUnpressedStr}-opacity-range`
+    `${pressedOrUnpressedStr}-text-opacity-range`
   );
   opacityNumberEl = document.getElementById(
-    `${pressedOrUnpressedStr}-opacity-number`
+    `${pressedOrUnpressedStr}-text-opacity-number`
   );
   syncOpacityInputs(opacityRangeEl, opacityNumberEl);
   button.style.setProperty(
@@ -1589,7 +1710,7 @@ function validImageUrlStyle(url) {
   return /.*(png|jpg|svg|gif|webp|jpeg)$/.test(url);
 }
 
-function resetButtonAndPressedOrUnpressedVersion(button) {
+function resetButton(button) {
   button.style.background = "";
   button.style.backgroundColor = "";
   button.style.borderRadius = "";
@@ -1610,22 +1731,15 @@ function resetButtonAndPressedOrUnpressedVersion(button) {
   for (const property of properties) {
     button.style.removeProperty(property);
   }
+}
+
+function resetButtonAndPressedOrUnpressedVersion(button) {
+  resetButton(button);
 
   // Probably a redundant check, because Make/Import already can't be applies to pressed.
   if (button.id !== ".fight-stick .fstick") {
     const otherVersion = getPressedOrUnpressedVersionOfButton(button);
-    otherVersion.style.background = "";
-    otherVersion.style.backgroundColor = "";
-    otherVersion.style.borderRadius = "";
-    otherVersion.style.border = "";
-    otherVersion.style.backgroundImage = "";
-    otherVersion.style.backgroundSize = "";
-    otherVersion.style.backgroundRepeat = "";
-    otherVersion.style.backgroundPosition = "";
-    otherVersion.style.borderColor = "";
-    for (const property of properties) {
-      otherVersion.style.removeProperty(property);
-    }
+    resetButton(otherVersion);
   }
 }
 
