@@ -1737,23 +1737,18 @@ function resetButton(button) {
   button.style.background = "";
   button.style.backgroundColor = "";
   button.style.borderRadius = "";
-  button.style.border = "";
-  button.style.backgroundImage = "";
+  button.style.border = "0px solid transparent";
+  button.style.backgroundImage = "none";
   button.style.backgroundSize = "";
   button.style.backgroundRepeat = "";
   button.style.backgroundPosition = "";
   button.style.borderColor = "";
-  const properties = [
-    "--text-color",
-    "--text-font-size",
-    "--text-stroke-color",
-    "--text-stroke-width",
-    "--text-content",
-    "--text-font-family",
-  ];
-  for (const property of properties) {
-    button.style.removeProperty(property);
-  }
+  button.style.setProperty("--text-color", '""');
+  button.style.setProperty("--text-font-size", '""');
+  button.style.setProperty("--text-stroke-color", '""');
+  button.style.setProperty("--text-stroke-width", '""');
+  button.style.setProperty("--text-content", '""');
+  button.style.setProperty("--text-font-family", "Helvetica Neue LT Pro");
 }
 
 function resetButtonAndPressedOrUnpressedVersion(button) {
