@@ -177,6 +177,10 @@ body {
   border-bottom: 1px dotted #6c757d;
 }
 
+.no-border {
+  border: none;
+}
+
 .tooltip .tooltiptext {
   visibility: hidden;
   width: 240px;
@@ -405,4 +409,16 @@ details[open] > summary {
 
 .text-underline {
   text-decoration: underline;
+}
+
+.icon {
+  background-color: #555;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }

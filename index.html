@@ -1,820 +1,501 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Controller overlay css generator</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="drag.css" />
-    <script src="drag.js"></script>
-  </head>
 
-  <body>
-    <div class="tab">
-      <button class="tablinks" onclick="openCity(event, 'moveTab')">
-        Move/Swap
-      </button>
-      <button class="tablinks" onclick="openCity(event, 'deleteTab')">
-        Delete
-      </button>
-      <button class="tablinks" onclick="openCity(event, 'changeSizeTab')">
-        Change size
-      </button>
-      <button class="tablinks" onclick="openCity(event, 'makeButtonsTab')">
-        Make buttons
-      </button>
-      <button class="tablinks" onclick="openCity(event, 'importButtonsTab')">
-        Import/copy buttons
-      </button>
-      <button class="tablinks" onclick="openCity(event, 'importStickTab')">
-        Import stick
-      </button>
-      <button class="tablinks" onclick="openCity(event, 'importCSSTab')">
-        Import CSS
-      </button>
-      <button class="tablinks active" onclick="openCity(event, 'tutorialTab')">
-        How to use
-      </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Controller overlay css generator</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="drag.css" />
+  <script src="drag.js"></script>
+</head>
+
+<body>
+  <div class="tab">
+    <button class="tablinks" onclick="openCity(event, 'moveTab')">
+      Move/Swap
+    </button>
+    <button class="tablinks" onclick="openCity(event, 'deleteTab')">
+      Delete
+    </button>
+    <button class="tablinks" onclick="openCity(event, 'changeSizeTab')">
+      Change size
+    </button>
+    <button class="tablinks" onclick="openCity(event, 'makeButtonsTab')">
+      Make buttons
+    </button>
+    <button class="tablinks" onclick="openCity(event, 'importButtonsTab')">
+      Import/copy buttons
+    </button>
+    <button class="tablinks" onclick="openCity(event, 'importStickTab')">
+      Import stick
+    </button>
+    <button class="tablinks" onclick="openCity(event, 'importCSSTab')">
+      Import CSS
+    </button>
+    <button class="tablinks active" onclick="openCity(event, 'tutorialTab')">
+      How to use
+    </button>
+  </div>
+  <div>
+    <div id="moveTab" class="tabcontent">
+      <p>
+        Click buttons/stick to select.<br />
+        Use arrow keys to move selected buttons/stick
+        <span class="input-with-unit">
+          <label for="moveAmountBox"></label>
+          <input class="buttonMakerTextBox" type="number" id="moveAmountBox" value="5" /><span>px at a time.</span>
+        </span>
+      </p>
+      <p>
+        To swap button locations, select two buttons and click
+        <span class="tooltip" style="border-bottom: none"><span class="tooltiptext"
+            style="background-color: #333">Select exactly 2 buttons and press this button to swap</span><button
+            class="btn-1" onclick="swapSelectedButtons()" id="swapButton" style="color: #999">
+            Swap selected Buttons
+          </button></span>
+      </p>
     </div>
-    <div>
-      <div id="moveTab" class="tabcontent">
-        <p>
-          Click buttons/stick to select.<br />
-          Use arrow keys to move selected buttons/stick
-          <span class="input-with-unit">
-            <label for="moveAmountBox"></label>
-            <input
-              class="buttonMakerTextBox"
-              type="number"
-              id="moveAmountBox"
-              value="5"
-            /><span>px at a time.</span>
-          </span>
-        </p>
-        <p>
-          To swap button locations, select two buttons and click
-          <span class="tooltip" style="border-bottom: none"
-            ><span class="tooltiptext" style="background-color: #333"
-              >Select exactly 2 buttons and press this button to swap</span
-            ><button
-              class="btn-1"
-              onclick="swapSelectedButtons()"
-              id="swapButton"
-              style="color: #999"
-            >
-              Swap selected Buttons
-            </button></span
-          >
-        </p>
-      </div>
-      <div id="deleteTab" class="tabcontent">
-        <p>Click buttons to delete them.</p>
-      </div>
-      <div id="makeButtonsTab" class="tabcontent">
-        <div>
-          <h4>Unpressed button</h4>
-          <details>
-            <summary>Button colors and size</summary>
-            <div>
-                <label for="unpressed-button-colorpicker">Color:</label>
-                <input
-                type="color"
-                id="unpressed-button-colorpicker"
-                value="#00BDBA"
-                onInput="updateMadeButtonColor(this.value, document.getElementById('unpressedMadeButton'))"
-                />
-                <div class="input-with-unit">
-                <label for="unpressedSize">Size:</label>
-                <input
-                    class="buttonMakerTextBox"
-                    type="number"
-                    id="unpressedSize"
-                    value="150"
-                    onInput="updateMadeButtonSize(this.value, document.getElementById('unpressedMadeButton'))"
-                /><span>px</span>
-                </div>
-            </div>
-            <label for="unpressed-border-colorpicker">Border color:</label>
-            <input
-              type="color"
-              id="unpressed-border-colorpicker"
-              value="#000000"
-              onInput="updateMadeButtonBorderColor(this.value, document.getElementById('unpressedMadeButton'))"
-            />
+    <div id="deleteTab" class="tabcontent">
+      <p>Click buttons to delete them.</p>
+    </div>
+    <div id="makeButtonsTab" class="tabcontent">
+      <div>
+        <h4>Unpressed button</h4>
+        <details>
+          <summary>Button colors and size</summary>
+          <div>
+            <label for="unpressed-button-colorpicker">Color:</label>
+            <input type="color" id="unpressed-button-colorpicker" value="#00BDBA"
+              onInput="updateMadeButtonColor(this.value, document.getElementById('unpressedMadeButton'))" />
             <div class="input-with-unit">
-              <label for="unpressedBorderThickness">Border thickness:</label>
-              <input
-                class="buttonMakerTextBox"
-                type="number"
-                id="unpressedBorderThickness"
-                value="10"
-                onInput="updateMadeButtonBorderSize(this.value, document.getElementById('unpressedMadeButton'))"
-              /><span>px</span>
+              <label for="unpressedSize">Size:</label>
+              <input class="buttonMakerTextBox" type="number" id="unpressedSize" value="150"
+                onInput="updateMadeButtonSize(this.value, document.getElementById('unpressedMadeButton'))" /><span>px</span>
             </div>
-          </details>
-          <details>
-            <summary>Text</summary>
-            <div>
-              <label for="unpressed-text-colorpicker">Color:</label>
-              <input
-                type="color"
-                id="unpressed-text-colorpicker"
-                value="#ffffff"
-                onInput="updateMadeButtonTextColorAndSyncOpacity('unpressed', document.getElementById('unpressedMadeButton'))"
-              />
-              <label>Opacity:</label>
-                <input
-                type="range"
-                id="unpressed-text-opacity-range"
-                min="0"
-                max="100"
-                step="1"
-                value="100"
-                oninput="updateMadeButtonTextColorAndSyncOpacity('unpressed', document.getElementById('unpressedMadeButton'))"
-              />
-              <div class="input-with-unit">
-                <input
-                    type="number"
-                    id="unpressed-text-opacity-number"
-                    min="0"
-                    max="100"
-                    step="1"
-                    value="100"
-                    oninput="updateMadeButtonTextColorAndSyncOpacity('unpressed', document.getElementById('unpressedMadeButton'))"
-                />
-              </div>
-              <div class="input-with-unit">
-                <label for="unpressedTextSize">Font size:</label>
-                <input
-                  class="buttonMakerTextBox"
-                  type="number"
-                  id="unpressedTextSize"
-                  value="62"
-                  onInput="updateMadeButtonTextSize(this.value, document.getElementById('unpressedMadeButton'))"
-                /><span>px</span>
-              </div>
+          </div>
+          <label for="unpressed-border-colorpicker">Border color:</label>
+          <input type="color" id="unpressed-border-colorpicker" value="#000000"
+            onInput="updateMadeButtonBorderColor(this.value, document.getElementById('unpressedMadeButton'))" />
+          <div class="input-with-unit">
+            <label for="unpressedBorderThickness">Border thickness:</label>
+            <input class="buttonMakerTextBox" type="number" id="unpressedBorderThickness" value="10"
+              onInput="updateMadeButtonBorderSize(this.value, document.getElementById('unpressedMadeButton'))" /><span>px</span>
+          </div>
+        </details>
+        <details>
+          <summary>Text</summary>
+          <div>
+            <label for="unpressed-text-colorpicker">Color:</label>
+            <input type="color" id="unpressed-text-colorpicker" value="#ffffff"
+              onInput="updateMadeButtonTextColorAndSyncOpacity('unpressed', document.getElementById('unpressedMadeButton'))" />
+            <label>Opacity:</label>
+            <input type="range" id="unpressed-text-opacity-range" min="0" max="100" step="1" value="100"
+              oninput="updateMadeButtonTextColorAndSyncOpacity('unpressed', document.getElementById('unpressedMadeButton'))" />
+            <div class="input-with-unit">
+              <input type="number" id="unpressed-text-opacity-number" min="0" max="100" step="1" value="100"
+                oninput="updateMadeButtonTextColorAndSyncOpacity('unpressed', document.getElementById('unpressedMadeButton'))" />
             </div>
-            <div>
-              <label for="unpressed-text-border-colorpicker">Text border color:</label>
-              <input
-                type="color"
-                id="unpressed-text-border-colorpicker"
-                value="#000000"
-                onInput="updateMadeButtonTextBorderColor(this.value, document.getElementById('unpressedMadeButton'))"
-              />
-              <div class="input-with-unit">
-                <label for="unpressedTextSize">Text border thickness:</label>
-                <input
-                  class="buttonMakerTextBox"
-                  type="number"
-                  id="unpressed-text-border-thickness"
-                  value="4"
-                  onInput="updateMadeButtonTextBorderThickness(this.value, document.getElementById('unpressedMadeButton'))"
-                /><span>px</span>
-              </div>
+            <div class="input-with-unit">
+              <label for="unpressedTextSize">Font size:</label>
+              <input class="buttonMakerTextBox" type="number" id="unpressedTextSize" value="62"
+                onInput="updateMadeButtonTextSize(this.value, document.getElementById('unpressedMadeButton'))" /><span>px</span>
             </div>
-            <div>
+          </div>
+          <div>
+            <label for="unpressed-text-border-colorpicker">Text border color:</label>
+            <input type="color" id="unpressed-text-border-colorpicker" value="#000000"
+              onInput="updateMadeButtonTextBorderColor(this.value, document.getElementById('unpressedMadeButton'))" />
+            <div class="input-with-unit">
+              <label for="unpressedTextSize">Text border thickness:</label>
+              <input class="buttonMakerTextBox" type="number" id="unpressed-text-border-thickness" value="4"
+                onInput="updateMadeButtonTextBorderThickness(this.value, document.getElementById('unpressedMadeButton'))" /><span>px</span>
+            </div>
+          </div>
+          <div>
             <div>
               <div class="input-with-unit">
                 <label for="unpressedTextContent">Your text:</label>
-                <input
-                  class="urlTextBox"
-                  type="text"
-                  id="unpressedTextContent"
-                  placeholder="Your text"
-                  value="M"
-                  onInput="updateMadeButtonTextContent(this.value, document.getElementById('unpressedMadeButton'))"
-                />
+                <input class="urlTextBox" type="text" id="unpressedTextContent" placeholder="Your text" value="M"
+                  onInput="updateMadeButtonTextContent(this.value, document.getElementById('unpressedMadeButton'))" />
               </div>
             </div>
             <div>
               <div class="input-with-unit">
                 <label for="unpressed-font-search-input">Font:</label>
-                <label
-                  class="font-dropdown-container"
-                  id="unpressedFontDropdownContainer"
-                >
-                  <input
-                    type="text"
-                    id="unpressed-font-search-input"
-                    placeholder="Search for a font..."
-                    autocomplete="off"
-                    value="Helvetica Neue LT Pro"
-                  />
+                <label class="font-dropdown-container" id="unpressedFontDropdownContainer">
+                  <input type="text" id="unpressed-font-search-input" placeholder="Search for a font..."
+                    autocomplete="off" value="Helvetica Neue LT Pro" />
                   <ul id="unpressed-font-list" class="font-dropdown-list"></ul>
                 </label>
               </div>
             </div>
-          </details>
+        </details>
 
-          <details>
-            <summary>Add an image on top</summary>
-            <label for="unpressedButtonUrlInput">Image URL:</label>
-            <input
-              class="urlTextBox"
-              type="text"
-              id="unpressedButtonUrlInput"
-              onChange="updateMadeButtonImg(this.value, document.getElementById('unpressedMadeButton'))"
-              value=""
-            /><br />
-            <div class="alert" style="display: none">
-              <span
-                id="unpressedButtonMakerCloseErrorButton"
-                class="closebtn"
-                onclick="this.parentElement.style.display='none';"
-                >&times;</span
-              >
-              <strong>Error:</strong> No image found at the provided URL.
+        <details>
+          <summary>Add an image on top</summary>
+          <label for="unpressedButtonUrlInput">Image URL:</label>
+          <input class="urlTextBox" type="text" id="unpressedButtonUrlInput"
+            onChange="updateMadeButtonImg(this.value, document.getElementById('unpressedMadeButton'))" value="" /><br />
+          <div class="alert" style="display: none">
+            <span id="unpressedButtonMakerCloseErrorButton" class="closebtn"
+              onclick="this.parentElement.style.display='none';">&times;</span>
+            <strong>Error:</strong> No image found at the provided URL.
+          </div>
+          <div class="input-with-unit">
+            <label for="unpressedImgSize">Image size:</label>
+            <input class="buttonMakerTextBox" type="number" id="unpressedImgSize" value="117"
+              onInput="updateMadeButtonImgSize(this.value, document.getElementById('unpressedMadeButton'))" /><span>px</span>
+          </div>
+        </details>
+
+        <span class="made-button" id="unpressedMadeButton"></span>
+      </div>
+      <div>
+        <h4>Pressed button</h4>
+        <details>
+          <summary>Button colors and size</summary>
+          <label for="pressed-button-colorpicker">Color:</label>
+          <input type="color" id="pressed-button-colorpicker" value="#ffffff"
+            onInput="updateMadeButtonColor(this.value, document.getElementById('pressedMadeButton'))" />
+          <div class="input-with-unit">
+            <label for="pressedSize">Size:</label>
+            <input class="buttonMakerTextBox" type="number" id="pressedSize" value="150"
+              onInput="updateMadeButtonSize(this.value, document.getElementById('pressedMadeButton'))" /><span>px</span>
+          </div>
+          <label for="pressed-border-colorpicker">Border color:</label>
+          <input type="color" id="pressed-border-colorpicker" value="#000000"
+            onInput="updateMadeButtonBorderColor(this.value, document.getElementById('pressedMadeButton'))" />
+          <div class="input-with-unit">
+            <label for="pressedBorderThickness">Border thickness:</label>
+            <input class="buttonMakerTextBox" type="number" id="pressedBorderThickness" value="10"
+              onInput="updateMadeButtonBorderSize(this.value, document.getElementById('pressedMadeButton'))" /><span>px</span>
+          </div>
+        </details>
+
+        <details>
+          <summary>Text</summary>
+          <div>
+            <label for="pressed-text-colorpicker">Color:</label>
+            <input type="color" id="pressed-text-colorpicker" value="#ffffff"
+              onInput="updateMadeButtonTextColorAndSyncOpacity('pressed', document.getElementById('pressedMadeButton'))" />
+            <label>Opacity:</label>
+            <input type="range" id="pressed-text-opacity-range" min="0" max="100" step="1" value="100"
+              oninput="updateMadeButtonTextColorAndSyncOpacity('pressed', document.getElementById('pressedMadeButton'))" />
+            <div class="input-with-unit">
+              <input type="number" id="pressed-text-opacity-number" min="0" max="100" step="1" value="100"
+                oninput="updateMadeButtonTextColorAndSyncOpacity('pressed', document.getElementById('pressedMadeButton'))" />
             </div>
             <div class="input-with-unit">
-              <label for="unpressedImgSize">Image size:</label>
-              <input
-                class="buttonMakerTextBox"
-                type="number"
-                id="unpressedImgSize"
-                value="117"
-                onInput="updateMadeButtonImgSize(this.value, document.getElementById('unpressedMadeButton'))"
-              /><span>px</span>
+              <label for="pressedTextSize">Font size:</label>
+              <input class="buttonMakerTextBox" type="number" id="pressed-text-border-thickness" value="62"
+                onInput="updateMadeButtonTextSize(this.value, document.getElementById('pressedMadeButton'))" /><span>px</span>
             </div>
-          </details>
-
-          <span class="made-button" id="unpressedMadeButton"></span>
-        </div>
-        <div>
-          <h4>Pressed button</h4>
-          <details>
-            <summary>Button colors and size</summary>
-            <label for="pressed-button-colorpicker">Color:</label>
-            <input
-              type="color"
-              id="pressed-button-colorpicker"
-              value="#ffffff"
-              onInput="updateMadeButtonColor(this.value, document.getElementById('pressedMadeButton'))"
-            />
+          </div>
+          <div>
+            <label for="pressed-text-border-colorpicker">Text border color:</label>
+            <input type="color" id="pressed-text-border-colorpicker" value="#000000"
+              onInput="updateMadeButtonTextBorderColor(this.value, document.getElementById('pressedMadeButton'))" />
             <div class="input-with-unit">
-              <label for="pressedSize">Size:</label>
-              <input
-                class="buttonMakerTextBox"
-                type="number"
-                id="pressedSize"
-                value="150"
-                onInput="updateMadeButtonSize(this.value, document.getElementById('pressedMadeButton'))"
-              /><span>px</span>
+              <label for="pressedTextSize">Text border thickness:</label>
+              <input class="buttonMakerTextBox" type="number" id="pressedTextSize" value="4"
+                onInput="updateMadeButtonTextBorderThickness(this.value, document.getElementById('pressedMadeButton'))" /><span>px</span>
             </div>
-            <label for="pressed-border-colorpicker">Border color:</label>
-            <input
-              type="color"
-              id="pressed-border-colorpicker"
-              value="#000000"
-              onInput="updateMadeButtonBorderColor(this.value, document.getElementById('pressedMadeButton'))"
-            />
-            <div class="input-with-unit">
-              <label for="pressedBorderThickness">Border thickness:</label>
-              <input
-                class="buttonMakerTextBox"
-                type="number"
-                id="pressedBorderThickness"
-                value="10"
-                onInput="updateMadeButtonBorderSize(this.value, document.getElementById('pressedMadeButton'))"
-              /><span>px</span>
-            </div>
-          </details>
-
-          <details>
-            <summary>Text</summary>
-            <div>
-              <label for="pressed-text-colorpicker">Color:</label>
-              <input
-                type="color"
-                id="pressed-text-colorpicker"
-                value="#ffffff"
-                onInput="updateMadeButtonTextColorAndSyncOpacity('pressed', document.getElementById('pressedMadeButton'))"
-              />
-              <label>Opacity:</label>
-                <input
-                type="range"
-                id="pressed-text-opacity-range"
-                min="0"
-                max="100"
-                step="1"
-                value="100"
-                oninput="updateMadeButtonTextColorAndSyncOpacity('pressed', document.getElementById('pressedMadeButton'))"
-              />
-              <div class="input-with-unit">
-                <input
-                    type="number"
-                    id="pressed-text-opacity-number"
-                    min="0"
-                    max="100"
-                    step="1"
-                    value="100"
-                    oninput="updateMadeButtonTextColorAndSyncOpacity('pressed', document.getElementById('pressedMadeButton'))"
-                />
-              </div>
-              <div class="input-with-unit">
-                <label for="pressedTextSize">Font size:</label>
-                <input
-                  class="buttonMakerTextBox"
-                  type="number"
-                  id="pressed-text-border-thickness"
-                  value="62"
-                  onInput="updateMadeButtonTextSize(this.value, document.getElementById('pressedMadeButton'))"
-                /><span>px</span>
-              </div>
-            </div>
-            <div>
-              <label for="pressed-text-border-colorpicker">Text border color:</label>
-              <input
-                type="color"
-                id="pressed-text-border-colorpicker"
-                value="#000000"
-                onInput="updateMadeButtonTextBorderColor(this.value, document.getElementById('pressedMadeButton'))"
-              />
-              <div class="input-with-unit">
-                <label for="pressedTextSize">Text border thickness:</label>
-                <input
-                  class="buttonMakerTextBox"
-                  type="number"
-                  id="pressedTextSize"
-                  value="4"
-                  onInput="updateMadeButtonTextBorderThickness(this.value, document.getElementById('pressedMadeButton'))"
-                /><span>px</span>
-              </div>
-            </div>
-            <div>
+          </div>
+          <div>
             <div>
               <div class="input-with-unit">
                 <label for="pressedTextContent">Your text:</label>
-                <input
-                  class="urlTextBox"
-                  type="text"
-                  id="pressedTextContent"
-                  placeholder="Your text"
-                  value="M"
-                  onInput="updateMadeButtonTextContent(this.value, document.getElementById('pressedMadeButton'))"
-                />
+                <input class="urlTextBox" type="text" id="pressedTextContent" placeholder="Your text" value="M"
+                  onInput="updateMadeButtonTextContent(this.value, document.getElementById('pressedMadeButton'))" />
               </div>
             </div>
             <div>
               <div class="input-with-unit">
                 <label for="pressed-font-search-input">Font:</label>
-                <label
-                  class="font-dropdown-container"
-                  id="pressedFontDropdownContainer"
-                >
-                  <input
-                    type="text"
-                    id="pressed-font-search-input"
-                    placeholder="Search for a font..."
-                    autocomplete="off"
-                    value="Helvetica Neue LT Pro"
-                  />
+                <label class="font-dropdown-container" id="pressedFontDropdownContainer">
+                  <input type="text" id="pressed-font-search-input" placeholder="Search for a font..."
+                    autocomplete="off" value="Helvetica Neue LT Pro" />
                   <ul id="pressed-font-list" class="font-dropdown-list"></ul>
                 </label>
               </div>
             </div>
-          </details>
+        </details>
 
-          <details>
-            <summary>Add an image on top</summary>
-            <label for="pressedButtonUrlInput">Image URL:</label>
-            <input
-              class="urlTextBox"
-              type="text"
-              id="pressedButtonUrlInput"
-              onChange="updateMadeButtonImg(this.value, document.getElementById('pressedMadeButton'))"
-              value=""
-            /><br />
-            <div class="input-with-unit">
-              <label for="pressedImgSize">Image size:</label>
-              <input
-                class="buttonMakerTextBox"
-                type="number"
-                id="pressedImgSize"
-                value="117"
-                onInput="updateMadeButtonImgSize(this.value, document.getElementById('pressedMadeButton'))"
-              /><span>px</span>
-            </div>
-            <div class="alert" style="display: none">
-              <span
-                id="pressedButtonMakerCloseErrorButton"
-                class="closebtn"
-                onclick="this.parentElement.style.display='none';"
-                >&times;</span
-              >
-              <strong>Error:</strong> No image found at the provided URL.
-            </div>
-          </details>
-          <span class="made-button pressed" id="pressedMadeButton"></span>
-        </div>
-      </div>
-      <div id="importButtonsTab" class="tabcontent">
-        <p>
-          Provide a URL for a
-          <span class="tooltip"
-            ><span class="tooltiptext"
-              >A properly formatted image just needs to have the unpressed
-              button above the pressed button. The unpressed version is taken by
-              cropping a square from the top of the image and the unpressed
-              version does is from the bottom. The width/height of the square
-              are just the width of the image.<img
-                src="https://imgur.com/hNxfRJI.png" /></span
-            >properly formatted</span
-          >
-          image. Then click a button to make it into that image.
-        </p>
-        <p>
-          You can also right-click buttons/stick to fill the URL in with them.
-        </p>
-        <label for="importedUrlInput">URL:</label>
-        <input
-          class="urlTextBox"
-          type="text"
-          id="importedUrlInput"
-          onChange="updatePreviewPicture(this.value, document.getElementById('urlButtonPreview'))"
-          value="https://imgur.com/xwCaQWn.png"
-        /><br /><br />
-        <div>
-          <div id="previewText">
-            Preview (alternates between unpressed and pressed if set up
-            properly):<br /><br />
+        <details>
+          <summary>Add an image on top</summary>
+          <label for="pressedButtonUrlInput">Image URL:</label>
+          <input class="urlTextBox" type="text" id="pressedButtonUrlInput"
+            onChange="updateMadeButtonImg(this.value, document.getElementById('pressedMadeButton'))" value="" /><br />
+          <div class="input-with-unit">
+            <label for="pressedImgSize">Image size:</label>
+            <input class="buttonMakerTextBox" type="number" id="pressedImgSize" value="117"
+              onInput="updateMadeButtonImgSize(this.value, document.getElementById('pressedMadeButton'))" /><span>px</span>
           </div>
-          <img
-            src="https://imgur.com/xwCaQWn.png"
-            style="
+          <div class="alert" style="display: none">
+            <span id="pressedButtonMakerCloseErrorButton" class="closebtn"
+              onclick="this.parentElement.style.display='none';">&times;</span>
+            <strong>Error:</strong> No image found at the provided URL.
+          </div>
+        </details>
+        <span class="made-button pressed" id="pressedMadeButton"></span>
+      </div>
+    </div>
+    <div id="importButtonsTab" class="tabcontent">
+      <p>
+        Provide a URL for a
+        <span class="tooltip"><span class="tooltiptext">A properly formatted image just needs to have the unpressed
+            button above the pressed button. The unpressed version is taken by
+            cropping a square from the top of the image and the unpressed
+            version does is from the bottom. The width/height of the square
+            are just the width of the image.<img src="https://imgur.com/hNxfRJI.png" /></span>properly formatted</span>
+        image. Then click a button to make it into that image.
+      </p>
+      <p>
+        You can also right-click buttons/stick to fill the URL in with them.
+      </p>
+      <label for="importedUrlInput">URL:</label>
+      <input class="urlTextBox" type="text" id="importedUrlInput"
+        onChange="updatePreviewPicture(this.value, document.getElementById('urlButtonPreview'))"
+        value="https://imgur.com/xwCaQWn.png" /><br /><br />
+      <div>
+        <div id="previewText">
+          Preview (alternates between unpressed and pressed if set up
+          properly):<br /><br />
+        </div>
+        <img src="https://imgur.com/xwCaQWn.png" style="
               width: 150px;
               height: 150px;
               object-fit: cover;
               object-position: 0% 0%;
               overflow: hidden;
-            "
-            id="urlButtonPreview"
-            onLoad="checkImage(true)"
-            onError="checkImage(false)"
-          />
-          <div class="alert" style="display: none">
-            <span
-              id="closeErrorButton"
-              class="closebtn"
-              onclick="this.parentElement.style.display='none';"
-              >&times;</span
-            >
-            <strong>Error:</strong> No image found at the provided URL.
-          </div>
+            " id="urlButtonPreview" onLoad="checkImage(true)" onError="checkImage(false)" />
+        <div class="alert" style="display: none">
+          <span id="closeErrorButton" class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+          <strong>Error:</strong> No image found at the provided URL.
         </div>
       </div>
-      <div id="changeSizeTab" class="tabcontent">
-        <p>
-          Choose a size (in px) for the buttons to change to, then click them to
-          make them that size.<br />NOTE: If you made a button in the "Make
-          buttons" tab, this size does not take your border thickness into
-          account.
-        </p>
-        <div class="input-with-unit">
-          <label for="sizeInput">Size:</label>
-          <input
-            class="urlTextBox"
-            type="number"
-            id="sizeInput"
-            value="150"
-          /><span>px</span>
-        </div>
+    </div>
+    <div id="changeSizeTab" class="tabcontent">
+      <p>
+        Choose a size (in px) for the buttons to change to, then click them to
+        make them that size.<br />NOTE: If you made a button in the "Make
+        buttons" tab, this size does not take your border thickness into
+        account.
+      </p>
+      <div class="input-with-unit">
+        <label for="sizeInput">Size:</label>
+        <input class="urlTextBox" type="number" id="sizeInput" value="150" /><span>px</span>
       </div>
-      <div id="importStickTab" class="tabcontent">
-        <p>
-          Provide a URL for a
-          <span
-            class="tooltip tooltip-up"
-            onmouseover="displayStickExample()"
-            onmouseout="hideStickExample()"
-          >
-            <span
-              id="stickToolTip"
-              class="tooltiptext"
-              style="display: inline-block"
-            >
-              A properly formatted stick example:
-            </span>
-            properly formatted</span
-          >
-          image. Then click a button to replace it with your stick.
-        </p>
+    </div>
+    <div id="importStickTab" class="tabcontent">
+      <p>
+        Provide a URL for a
+        <span class="tooltip tooltip-up" onmouseover="displayStickExample()" onmouseout="hideStickExample()">
+          <span id="stickToolTip" class="tooltiptext" style="display: inline-block">
+            A properly formatted stick example:
+          </span>
+          properly formatted</span>
+        image. Then click a button to replace it with your stick.
+      </p>
 
-        <img
-          hidden
-          id="stickExampleImage"
-          style="width: 100%"
-          src="https://imgur.com/jBa7zhR.png"
-        />
-        <label for="stickImportedUrlInput">URL:</label>
-        <input
-          class="urlTextBox"
-          type="text"
-          id="stickImportedUrlInput"
-          onChange="updatePreviewPicture(this.value, document.getElementById('stickPreview'))"
-          value="https://imgur.com/7bIsLfh.png"
-        /><br /><br />
-        <div>
-          <div id="stickPreviewText">Preview:<br /><br /></div>
-          <img
-            src="https://imgur.com/7bIsLfh.png"
-            style="
+      <img hidden id="stickExampleImage" style="width: 100%" src="https://imgur.com/jBa7zhR.png" />
+      <label for="stickImportedUrlInput">URL:</label>
+      <input class="urlTextBox" type="text" id="stickImportedUrlInput"
+        onChange="updatePreviewPicture(this.value, document.getElementById('stickPreview'))"
+        value="https://imgur.com/7bIsLfh.png" /><br /><br />
+      <div>
+        <div id="stickPreviewText">Preview:<br /><br /></div>
+        <img src="https://imgur.com/7bIsLfh.png" style="
               width: 250px;
               height: 250px;
               object-fit: cover;
               object-position: 0% 0%;
               overflow: hidden;
-            "
-            id="stickPreview"
-            onLoad="checkImage(true, this, document.getElementById('stickImportedUrlInput'), document.getElementById('stickCloseErrorButton'), document.getElementById('stickPreviewText'))"
-            onError="checkImage(false, this, document.getElementById('stickImportedUrlInput'), document.getElementById('stickCloseErrorButton'), document.getElementById('stickPreviewText'))"
-          />
-          <div class="alert" style="display: none">
-            <span
-              id="stickCloseErrorButton"
-              class="closebtn"
-              onclick="this.parentElement.style.display='none';"
-              >&times;</span
-            >
-            <strong>Error:</strong> No image found at the provided URL.
-          </div>
+            " id="stickPreview"
+          onLoad="checkImage(true, this, document.getElementById('stickImportedUrlInput'), document.getElementById('stickCloseErrorButton'), document.getElementById('stickPreviewText'))"
+          onError="checkImage(false, this, document.getElementById('stickImportedUrlInput'), document.getElementById('stickCloseErrorButton'), document.getElementById('stickPreviewText'))" />
+        <div class="alert" style="display: none">
+          <span id="stickCloseErrorButton" class="closebtn"
+            onclick="this.parentElement.style.display='none';">&times;</span>
+          <strong>Error:</strong> No image found at the provided URL.
         </div>
       </div>
-      <div id="importBackgroundTab" class="tabcontent">
-        <p>Provide an image url in the box below to be the background.</p>
-        <label for="importedUrlInput">URL:</label>
-        <input
-          class="urlTextBox"
-          type="text"
-          id="importedBackgroundUrlInput"
-          onChange="updateBackground(this.value)"
-        /><br /><br />
-      </div>
-      <div id="importCSSTab" class="tabcontent">
-        <p>
-          Put your CSS in the text box below and then press
-          <span
-            ><button
-              id="importCSS"
-              class="btn-1"
-              onclick="applyCSS(document.getElementById('importCssText').value)"
-            >
-              Import CSS
-            </button></span
-          >.
-        </p>
+    </div>
+    <div id="importBackgroundTab" class="tabcontent">
+      <p>Provide an image url in the box below to be the background.</p>
+      <label for="importedUrlInput">URL:</label>
+      <input class="urlTextBox" type="text" id="importedBackgroundUrlInput"
+        onChange="updateBackground(this.value)" /><br /><br />
+    </div>
+    <div id="importCSSTab" class="tabcontent">
+      <p>
+        Put your CSS in the text box below and then press
+        <span><button id="importCSS" class="btn-1" onclick="applyCSS(document.getElementById('importCssText').value)">
+            Import CSS
+          </button></span>.
+      </p>
 
-        <textarea
-          id="importCssText"
-          name="importCssTextArea"
-          cols="150"
-          rows="30"
-        ></textarea>
-      </div>
-      <div id="tutorialTab" class="tabcontent" style="display: block">
-        <button id="openLayoutsBrowserButton" class="btn-1">
-          Open base layouts browser
-        </button>
-        <div id="myModal" class="modal">
-          <div class="modal-content">
-            <span class="close">&times;</span>
-            <p>Select a base layout</p>
+      <textarea id="importCssText" name="importCssTextArea" cols="150" rows="30"></textarea>
+    </div>
+    <div id="tutorialTab" class="tabcontent" style="display: block">
+      <button id="openLayoutsBrowserButton" class="btn-1">
+        Open base layouts browser
+      </button>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p>Select a base layout</p>
+          <div>
             <div>
-              <div>
-                <h4>Xbox</h4>
-                <button
-                  id="selectSimpleXboxLayout"
-                  class="btn-1"
-                  onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/console%20controllers/xbox/xbox.css')"
-                >
-                  Simple Xbox buttons
-                </button>
-              </div>
-              <div>
-                <h4>2XKO</h4>
-                <button
-                  id="select2XKOLightLayout"
-                  class="btn-1"
-                  onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/2XKO/2025/all-buttons-in-game.css')"
-                >
-                  Basic
-                </button>
-              </div>
-              <div>
-                <h4>Street Fighter</h4>
-                <button
-                  id="selectStreetFighter3dLayout"
-                  class="btn-1"
-                  onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/street%20fighter/3d%20buttons.css')"
-                >
-                  Arcade Buttons
-                </button>
-              </div>
+              <h4>Xbox</h4>
+              <button id="selectSimpleXboxLayout" class="btn-1"
+                onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/console%20controllers/xbox/xbox.css')">
+                Simple Xbox buttons
+              </button>
+            </div>
+            <div>
+              <h4>2XKO</h4>
+              <button id="select2XKOLightLayout" class="btn-1"
+                onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/2XKO/2025/all-buttons-in-game.css')">
+                Basic
+              </button>
+            </div>
+            <div>
+              <h4>Guilty Gear
+                <!-- <div class="tooltip no-border">
+                  <span class="icon">i</span>
+                  <span class="tooltiptext">image credit to @fenceil</span>
+                </div> -->
+              </h4>
+              <button id="selectGuiltyGearXXAccentCoreLayout" class="btn-1"
+                onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/Guilty%20Gear/XX%20Accent%20Core.css')">
+                XX Accent Core
+              </button>
+            </div>
+            <div>
+              <h4>Street Fighter</h4>
+              <button id="selectStreetFighter3dLayout" class="btn-1"
+                onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/street%20fighter/3d%20buttons.css')">
+                Arcade Buttons
+              </button>
             </div>
           </div>
         </div>
-        <p id="kurttmtest">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.youtube.com/watch?v=oTEMndNv4lI&ab_channel=KurtMage"
-            >Click here for Youtube video for how to use all features.</a
-          ><br />
-          1. In OBS, click the + in sources to add source. Select "Browser"
-          type.<br />
+      </div>
+      <p id="kurttmtest">
+        <a target="_blank" rel="noopener noreferrer"
+          href="https://www.youtube.com/watch?v=oTEMndNv4lI&ab_channel=KurtMage">Click here for Youtube video for how to
+          use all features.</a><br />
+        1. In OBS, click the + in sources to add source. Select "Browser"
+        type.<br />
 
-          2.
-          <span
-            class="tooltip"
-            id="layoutBaseURL"
-            style="cursor: pointer"
-            onclick="copyLayoutBaseURL()"
-            ><span class="tooltiptext" id="clickToCopy">Click to copy</span
-            >Click here to copy the URL</span
-          >
-          for the currently selected base layout. Then paste it into the URL
-          box.<br />
-          3. Change the width to 1500 and height to 800.<br />
-          4. Press OK and make sure it works.<br />
-          5. Edit your layout here. Select actions at the top of the page.<br />
-          6. When you have a layout you like, click "copy code to clipboard".<br />
-          7. Right-click your browser source in OBS and open Properties. Replace
-          the text in the "Custom CSS" dialog box with your text (ctrl+a, ctrl+v
-          to select all and paste).<br />
-          8. Press OK and you're done!
-        </p>
-      </div>
-      <div style="background-color: #f1f1f1">
-        <button class="btn-1" onclick="copyText()">
-          Copy code to clipboard
-        </button>
-        <button
-          class="btn-1"
-          onclick="undo()"
-          id="undoButton"
-          style="color: #999"
-        >
-          Undo last action
-        </button>
-        <button
-          class="btn-1"
-          onclick="redo()"
-          id="redoButton"
-          style="color: #999"
-        >
-          Redo last undo
-        </button>
-      </div>
+        2.
+        <span class="tooltip" id="layoutBaseURL" style="cursor: pointer" onclick="copyLayoutBaseURL()"><span
+            class="tooltiptext" id="clickToCopy">Click to copy</span>Click here to copy the URL</span>
+        for the currently selected base layout. Then paste it into the URL
+        box.<br />
+        3. Change the width to 1500 and height to 800.<br />
+        4. Press OK and make sure it works.<br />
+        5. Edit your layout here. Select actions at the top of the page.<br />
+        6. When you have a layout you like, click "copy code to clipboard".<br />
+        7. Right-click your browser source in OBS and open Properties. Replace
+        the text in the "Custom CSS" dialog box with your text (ctrl+a, ctrl+v
+        to select all and paste).<br />
+        8. Press OK and you're done!
+      </p>
     </div>
-    <div
-      class="layout-box"
-      id="layout-box"
-      style="
+    <div style="background-color: #f1f1f1">
+      <button class="btn-1" onclick="copyText()">
+        Copy code to clipboard
+      </button>
+      <button class="btn-1" onclick="undo()" id="undoButton" style="color: #999">
+        Undo last action
+      </button>
+      <button class="btn-1" onclick="redo()" id="redoButton" style="color: #999">
+        Redo last undo
+      </button>
+    </div>
+  </div>
+  <div class="layout-box" id="layout-box" style="
         background-size: auto;
         background-position: left top;
         background-repeat: no-repeat;
-      "
-    >
-      <span class="img button x" id=".fight-stick .x"></span>
-      <span class="img button y" id=".fight-stick .y"></span>
-      <span class="img button a" id=".fight-stick .a"></span>
-      <span class="img button b" id=".fight-stick .b"></span>
-      <span class="img button rb" id=".fight-stick .bumper.right"></span>
-      <span class="img button lb" id=".fight-stick .bumper.left"></span>
-      <span
-        class="img button rt"
-        id=".fight-stick .trigger-button.right"
-      ></span>
-      <span class="img button lt" id=".fight-stick .trigger-button.left"></span>
-      <span class="img arrow left" id=".fight-stick .face.left"></span>
-      <span class="img arrow down" id=".fight-stick .face.down"></span>
-      <span class="img arrow right" id=".fight-stick .face.right"></span>
-      <span class="img arrow up" id=".fight-stick .face.up"></span>
-      <span class="img startback start" id=".fight-stick .start"></span>
-      <span class="img startback back" id=".fight-stick .back"></span>
-      <span class="img ls" id=".fight-stick .stick.left"></span>
-      <span class="img rs" id=".fight-stick .stick.right"></span>
+      ">
+    <span class="img button x" id=".fight-stick .x"></span>
+    <span class="img button y" id=".fight-stick .y"></span>
+    <span class="img button a" id=".fight-stick .a"></span>
+    <span class="img button b" id=".fight-stick .b"></span>
+    <span class="img button rb" id=".fight-stick .bumper.right"></span>
+    <span class="img button lb" id=".fight-stick .bumper.left"></span>
+    <span class="img button rt" id=".fight-stick .trigger-button.right"></span>
+    <span class="img button lt" id=".fight-stick .trigger-button.left"></span>
+    <span class="img arrow left" id=".fight-stick .face.left"></span>
+    <span class="img arrow down" id=".fight-stick .face.down"></span>
+    <span class="img arrow right" id=".fight-stick .face.right"></span>
+    <span class="img arrow up" id=".fight-stick .face.up"></span>
+    <span class="img startback start" id=".fight-stick .start"></span>
+    <span class="img startback back" id=".fight-stick .back"></span>
+    <span class="img ls" id=".fight-stick .stick.left"></span>
+    <span class="img rs" id=".fight-stick .stick.right"></span>
 
-      <span
-        hidden
-        class="img button x pressed"
-        id=".fight-stick .x.pressed"
-      ></span>
-      <span
-        hidden
-        class="img button y pressed"
-        id=".fight-stick .y.pressed"
-      ></span>
-      <span
-        hidden
-        class="img button a pressed"
-        id=".fight-stick .a.pressed"
-      ></span>
-      <span
-        hidden
-        class="img button b pressed"
-        id=".fight-stick .b.pressed"
-      ></span>
-      <span
-        hidden
-        class="img button rb pressed"
-        id=".fight-stick .bumper.right.pressed"
-      ></span>
-      <span
-        hidden
-        class="img button lb pressed"
-        id=".fight-stick .bumper.left.pressed"
-      ></span>
-      <span
-        hidden
-        class="img button rt pressed"
-        id=".fight-stick .trigger-button.right.pressed"
-      ></span>
-      <span
-        hidden
-        class="img button lt pressed"
-        id=".fight-stick .trigger-button.left.pressed"
-      ></span>
-      <span
-        hidden
-        class="img arrow left pressed"
-        id=".fight-stick .face.left.pressed"
-      ></span>
-      <span
-        hidden
-        class="img arrow down pressed"
-        id=".fight-stick .face.down.pressed"
-      ></span>
-      <span
-        hidden
-        class="img arrow pressed right"
-        id=".fight-stick .face.right.pressed"
-      ></span>
-      <span
-        hidden
-        class="img arrow up pressed"
-        id=".fight-stick .face.up.pressed"
-      ></span>
-      <span
-        hidden
-        class="img startback start pressed"
-        id=".fight-stick .start.pressed"
-      ></span>
-      <span
-        hidden
-        class="img startback back pressed"
-        id=".fight-stick .back.pressed"
-      ></span>
-      <span
-        hidden
-        class="img ls pressed"
-        id=".fight-stick .stick.left.pressed"
-      ></span>
-      <span
-        hidden
-        class="img rs pressed"
-        id=".fight-stick .stick.right.pressed"
-      ></span>
+    <span hidden class="img button x pressed" id=".fight-stick .x.pressed"></span>
+    <span hidden class="img button y pressed" id=".fight-stick .y.pressed"></span>
+    <span hidden class="img button a pressed" id=".fight-stick .a.pressed"></span>
+    <span hidden class="img button b pressed" id=".fight-stick .b.pressed"></span>
+    <span hidden class="img button rb pressed" id=".fight-stick .bumper.right.pressed"></span>
+    <span hidden class="img button lb pressed" id=".fight-stick .bumper.left.pressed"></span>
+    <span hidden class="img button rt pressed" id=".fight-stick .trigger-button.right.pressed"></span>
+    <span hidden class="img button lt pressed" id=".fight-stick .trigger-button.left.pressed"></span>
+    <span hidden class="img arrow left pressed" id=".fight-stick .face.left.pressed"></span>
+    <span hidden class="img arrow down pressed" id=".fight-stick .face.down.pressed"></span>
+    <span hidden class="img arrow pressed right" id=".fight-stick .face.right.pressed"></span>
+    <span hidden class="img arrow up pressed" id=".fight-stick .face.up.pressed"></span>
+    <span hidden class="img startback start pressed" id=".fight-stick .start.pressed"></span>
+    <span hidden class="img startback back pressed" id=".fight-stick .back.pressed"></span>
+    <span hidden class="img ls pressed" id=".fight-stick .stick.left.pressed"></span>
+    <span hidden class="img rs pressed" id=".fight-stick .stick.right.pressed"></span>
 
-      <span hidden class="img fstick" id=".fight-stick .fstick"></span>
-    </div>
+    <span hidden class="img fstick" id=".fight-stick .fstick"></span>
+  </div>
 
-    <div class="copycode">
-      <div class="code-box">
-        <code>
+  <div class="copycode">
+    <div class="code-box">
+      <code>
           <p id="css-text">
             body { background-color: rgba(1, 0, 0, 0); margin: 0px auto;
             overflow: hidden; }
           </p>
         </code>
-      </div>
     </div>
-    <script>
-      // Get the modal
-      var modal = document.getElementById("myModal");
+  </div>
+  <script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
 
-      // Get the button that opens the modal
-      var btn = document.getElementById("openLayoutsBrowserButton");
+    // Get the button that opens the modal
+    var btn = document.getElementById("openLayoutsBrowserButton");
 
-      // Get the <span> element that closes the modal
-      var span = document.getElementsByClassName("close")[0];
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
 
-      // When the user clicks the button, open the modal
-      btn.onclick = function () {
-        modal.style.display = "block";
-      };
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+      modal.style.display = "block";
+    };
 
-      // When the user clicks on <span> (x), close the modal
-      span.onclick = function () {
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
         modal.style.display = "none";
-      };
+      }
+    };
+  </script>
+</body>
 
-      // When the user clicks anywhere outside of the modal, close it
-      window.onclick = function (event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      };
-    </script>
-  </body>
 </html>
