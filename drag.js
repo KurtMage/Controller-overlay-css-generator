@@ -550,6 +550,9 @@ function updatePreviewPicture(url, previewPicture) {
   clearInterval(importButtonInterval);
   const img = previewPicture;
   img.src = validImageUrlStyle(url) ? url : `${url}.png`;
+  if (!url) {
+    img.src = "";
+  }
   img.style.objectPosition = "0% 0%";
   if (previewPicture.id === "urlButtonPreview") {
     importButtonInterval = setInterval(alternatePreviewPicture, 1000);
@@ -1358,7 +1361,7 @@ function getChangedVariables(img) {
   const originalStateOfImg = originalState.get(img.id);
   var changedVariables = "";
   const backgroundChanged = style.background !== originalStateOfImg.background;
-  const indentation = "&nbsp;&nbsp;";
+  const indentation = "";
 
   const properties = [
     "--text-color",
@@ -1690,12 +1693,16 @@ function updateMadeButtonImg(url, button) {
   button.style.backgroundImage = validImageUrlStyle(url)
     ? `url("${url}")`
     : `url("${url}.png")`;
+  if (!url) {
+    button.style.backgroundImage = "";
+  }
   const fixedUrl = validImageUrlStyle(url) ? url : `${url}.png`;
   if (button.id.startsWith("unpressed")) {
-    hiddenUnpressedImgUpdater.src = fixedUrl;
+    hiddenUnpressedImgUpdater.src = url ? fixedUrl : "";
   } else if (button.id.startsWith("pressed")) {
-    hiddenPressedImgUpdater.src = fixedUrl;
+    hiddenPressedImgUpdater.src = url ? fixedUrl : "";
   }
+
   button.style.backgroundRepeat = "no-repeat";
   button.style.backgroundPosition = "center";
   // updateMadeButtonImgSize(document.getElementById("unpressedImgSize").value, button);
