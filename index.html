@@ -188,7 +188,7 @@
             </div>
             <div class="input-with-unit">
               <label for="pressedTextSize">Font size:</label>
-              <input class="buttonMakerTextBox" type="number" id="pressed-text-border-thickness" value="62"
+              <input class="buttonMakerTextBox" type="number" id="pressedTextSize" value="62"
                 onInput="updateMadeButtonTextSize(this.value, document.getElementById('pressedMadeButton'))" /><span>px</span>
             </div>
           </div>
@@ -197,7 +197,7 @@
             <input type="color" id="pressed-text-border-colorpicker" value="#000000"
               onInput="updateMadeButtonTextBorderColor(this.value, document.getElementById('pressedMadeButton'))" />
             <div class="input-with-unit">
-              <label for="pressedTextSize">Text border thickness:</label>
+              <label for="pressed-text-border-thickness">Text border thickness:</label>
               <input class="buttonMakerTextBox" type="number" id="pressedTextSize" value="4"
                 onInput="updateMadeButtonTextBorderThickness(this.value, document.getElementById('pressedMadeButton'))" /><span>px</span>
             </div>
@@ -278,11 +278,8 @@
     </div>
     <div id="changeSizeTab" class="tabcontent">
       <p>
-        Choose a size (in px) for the buttons to change to, then click them to
-        make them that size.<br />NOTE: If you made a button in the "Make
-        buttons" tab, this size does not take your border thickness into
-        account.
-      </p>
+        Choose a size for the buttons to change to, then click them to
+        make them that size. </p>
       <div class="input-with-unit">
         <label for="sizeInput">Size:</label>
         <input class="urlTextBox" type="number" id="sizeInput" value="150" /><span>px</span>

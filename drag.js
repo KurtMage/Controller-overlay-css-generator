@@ -793,9 +793,13 @@ function applyMadeButton(e) {
         .getPropertyValue("--text-font-family")
         .replace(/"/g, "");
 
+      const justUrl = madeButtonStyle.backgroundImage
+        .replace(/^url\(['"]?/, "")
+        .replace(/['"]?\)$/, "")
+        .replace(/^none$/, "");
       document.getElementById(
         `${pressedOrUnpressedString}ButtonUrlInput`
-      ).value = madeButtonStyle.backgroundImage;
+      ).value = justUrl;
       document.getElementById(`${pressedOrUnpressedString}ImgSize`).value =
         parseInt(madeButtonStyle.backgroundSize);
     }
