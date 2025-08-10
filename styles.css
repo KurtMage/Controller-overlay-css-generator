@@ -209,9 +209,16 @@ body {
   border-color: #343a40 transparent transparent transparent;
 }
 
-.tooltip:hover .tooltiptext {
+.tooltip .icon,
+.tooltip .tooltiptext {
+  text-transform: none;
+}
+
+.tooltip:hover .tooltiptext,
+.tooltip .tooltiptext:hover {
   visibility: visible;
   opacity: 1;
+  pointer-events: auto;
 }
 
 /* New CSS class for the "properly formatted stick" tooltip */
