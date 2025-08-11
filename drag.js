@@ -1673,21 +1673,6 @@ function updateMadeButtonTextBorderThickness(textStrokeThickness, button) {
   button.style.setProperty("--text-stroke-width", textStrokeThickness + "px");
 }
 
-function updateMadeButtonTextContent(textContentValue, button) {
-  button.style.setProperty("--text-content", '"' + textContentValue + '"');
-}
-
-function updateMadeButtonTextFont(textFontFamilyValue, button) {
-  button.style.setProperty(
-    "--text-font-family",
-    '"' + textFontFamilyValue + '"'
-  );
-}
-
-function updateMadeButtonTextSize(textSizeValue, button) {
-  button.style.setProperty("--text-font-size", "" + textSizeValue + "px");
-}
-
 function updateMadeButtonImg(url, button) {
   mostRecentlyChangedTextBox = button;
   button.style.backgroundImage = validImageUrlStyle(url)
@@ -1888,3 +1873,22 @@ function openCity(evt, cityName) {
     }
   }
 }
+
+window.openCity = openCity;
+window.swapSelectedButtons = swapSelectedButtons;
+window.undo = undo;
+window.redo = redo;
+window.copyText = copyText;
+
+module.exports = {
+  moveButtonAndPressedToLocation,
+  deleteButton,
+  resizeButtonTarget,
+  applyMadeButton,
+  importButton,
+  importStick,
+  applyCSS,
+  highlightButton,
+  clickAction,
+  init,
+};
