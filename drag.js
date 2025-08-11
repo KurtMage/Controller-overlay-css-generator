@@ -1,11 +1,7 @@
-var originalState = new Map();
-var baseLayoutUrl2OriginalState = new Map();
 var pastStates = [];
 var undoneStates = [];
 var selectedButton;
 var moveSelectedButtons = new Set();
-var lastMovedButton;
-var drag = false;
 var urlImageIsGood = false;
 window.urlImageIsGood = false;
 var lastKeyPressMove;
@@ -14,7 +10,6 @@ var baseLayoutUrl =
 var hiddenPressedImgUpdater;
 var hiddenUnpressedImgUpdater;
 var importButtonInterval;
-var mostRecentlyChangedTextBox;
 var id2state = new Map();
 
 const stateMapUrlKey = "baseLayoutUrl";
@@ -96,7 +91,6 @@ function init() {
   };
 
   switchBaseLayout(baseLayoutUrl, false, false, false);
-  originalState = pastStates[0];
   // for (const img of document.getElementById("layout-box").getElementsByTagName('*')) {
   // 	const state = getStateOfImg(img);
   // 	originalState.set(img.id, state);
@@ -1095,7 +1089,6 @@ function startDrag(e) {
   } else {
     document.getElementById("swapButton").style.color = "#999";
   }
-  lastMovedButton = targ;
   targ.style.zIndex = 1;
   if (!targ.style.left) {
     targ.style.left = targ.offsetLeft + "px";
@@ -1108,7 +1101,6 @@ function startDrag(e) {
   // properties
   coordX = parseInt(targ.style.left);
   coordY = parseInt(targ.style.top);
-  drag = true;
 
   // move div element
   return false;
@@ -1148,39 +1140,17 @@ function undo() {
     }
     const currentLocation = currentState.get(id);
     const img = document.getElementById(id);
-    if (currentLocation.top !== locationToReturnTo.top) {
-      img.style.top = locationToReturnTo.top;
-    }
-    if (currentLocation.left !== locationToReturnTo.left) {
-      img.style.left = locationToReturnTo.left;
-    }
-    if (locationToReturnTo.top === originalState.get(id).top) {
-      img.style.top = null;
-    }
-    if (locationToReturnTo.left === originalState.get(id).left) {
-      img.style.left = null;
-    }
-    if (locationToReturnTo.visibility !== originalState.visibility) {
-      img.style.visibility = locationToReturnTo.visibility;
-      img.style.zIndex = 0;
-    }
-    if (locationToReturnTo.background !== currentLocation.background) {
-      img.style.background = locationToReturnTo.background;
-    }
-    if (locationToReturnTo.size !== currentLocation.size) {
-      img.style.backgroundSize = locationToReturnTo.size;
-      img.style.width = locationToReturnTo.size;
-      img.style.height = locationToReturnTo.size;
-    }
-    if (locationToReturnTo.border !== currentLocation.border) {
-      img.style.border = locationToReturnTo.border;
-    }
-    if (locationToReturnTo.borderRadius !== currentLocation.borderRadius) {
-      img.style.borderRadius = locationToReturnTo.borderRadius;
-    }
-    if (locationToReturnTo.backgroundSize !== currentLocation.backgroundSize) {
-      img.style.backgroundSize = locationToReturnTo.backgroundSize;
-    }
+    img.style.top = locationToReturnTo.top;
+    img.style.left = locationToReturnTo.left;
+    img.style.visibility = locationToReturnTo.visibility;
+    img.style.zIndex = 0;
+    img.style.background = locationToReturnTo.background;
+    img.style.backgroundSize = locationToReturnTo.size;
+    img.style.width = locationToReturnTo.size;
+    img.style.height = locationToReturnTo.size;
+    img.style.border = locationToReturnTo.border;
+    img.style.borderRadius = locationToReturnTo.borderRadius;
+    img.style.backgroundSize = locationToReturnTo.backgroundSize;
     img.style.setProperty("--text-color", locationToReturnTo.textColor);
     img.style.setProperty("--text-font-size", locationToReturnTo.textFontSize);
     img.style.setProperty(
@@ -1233,42 +1203,17 @@ function redo() {
     }
     const currentLocation = currentState.get(id);
     const img = document.getElementById(id);
-    if (currentLocation.top !== locationToReturnTo.top) {
-      img.style.top = locationToReturnTo.top;
-    }
-    if (currentLocation.left !== locationToReturnTo.left) {
-      img.style.left = locationToReturnTo.left;
-    }
-    if (locationToReturnTo.top === originalState.get(id).top) {
-      img.style.top = null;
-    }
-    if (locationToReturnTo.left === originalState.get(id).left) {
-      img.style.left = null;
-    }
-    if (locationToReturnTo.visibility !== originalState.visibility) {
-      img.style.visibility = locationToReturnTo.visibility;
-      img.style.zIndex = 0;
-    } else {
-      img.style.visibility = "hidden";
-      img.style.zIndex = -1;
-    }
-    if (locationToReturnTo.background !== currentLocation.background) {
-      img.style.background = locationToReturnTo.background;
-    }
-    if (locationToReturnTo.size !== currentLocation.size) {
-      img.style.backgroundSize = locationToReturnTo.size;
-      img.style.width = locationToReturnTo.size;
-      img.style.height = locationToReturnTo.size;
-    }
-    if (locationToReturnTo.border !== currentLocation.border) {
-      img.style.border = locationToReturnTo.border;
-    }
-    if (locationToReturnTo.borderRadius !== currentLocation.borderRadius) {
-      img.style.borderRadius = locationToReturnTo.borderRadius;
-    }
-    if (locationToReturnTo.backgroundSize !== currentLocation.backgroundSize) {
-      img.style.backgroundSize = locationToReturnTo.backgroundSize;
-    }
+    img.style.top = locationToReturnTo.top;
+    img.style.left = locationToReturnTo.left;
+    img.style.visibility = locationToReturnTo.visibility;
+    img.style.zIndex = 0;
+    img.style.background = locationToReturnTo.background;
+    img.style.backgroundSize = locationToReturnTo.size;
+    img.style.width = locationToReturnTo.size;
+    img.style.height = locationToReturnTo.size;
+    img.style.border = locationToReturnTo.border;
+    img.style.borderRadius = locationToReturnTo.borderRadius;
+    img.style.backgroundSize = locationToReturnTo.backgroundSize;
     img.style.setProperty("--text-color", locationToReturnTo.textColor);
     img.style.setProperty("--text-font-size", locationToReturnTo.textFontSize);
     img.style.setProperty(
@@ -1319,32 +1264,7 @@ function copyLayoutBaseURL() {
 }
 
 function doesButtonHaveChange(img) {
-  const style = getComputedStyle(img);
-  const originalStateOfImg = originalState.get(img.id);
-  return (
-    style.top !== originalStateOfImg.top ||
-    style.left !== originalStateOfImg.left ||
-    (!img.id.endsWith(".pressed") && style.visibility === "hidden") ||
-    style.background !== originalStateOfImg.background ||
-    style.width !== originalStateOfImg.size ||
-    style.border !== originalStateOfImg.border ||
-    style.borderRadius !== originalStateOfImg.borderRadius ||
-    style.backgroundImage !== originalStateOfImg.backgroundImage ||
-    style.backgroundSize !== originalStateOfImg.backgroundSize ||
-    style.backgroundRepeat !== originalStateOfImg.backgroundRepeat ||
-    style.backgroundPosition !== originalStateOfImg.backgroundPosition ||
-    style.getPropertyValue("--text-color") !== originalStateOfImg.textColor ||
-    style.getPropertyValue("--text-font-size") !==
-      originalStateOfImg.textFontSize ||
-    style.getPropertyValue("--text-stroke-color") !==
-      originalStateOfImg.textStrokeColor ||
-    style.getPropertyValue("--text-stroke-width") !==
-      originalStateOfImg.textStrokeWidth ||
-    style.getPropertyValue("--text-content") !==
-      originalStateOfImg.textContent ||
-    style.getPropertyValue("--text-font-family") !==
-      originalStateOfImg.textFontFamily
-  );
+  return true;
 }
 
 function addToPastStates(id2state) {
@@ -1361,9 +1281,7 @@ function addToPastStates(id2state) {
 
 function getChangedVariables(img) {
   const style = getComputedStyle(img);
-  const originalStateOfImg = originalState.get(img.id);
   var changedVariables = "";
-  const backgroundChanged = style.background !== originalStateOfImg.background;
   const indentation = "";
 
   const properties = [
@@ -1381,89 +1299,26 @@ function getChangedVariables(img) {
   const propertyStyles = properties
     .map((property) => {
       // Use a conditional (ternary) operator to decide which string to return
-      return style.getPropertyValue(property) !==
-        originalStateOfImg[kebabToCamelCase(property.slice(2))] // Remove the "--" prefix.
-        ? `${property}: ${style.getPropertyValue(property)};<br>`
-        : "";
+      return `${property}: ${style.getPropertyValue(property)};<br>`;
     })
     .join("");
   changedVariables += `
 	<br>${img.id} {<br>
-		${
-      style.top !== originalStateOfImg.top
-        ? `${indentation}top: ${style.top};<br>`
-        : ""
-    }
-		${
-      style.left !== originalStateOfImg.left
-        ? `${indentation}left: ${style.left};<br>`
-        : ""
-    }
-		${
-      style.visibility !== "hidden" && backgroundChanged
-        ? `${indentation}background: ${style.background};<br>`
-        : ""
-    }
-		${
-      style.visibility !== originalStateOfImg.visibility
-        ? `${indentation}visibility: ${style.visibility};<br>`
-        : ""
-    }
-		${
-      style.width !== originalStateOfImg.size
-        ? `${indentation}width: ${style.width};<br>`
-        : ""
-    }
-		${
-      style.width !== originalStateOfImg.size
-        ? `${indentation}height: ${style.width};<br>`
-        : ""
-    }
-		${
-      style.border !== originalStateOfImg.border
-        ? `${indentation}border: ${style.border};<br>`
-        : ""
-    }
-		${
-      style.borderRadius !== originalStateOfImg.borderRadius
-        ? `${indentation}border-radius: ${style.borderRadius};<br>`
-        : ""
-    }
-		${
-      style.backgroundPositionY !== originalStateOfImg.backgroundPositionY
-        ? `${indentation}background-position-y: ${style.backgroundPositionY};<br>`
-        : ""
-    }
-		${
-      style.backgroundImage !== originalStateOfImg.backgroundImage
-        ? `${indentation}background-image: ${style.backgroundImage};<br>`
-        : ""
-    }
-		${
-      style.backgroundSize !== originalStateOfImg.backgroundSize
-        ? `${indentation}background-size: ${style.backgroundSize};<br>`
-        : ""
-    }
-		${
-      style.backgroundRepeat !== originalStateOfImg.backgroundRepeate
-        ? `${indentation}background-repeat: ${style.backgroundRepeat};<br>`
-        : ""
-    }
-		${
-      style.backgroundPosition !== originalStateOfImg.backgroundPosition
-        ? `${indentation}background-image: ${style.backgroundPosition};<br>`
-        : ""
-    }
-		${
-      style.borderRadius !== originalStateOfImg.borderRadius
-        ? `${indentation}border-radius: ${style.borderRadius};<br>`
-        : ""
-    }
-		${
-      style.borderColor !== originalStateOfImg.borderColor
-        ? `${indentation}border-color: ${style.borderColor};<br>`
-        : ""
-    }
+		${`${indentation}top: ${style.top};<br>`}
+		${`${indentation}left: ${style.left};<br>`}
+    ${`${indentation}background: ${style.background};<br>`}
+		${`${indentation}visibility: ${style.visibility};<br>`}
+		${`${indentation}width: ${style.width};<br>`}
+		${`${indentation}height: ${style.width};<br>`}
+		${`${indentation}border: ${style.border};<br>`}
+		${`${indentation}border-radius: ${style.borderRadius};<br>`}
+		${`${indentation}background-position-y: ${style.backgroundPositionY};<br>`}
+		${`${indentation}background-image: ${style.backgroundImage};<br>`}
+		${`${indentation}background-size: ${style.backgroundSize};<br>`}
+		${`${indentation}background-repeat: ${style.backgroundRepeat};<br>`}
+		${`${indentation}background-image: ${style.backgroundPosition};<br>`}
+		${`${indentation}border-radius: ${style.borderRadius};<br>`}
+		${`${indentation}border-color: ${style.borderColor};<br>`}
 		${propertyStyles}
 	}<br>
 	`;
@@ -1677,7 +1532,6 @@ function updateMadeButtonTextBorderThickness(textStrokeThickness, button) {
 }
 
 function updateMadeButtonImg(url, button) {
-  mostRecentlyChangedTextBox = button;
   button.style.backgroundImage = validImageUrlStyle(url)
     ? `url("${url}")`
     : `url("${url}.png")`;
