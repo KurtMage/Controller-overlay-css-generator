@@ -202,17 +202,6 @@ body {
   transition: opacity 0.3s;
 }
 
-.tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #343a40 transparent transparent transparent;
-}
-
 .tooltip .icon,
 .tooltip .tooltiptext {
   text-transform: none;
