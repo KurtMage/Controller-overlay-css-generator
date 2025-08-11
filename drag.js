@@ -7,6 +7,7 @@ var moveSelectedButtons = new Set();
 var lastMovedButton;
 var drag = false;
 var urlImageIsGood = false;
+window.urlImageIsGood = false;
 var lastKeyPressMove;
 var baseLayoutUrl =
   "https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/console%20controllers/xbox/xbox.css";
@@ -622,6 +623,7 @@ function checkImage(
     // Clicking the error button makes it go away.
     closeErrorButton.click();
     urlImageIsGood = true;
+    window.urlImageIsGood = true;
   } else {
     img.visibility = "hidden";
     img.style.width = "0px";
@@ -631,6 +633,7 @@ function checkImage(
     closeErrorButton.parentElement.style.display = "block";
     previewText.style.display = "none";
     urlImageIsGood = false;
+    window.urlImageIsGood = false;
   }
 }
 
@@ -1879,6 +1882,13 @@ window.swapSelectedButtons = swapSelectedButtons;
 window.undo = undo;
 window.redo = redo;
 window.copyText = copyText;
+window.updateMadeButtonColor = updateMadeButtonColor;
+window.updateMadeButtonBorderColor = updateMadeButtonBorderColor;
+window.updateMadeButtonTextContent = updateMadeButtonTextContent;
+window.updateMadeButtonImg = updateMadeButtonImg;
+window.updatePreviewPicture = updatePreviewPicture;
+window.checkImage = checkImage;
+window.applyCSS = applyCSS;
 
 module.exports = {
   moveButtonAndPressedToLocation,

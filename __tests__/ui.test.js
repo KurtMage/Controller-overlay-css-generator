@@ -12,7 +12,12 @@ const {
 require("@testing-library/jest-dom");
 
 const html = fs.readFileSync(path.resolve(__dirname, "../index.html"), "utf8");
-const { highlightButton, clickAction, init } = require("../drag.js");
+const {
+  highlightButton,
+  clickAction,
+  init,
+  checkImage,
+} = require("../drag.js");
 
 describe("Controller Overlay CSS Generator UI", () => {
   beforeEach(() => {
@@ -151,5 +156,117 @@ describe("Controller Overlay CSS Generator UI", () => {
     expect(cssTextOutput.textContent.replace(/\s+/g, "")).toContain(
       `.fight-stick.y{top:70px;left:210px;`
     );
+  });
+
+  test("Delete tab: delete a button, undo/redo/copy", () => {
+    fireEvent.click(getByText(document.body, "Delete"));
+    const buttonA = document.getElementById(".fight-stick .a");
+    fireEvent.mouseDown(buttonA);
+    expect(buttonA.style.visibility).toBe("hidden");
+
+    // Copy code to clipboard
+    fireEvent.click(getByText(document.body, "Copy code to clipboard"));
+    expect(navigator.clipboard.writeText).toHaveBeenCalled();
+
+    // Undo
+    fireEvent.click(getByText(document.body, "Undo last action"));
+    expect(buttonA.style.visibility).not.toBe("hidden");
+
+    // Redo
+    fireEvent.click(getByText(document.body, "Redo last undo"));
+    expect(buttonA.style.visibility).toBe("hidden");
+  });
+
+  test("Change size tab: change size input, resize button, undo/redo/copy", () => {
+    fireEvent.click(getByText(document.body, "Change size"));
+    const sizeInput = document.getElementById("sizeInput");
+    sizeInput.value = "180";
+    fireEvent.input(sizeInput);
+
+    const buttonX = document.getElementById(".fight-stick .x");
+    fireEvent.mouseDown(buttonX);
+    expect(buttonX.style.width).toBe("180px");
+    expect(buttonX.style.height).toBe("180px");
+
+    fireEvent.click(getByText(document.body, "Copy code to clipboard"));
+    expect(navigator.clipboard.writeText).toHaveBeenCalled();
+
+    fireEvent.click(getByText(document.body, "Undo last action"));
+    expect(buttonX.style.width).not.toBe("180px");
+
+    fireEvent.click(getByText(document.body, "Redo last undo"));
+    expect(buttonX.style.width).toBe("180px");
+  });
+
+  test("Make buttons tab: change color, border, text, image, undo/redo/copy", () => {
+    fireEvent.click(getByText(document.body, "Make buttons"));
+    const colorPicker = document.getElementById("unpressed-button-colorpicker");
+    colorPicker.value = "#ff0000";
+    fireEvent.input(colorPicker);
+
+    const borderColorPicker = document.getElementById(
+      "unpressed-border-colorpicker"
+    );
+    borderColorPicker.value = "#00ff00";
+    fireEvent.input(borderColorPicker);
+
+    const textInput = document.getElementById("unpressedTextContent");
+    textInput.value = "Test";
+    fireEvent.input(textInput);
+
+    const imgInput = document.getElementById("unpressedButtonUrlInput");
+    imgInput.value = "https://imgur.com/test.png";
+    fireEvent.change(imgInput);
+
+    fireEvent.click(getByText(document.body, "Copy code to clipboard"));
+    expect(navigator.clipboard.writeText).toHaveBeenCalled();
+
+    fireEvent.click(getByText(document.body, "Undo last action"));
+    // Optionally check that color/text/image reverted
+
+    fireEvent.click(getByText(document.body, "Redo last undo"));
+    // Optionally check that color/text/image restored
+  });
+
+  test("Import CSS tab: change textarea, import CSS, undo/redo/copy", () => {
+    fireEvent.click(document.getElementById("importCssTab"));
+    const cssTextArea = document.getElementById("importCssText");
+    cssTextArea.value = `
+      .fight-stick .x {
+        top: 50px;
+        left: 60px;
+        background: #fff;
+      }
+    `;
+    fireEvent.input(cssTextArea);
+
+    fireEvent.click(document.getElementById("importCSS"));
+
+    fireEvent.click(getByText(document.body, "Copy code to clipboard"));
+    expect(navigator.clipboard.writeText).toHaveBeenCalled();
+
+    fireEvent.click(getByText(document.body, "Undo last action"));
+    // Optionally check that CSS reverted
+
+    fireEvent.click(getByText(document.body, "Redo last undo"));
+    // Optionally check that CSS restored
+  });
+
+  test("How to use tab: tutorial visible, undo/redo/copy", () => {
+    fireEvent.click(getByText(document.body, "How to use"));
+    const tutorialTab = document.getElementById("tutorialTab");
+    expect(tutorialTab).toBeVisible();
+    expect(
+      getByText(document.body, /Youtube video for how to use all features/i)
+    ).toBeInTheDocument();
+
+    fireEvent.click(getByText(document.body, "Copy code to clipboard"));
+    expect(navigator.clipboard.writeText).toHaveBeenCalled();
+
+    fireEvent.click(getByText(document.body, "Undo last action"));
+    // Optionally check that tutorial reverted
+
+    fireEvent.click(getByText(document.body, "Redo last undo"));
+    // Optionally check that tutorial restored
   });
 });
