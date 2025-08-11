@@ -22,10 +22,18 @@
       Change size
     </button>
     <button class="tablinks" onclick="openCity(event, 'makeButtonsTab')">
-      Make buttons
+      Make/copy button
+      <div class="tooltip no-border">
+        <span class="icon">i</span>
+        <span class="tooltiptext">
+          Right-click a button to copy it into the "make button" editor. Then you can left-click a button to turn it
+          into
+          the button in the editor.
+        </span>
+      </div>
     </button>
     <button class="tablinks" onclick="openCity(event, 'importButtonsTab')">
-      Import/copy buttons
+      Import buttons
     </button>
     <button class="tablinks" onclick="openCity(event, 'importStickTab')">
       Import stick
@@ -359,10 +367,13 @@
                 <div class="tooltip no-border">
                   <span class="icon">i</span>
                   <span class="tooltiptext">
-                    I will update this layout to match the in-game input viewer when the game comes out. Currently it is based on 
+                    I will update this layout to match the in-game input viewer when the game comes out. Currently it is
+                    based on
                     <a href="https://youtube.com/clip/UgkxP72dAyPjhtUtZHWugnZK8UqDMiV2rE-M?si=F0u01SXRJ4r3nWl7"
-                      target="_blank" rel="noopener noreferrer" style="color:#1da1f2;text-decoration:underline">this clip</a>
+                      target="_blank" rel="noopener noreferrer" style="color:#1da1f2;text-decoration:underline">this
+                      clip</a>
                   </span>
+                </div>
               </button>
               <button id="select2XKOLightLayout" class="btn-1"
                 onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/2XKO/2025/basic-all-buttons.css')">

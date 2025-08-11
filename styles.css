@@ -107,7 +107,7 @@ body {
 
 /* Tab Component Styling */
 .tab {
-  overflow: hidden;
+  overflow: visible;
   background-color: #e9ecef;
   border-bottom: 1px solid #dee2e6;
   border-radius: 8px 8px 0 0;
@@ -194,7 +194,7 @@ body {
   border-radius: 6px;
   padding: 10px;
   position: absolute;
-  z-index: 1;
+  z-index: 9999; /* High value to ensure it's above other content */
   top: 125%;
   left: 50%;
   margin-left: -120px;
