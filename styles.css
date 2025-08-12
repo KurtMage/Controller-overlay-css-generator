@@ -186,6 +186,11 @@ body {
 }
 
 .tooltip .tooltiptext {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100%; /* or bottom: 100% if you want it above */
+  margin-top: 0px; /* Adjust as needed to remove the gap */
   visibility: hidden;
   width: 240px;
   background-color: #343a40;
@@ -193,11 +198,7 @@ body {
   text-align: center;
   border-radius: 6px;
   padding: 10px;
-  position: absolute;
   z-index: 9999; /* High value to ensure it's above other content */
-  top: 125%;
-  left: 50%;
-  margin-left: -120px;
   opacity: 0;
   transition: opacity 0.3s;
 }
