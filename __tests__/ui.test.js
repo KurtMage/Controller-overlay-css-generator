@@ -11,6 +11,43 @@ const { init } = require("../drag.js");
 
 describe("Controller Overlay CSS Generator UI", () => {
   beforeEach(() => {
+    // Mock XMLHttpRequest for all tests
+    window.XMLHttpRequest = function () {
+      this.open = jest.fn();
+      this.send = jest.fn(function () {
+        // Provide a default CSS response for init()
+        this.responseText = `
+          <body>
+            .fight-stick .x {
+              top: 0px;
+              left: 0px;
+              background: #fff;
+            }
+          </body>
+        `;
+        this.readyState = 4;
+        this.status = 200;
+        this.onreadystatechange && this.onreadystatechange();
+        this.onload && this.onload();
+      });
+      this.addEventListener = (event, cb) => {
+        if (event === "load") {
+          setTimeout(() => {
+            this.responseText = `
+              <body>
+                .fight-stick .x {
+                  top: 0px;
+                  left: 0px;
+                  background: #fff;
+                }
+              </body>
+            `;
+            cb.call(this);
+          }, 0);
+        }
+      };
+    };
+
     document.documentElement.innerHTML = html;
     init();
     // Mock clipboard API
@@ -259,4 +296,235 @@ describe("Controller Overlay CSS Generator UI", () => {
     fireEvent.click(getByText(document.body, "Redo last undo"));
     // Optionally check that tutorial restored
   });
+
+  test("switchBaseLayout updates layout and CSS", async () => {
+    // Mock XMLHttpRequest
+    const originalXMLHttpRequest = window.XMLHttpRequest;
+    window.XMLHttpRequest = function () {
+      this.open = jest.fn();
+      this.send = jest.fn(function () {
+        // Simulate a response with minimal valid CSS for one button
+        this.responseText = `
+          <body>
+            .fight-stick .x {
+              top: 123px;
+              left: 456px;
+              background: #fff;
+            }
+          </body>
+        `;
+        this.readyState = 4;
+        this.status = 200;
+        this.onreadystatechange && this.onreadystatechange();
+        this.onload && this.onload();
+      });
+      this.addEventListener = (event, cb) => {
+        if (event === "load") {
+          setTimeout(() => {
+            this.responseText = `
+              <body>
+                .fight-stick .x {
+                  top: 123px;
+                  left: 456px;
+                  background: #fff;
+                }
+              </body>
+            `;
+            cb.call(this);
+          }, 0);
+        }
+      };
+    };
+
+    // Call switchBaseLayout with a test URL
+    const { switchBaseLayout } = require("../drag.js");
+    switchBaseLayout(
+      "https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://example.com/test.css",
+      false,
+      false,
+      true
+    );
+
+    // Wait for the mock XMLHttpRequest to finish
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    // Check that the button's style was updated
+    const buttonX = document.getElementById(".fight-stick .x");
+    expect(buttonX.style.top).toBe("123px");
+    expect(buttonX.style.left).toBe("456px");
+    expect(buttonX.style.background).toBe("rgb(255, 255, 255)");
+
+    // Restore original XMLHttpRequest
+    window.XMLHttpRequest = originalXMLHttpRequest;
+  });
+
+  test("switchBaseLayout updates layout and CSS including pressed state", async () => {
+    // Mock XMLHttpRequest
+    const originalXMLHttpRequest = window.XMLHttpRequest;
+    window.XMLHttpRequest = function () {
+      this.open = jest.fn();
+      this.send = jest.fn(function () {
+        // Simulate a response with valid CSS for both states
+        this.responseText = `
+          <body>
+            .fight-stick .x {
+              top: 123px;
+              left: 456px;
+              background: url('https://imgur.com/unpressed.png');
+            }
+            .fight-stick .x.pressed {
+              background: url('https://imgur.com/pressed.png');
+            }
+          </body>
+        `;
+        this.readyState = 4;
+        this.status = 200;
+        this.onreadystatechange && this.onreadystatechange();
+        this.onload && this.onload();
+      });
+      this.addEventListener = (event, cb) => {
+        if (event === "load") {
+          setTimeout(() => {
+            this.responseText = `
+              <body>
+                .fight-stick .x {
+                  top: 123px;
+                  left: 456px;
+                  background: url('https://imgur.com/unpressed.png');
+                }
+                .fight-stick .x.pressed {
+                  background: url('https://imgur.com/pressed.png');
+                }
+              </body>
+            `;
+            cb.call(this);
+          }, 0);
+        }
+      };
+    };
+
+    // Call switchBaseLayout with a test URL
+    const { switchBaseLayout } = require("../drag.js");
+    switchBaseLayout(
+      "https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://example.com/test.css",
+      false,
+      false,
+      true
+    );
+
+    // Wait for the mock XMLHttpRequest to finish
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    // Check that the button's style was updated
+    const buttonX = document.getElementById(".fight-stick .x");
+    expect(buttonX.style.top).toBe("123px");
+    expect(buttonX.style.left).toBe("456px");
+    expect(buttonX.style.backgroundImage).toContain("unpressed.png");
+
+    // Simulate pressed state
+    buttonX.classList.add("pressed");
+    expect(buttonX.classList.contains("pressed")).toBe(true);
+    expect(buttonX.style.backgroundImage).toContain("pressed.png");
+
+    // Restore original XMLHttpRequest
+    window.XMLHttpRequest = originalXMLHttpRequest;
+  });
+
+  test("switchBaseLayout updates layout and CSS including pressed state assuming background image from unpressed definition", async () => {
+    // Mock XMLHttpRequest
+    const originalXMLHttpRequest = window.XMLHttpRequest;
+    window.XMLHttpRequest = function () {
+      this.open = jest.fn();
+      this.send = jest.fn(function () {
+        // Simulate a response with valid CSS for both states
+        this.responseText = `
+          <body>
+            .fight-stick .x {
+              top: 123px;
+              left: 456px;
+              background: url('https://imgur.com/unpressed.png');
+            }
+            .fight-stick .x.pressed {
+              background: #ff0000;
+            }
+          </body>
+        `;
+        this.readyState = 4;
+        this.status = 200;
+        this.onreadystatechange && this.onreadystatechange();
+        this.onload && this.onload();
+      });
+      this.addEventListener = (event, cb) => {
+        if (event === "load") {
+          setTimeout(() => {
+            this.responseText = `
+              <body>
+                .fight-stick .x {
+                  top: 123px;
+                  left: 456px;
+                  background: url('https://imgur.com/unpressed.png');
+                }
+                .fight-stick .x.pressed {
+                  background: #ff0000;
+                }
+              </body>
+            `;
+            cb.call(this);
+          }, 0);
+        }
+      };
+    };
+
+    // Call switchBaseLayout with a test URL
+    const { switchBaseLayout } = require("../drag.js");
+    switchBaseLayout(
+      "https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://example.com/test.css",
+      false,
+      false,
+      true
+    );
+
+    // Wait for the mock XMLHttpRequest to finish
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    // Check that the button's style was updated
+    const buttonX = document.getElementById(".fight-stick .x");
+    expect(buttonX.style.top).toBe("123px");
+    expect(buttonX.style.left).toBe("456px");
+    expect(buttonX.style.backgroundImage).toContain("unpressed.png");
+
+    // Simulate pressed state
+    buttonX.classList.add("pressed");
+    expect(buttonX.classList.contains("pressed")).toBe(true);
+    // Should NOT contain a url, should be a color
+    expect(buttonX.style.backgroundImage).toBe(
+      'url("https://imgur.com/unpressed.png")'
+    );
+    expect(buttonX.style.background).toBe(
+      'url("https://imgur.com/unpressed.png")'
+    );
+
+    // Restore original XMLHttpRequest
+    window.XMLHttpRequest = originalXMLHttpRequest;
+  });
+
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      text: () =>
+        Promise.resolve(`
+        <body>
+          .fight-stick .x {
+            top: 123px;
+            left: 456px;
+            background: url('https://imgur.com/unpressed.png');
+          }
+          .fight-stick .x.pressed {
+            background: url('https://imgur.com/pressed.png');
+          }
+        </body>
+      `),
+      ok: true,
+      status: 200,
+    })
+  );
 });

@@ -234,10 +234,12 @@ function switchBaseLayout(
         if (buttonEl.id.endsWith(".pressed")) {
           const unpressedButton =
             getPressedOrUnpressedVersionOfButton(buttonEl);
-          buttonEl.style.setProperty(
-            "background-image",
-            getComputedStyle(unpressedButton).backgroundImage
-          );
+          if (!buttonEl.style.backgroundImage) {
+            buttonEl.style.setProperty(
+              "background-image",
+              getComputedStyle(unpressedButton).backgroundImage
+            );
+          }
           buttonEl.style.setProperty(
             "left",
             getComputedStyle(unpressedButton).left
@@ -1756,5 +1758,6 @@ if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
     highlightButton,
     clickAction,
     init,
+    switchBaseLayout,
   };
 }
