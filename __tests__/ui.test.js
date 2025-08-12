@@ -3,21 +3,11 @@
  */
 const fs = require("fs");
 const path = require("path");
-const {
-  fireEvent,
-  getByText,
-  getByLabelText,
-  getByRole,
-} = require("@testing-library/dom");
+const { fireEvent, getByText } = require("@testing-library/dom");
 require("@testing-library/jest-dom");
 
 const html = fs.readFileSync(path.resolve(__dirname, "../index.html"), "utf8");
-const {
-  highlightButton,
-  clickAction,
-  init,
-  checkImage,
-} = require("../drag.js");
+const { init } = require("../drag.js");
 
 describe("Controller Overlay CSS Generator UI", () => {
   beforeEach(() => {
