@@ -199,7 +199,7 @@ describe("Controller Overlay CSS Generator UI", () => {
   });
 
   test("Make buttons tab: change color, border, text, image, undo/redo/copy", () => {
-    fireEvent.click(getByText(document.body, "Make buttons"));
+    fireEvent.click(getByText(document.body, "Make/copy button"));
     const colorPicker = document.getElementById("unpressed-button-colorpicker");
     colorPicker.value = "#ff0000";
     fireEvent.input(colorPicker);

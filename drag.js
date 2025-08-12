@@ -1744,15 +1744,17 @@ window.updatePreviewPicture = updatePreviewPicture;
 window.checkImage = checkImage;
 window.applyCSS = applyCSS;
 
-module.exports = {
-  moveButtonAndPressedToLocation,
-  deleteButton,
-  resizeButtonTarget,
-  applyMadeButton,
-  importButton,
-  importStick,
-  applyCSS,
-  highlightButton,
-  clickAction,
-  init,
-};
+if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
+  module.exports = {
+    moveButtonAndPressedToLocation,
+    deleteButton,
+    resizeButtonTarget,
+    applyMadeButton,
+    importButton,
+    importStick,
+    applyCSS,
+    highlightButton,
+    clickAction,
+    init,
+  };
+}

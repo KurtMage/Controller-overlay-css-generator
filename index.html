@@ -360,6 +360,10 @@
             </div>
             <div>
               <h4>2XKO</h4>
+              <button id="select2XKOLightLayout" class="btn-1"
+                onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/2XKO/2025/basic-all-buttons.css')">
+                Light theme
+              </button>
               <button id="select2XKOInGameLayout" class="btn-1"
                 onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/2XKO/2025/all-buttons-in-game.css')">
                 In game
@@ -373,10 +377,6 @@
                       clip</a>
                   </span>
                 </div>
-              </button>
-              <button id="select2XKOLightLayout" class="btn-1"
-                onclick="switchBaseLayout('https://gamepadviewer.com/?p=1&s=7&map=%7B%7D&editcss=https://kurtmage.github.io/hitbox%20layout/2XKO/2025/basic-all-buttons.css')">
-                Light
               </button>
             </div>
             <div>
@@ -412,21 +412,45 @@
         <a target="_blank" rel="noopener noreferrer"
           href="https://www.youtube.com/watch?v=oTEMndNv4lI&ab_channel=KurtMage">Click here for Youtube video for how to
           use all features.</a><br />
-        1. In OBS, click the + in sources to add source. Select "Browser"
-        type.<br />
+        1. Select a base layout using the button above.<br />
 
         2.
         <span class="tooltip" id="layoutBaseURL" style="cursor: pointer" onclick="copyLayoutBaseURL()"><span
             class="tooltiptext" id="clickToCopy">Click to copy</span>Click here to copy the URL</span>
-        for the currently selected base layout. Then paste it into the URL
-        box.<br />
+        for the currently selected base layout. Then in OBS, click the + in sources to add source. Select "Browser"
+        type Then paste it into the URL box.
+        <!-- <span class="tooltip no-border" id="video-tooltip">
+          <span class="icon">i</span>
+          <span class="tooltiptext">
+            <video
+              id="video-tooltip"
+              src="https://i.imgur.com/aE8Rg63.mp4"
+              width="1100"
+              muted
+              loop
+              playsinline
+              style="display: block;"
+            ></video>
+          </span>
+        </span> -->
+        <br />
+
         3. Change the width to 1500 and height to 800.<br />
         4. Press OK and make sure it works.<br />
-        5. Edit your layout here. Select actions at the top of the page.<br />
+        5. At the top of this page, select actions to edit your layout.<br />
         6. When you have a layout you like, click "copy code to clipboard".<br />
         7. Right-click your browser source in OBS and open Properties. Replace
         the text in the "Custom CSS" dialog box with your text (ctrl+a, ctrl+v
-        to select all and paste).<br />
+        to select all and paste).
+        <!-- <span class="tooltip no-border">
+          <span class="icon">i</span>
+          <span class="tooltiptext">
+            <img
+              src="https://64.media.tumblr.com/9078d57d45c01c4f00b3876389e1138f/a70d9365987dee6c-5a/s640x960/d5c9a31bb766506dd88ed76f7a727e561108cd05.gif"
+              alt="Placeholder image">
+          </span>
+        </span> -->
+        <br />
         8. Press OK and you're done!
       </p>
     </div>
